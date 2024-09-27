@@ -1,6 +1,6 @@
 from datetime import datetime
 from enum import Enum
-from typing import Any
+from typing import Annotated, Any
 
 from pydantic import HttpUrl, model_validator
 from sqlmodel import JSON, Column, Field, SQLModel
@@ -81,3 +81,29 @@ class QAInput(QAQuestion):
 
 class QAOutput(SQLModel):
     message: str
+
+
+# === Overview === #
+
+
+class SubTopic(SQLModel):
+    name: str
+    value: Annotated[int, Field(ge=0)]
+
+
+class Topic(SQLModel):
+    name: str
+    subtopics: list[SubTopic]
+
+
+class Lead(SQLModel):
+    positive: int = 0
+    neutral: int = 0
+    negative: int = 0
+
+
+class CampaignOverview(SQLModel):
+    summary: str
+    score: Annotated[int, Field(ge=0, le=100)]
+    topics: list[Topic]
+    leads: Lead

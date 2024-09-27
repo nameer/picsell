@@ -18,3 +18,10 @@ def qa(campaign_id: str, session_id: str, question: str) -> dict:
         },
     )
     return v.json()
+
+
+def generate_overview(data: dict) -> dict:
+    v = requests.post(get_url("summary"), json=data)
+    resp = v.json()
+    resp["score"] = min(100, max(0, resp["score"]))
+    return resp
