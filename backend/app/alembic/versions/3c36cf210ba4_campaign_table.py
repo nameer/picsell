@@ -22,13 +22,13 @@ def upgrade():
     op.create_table(
         "campaign",
         sa.Column("name", sqlmodel.sql.sqltypes.AutoString(), nullable=False),
-        sa.Column("video_url", sqlmodel.sql.sqltypes.AutoString(), nullable=False),
+        sa.Column("video_url", sqlmodel.sql.sqltypes.AutoString(), nullable=True),
         sa.Column("document_urls", sa.JSON(), nullable=True),
         sa.Column("id", sa.Integer(), nullable=False),
         sa.Column(
             "status",
             sa.Enum(
-                "QUEUED", "PROCESSING", "COMPLETED", "FAILED", name="campaignstatus"
+                "DRAFTED", "PROCESSING", "COMPLETED", "FAILED", name="campaignstatus"
             ),
             nullable=False,
         ),

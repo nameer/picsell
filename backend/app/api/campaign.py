@@ -6,7 +6,7 @@ from fastapi import APIRouter, Depends, status
 from app import crud
 from app.api.deps import SessionDep, get_campaign
 from app.core import ai
-from app.models import Campaign, CampaignCreate, CampaignOverview
+from app.models import Campaign, CampaignCreate, CampaignOverview, CampaignUpdate
 
 router = APIRouter()
 
@@ -75,3 +75,15 @@ def get_campaign_overview(session: SessionDep, campaign_id: int) -> CampaignOver
     }
     crud.create_overview_cache(session, campaign_id, data)
     return data
+
+
+@router.patch("/{id}", response_model=Campaign)
+def update_campaign(id: int, session: SessionDep, data: CampaignUpdate):
+    db_campaign = session.get(Campaign, id)
+    if not db_campaign:
+        raise HTTPException(
+            status_code=404,
+            detail="Campaign not found",
+        )
+    db_campaign = crud.update_campaign(session, db_campaign, data)
+    return db_campaign
