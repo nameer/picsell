@@ -1,4 +1,4 @@
-from sqlmodel import Session
+from sqlmodel import Session,select
 
 from app.models import Campaign, CampaignCreate, Engagement, EngagementCreate
 
@@ -17,3 +17,8 @@ def create_engagement(session: Session, data: EngagementCreate) -> Engagement:
     session.commit()
     session.refresh(engagement)
     return engagement
+
+
+def get_campaigns(session:Session) -> list[Campaign]:
+    campaigns = session.exec(select(Campaign)).all()
+    return campaigns
