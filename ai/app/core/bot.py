@@ -116,12 +116,12 @@ prompt_template = PromptTemplate.from_template(
               "session_id": "abc123",
               "interactions": [
                   {{
-                  "question": "How to access pricing page?",
-                  "response": "Click on pricing tab"
+                      "question": "How to access pricing page?",
+                      "response": "Click on pricing tab"
                   }},
                   {{
-                  "question": "How to access pricing page?",
-                  "response": "Click on pricing tab"
+                      "question": "How to access pricing page?",
+                      "response": "Click on pricing tab"
                   }}
               ]
           }},
@@ -129,12 +129,12 @@ prompt_template = PromptTemplate.from_template(
               "session_id": "def124",
               "interactions": [
                   {{
-                  "question": "How to access pricing page?",
-                  "response": "Click on pricing tab"
+                      "question": "How to access pricing page?",
+                      "response": "Click on pricing tab"
                   }},
                   {{
-                  "question": "How to access pricing page?",
-                  "response": "Click on pricing tab"
+                      "question": "How to access pricing page?",
+                      "response": "Click on pricing tab"
                   }}
               ]
           }}
@@ -144,38 +144,55 @@ prompt_template = PromptTemplate.from_template(
     Analyze the conversation and prepare a summary of the conversation. The summary generated needs to be in the following form:
 
     {{
-      "summary": "Areas for Improvement: Energy-saving feature questions",
-      "topics": [
-      {{
-        name: "Pricing",
-        subtopics: [
-        {{
-          "name": "Basic Plan",
-          "value": 60
-        }},
-        {{
-          "name": "Enterprise plan",
-          "value": 40
-        }}
+      "summary": {{
+        "engagement_peak": [
+          "45% of interactions occur after product setup segment"
+        ],
+        "ai_query_performance": [
+          "Top handled query: How does this product integrate with other devices?"
+        ],
+        "customer_feedback": [
+          "Overall Sentiment: 87% positive",
+          "Common Feedback: Requests for more detailed videos on specific features"
+        ],
+        "additional_insights": [
+          "Engagement is higher during hands-on segments like product setup",
+          "Customer interest is focused on integration and energy-saving features",
+          "AI handling of product feature questions shows high accuracy, but specific areas (energy-saving) need refinement to improve the customer experience"
         ]
       }},
-      {{
-        name: "Technical support",
-        subtopics: [
+      "score": 36,
+      "topics": [
         {{
-          "name": "Downtime queries",
-          "value": 50
+          "name": "Pricing",
+          "subtopics": [
+            {{
+              "name": "Basic Plan",
+              "value": 60
+            }},
+            {{
+              "name": "Enterprise plan",
+              "value": 40
+            }}
+          ]
         }},
         {{
-          "name": "API support",
-          "value": 27
-        }},
-        {{
-          "name": "Payment failures",
-          "value": 33
+          "name": "Technical support",
+          "subtopics": [
+            {{
+              "name": "Downtime queries",
+              "value": 50
+            }},
+            {{
+              "name": "API support",
+              "value": 27
+            }},
+            {{
+              "name": "Payment failures",
+              "value": 33
+            }}
+          ]
         }}
-        ]
-      }}
       ],
       "sentiments": [
         {{
@@ -189,6 +206,10 @@ prompt_template = PromptTemplate.from_template(
       ]
     }}
 
+    The summary should be generated like the given example:
+
+    The "score" should be calculated based on the overall tone and sentiment of the conversation sessions. The score should be on a scale of 0-100. If the user sentiment is positive or if the conversation infers that the user has a positive sentiment, assign a higher score. If the sentiment is negative, the score should decrease accordingly. Neutral conversations can lead to mid-range scores.
+
     The "sentiment" value should be an integer: `1` for positive, `-1` for negative, and `0` for neutral. Topics should be based on the most frequently asked questions across different sessions. If multiple topics are discussed, give the most frequently mentioned ones. Also, provide the sentiment for each session and calculate the total number of positive and negative sentiments.
 
     Avoid any sort of markdown in the response like ```json....```.
@@ -196,7 +217,6 @@ prompt_template = PromptTemplate.from_template(
     {json_input}
     """
 )
-
 
 # Formatting the prompt with new content
 

@@ -96,6 +96,13 @@ class Topic(SQLModel):
     subtopics: list[SubTopic]
 
 
+class Summaries(SQLModel):
+    engagement_peak: list[str]
+    ai_query_performance: list[str]
+    customer_feedback: list[str]
+    additional_insights: list[str]
+
+
 class Lead(SQLModel):
     positive: int = 0
     neutral: int = 0
@@ -103,7 +110,7 @@ class Lead(SQLModel):
 
 
 class CampaignOverview(SQLModel):
-    summary: str
+    summary: Summaries
     score: Annotated[int, Field(ge=0, le=100)]
     topics: list[Topic]
     leads: Lead

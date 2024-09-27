@@ -54,7 +54,15 @@ class Sentiment(BaseModel):
     sentiment: Literal[-1, 0, 1]
 
 
-class Summary(BaseModel):
-    summary: str
+class Summaries(BaseModel):
+    engagement_peak: list[str]
+    ai_query_performance: list[str]
+    customer_feedback: list[str]
+    additional_insights: list[str]
+
+
+class Overview(BaseModel):
+    summary: Summaries
+    score: int
     topics: list[Topic]
     sentiments: list[Sentiment]

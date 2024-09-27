@@ -1,7 +1,7 @@
 from fastapi import APIRouter
 
 from app.core import bot
-from app.models import QAInput, QAOutput, Summary, SummaryInput
+from app.models import Overview, QAInput, QAOutput, SummaryInput
 
 api_router = APIRouter()
 
@@ -17,7 +17,7 @@ def qa(data: QAInput) -> dict:
     return {"message": message}
 
 
-@api_router.post("/summary", response_model=Summary)
+@api_router.post("/summary", response_model=Overview)
 def summary(input: SummaryInput) -> dict:
     bot_response = bot.summary_analysis(input)
     return eval(bot_response)
