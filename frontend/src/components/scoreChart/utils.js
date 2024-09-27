@@ -5,7 +5,7 @@ import { ARC_INNER_RADIUS, ARC_OUTER_RADIUS } from './constants';
 
 // scale to map sustainability score to angle between 0 and 180
 export const angleScale = scaleLinear()
-  .domain([0, 1000])
+  .domain([0, 100])
   .range([-Math.PI / 2, Math.PI / 2])
   .clamp(true);
 
