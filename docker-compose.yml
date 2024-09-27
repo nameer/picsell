@@ -4,7 +4,7 @@ services:
     image: postgres:16
     restart: unless-stopped
     volumes:
-      - app-db-data:/var/lib/postgresql/data/pgdata
+      - ./tmp/db-data:/var/lib/postgresql/data/pgdata
     env_file:
       - .env
     environment:
@@ -32,7 +32,7 @@ services:
       - .env
     command:
       - fastapi
-      - dev
+      - run
       - --reload
       - "app/main.py"
       - --port
@@ -75,7 +75,7 @@ services:
       - CHAT_ENDPOINT=http://chat:${CHAT_PORT}
     command:
       - fastapi
-      - dev
+      - run
       - --reload
       - "app/main.py"
       - --port
@@ -119,11 +119,3 @@ services:
     command:
       - npm
       - start
-
-volumes:
-  app-db-data:
-    driver: local
-    driver_opts:
-      type: none
-      o: bind
-      device: ./tmp/db-data
