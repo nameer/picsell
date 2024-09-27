@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 
-### QA ###
+# === QA === #
 
 # Request #
 
@@ -11,7 +11,11 @@ class QAInput(BaseModel):
     query: str
 
 
-### Summary ###
+class QAOutput(BaseModel):
+    message: str
+
+
+# === Summary === #
 
 # Request #
 
