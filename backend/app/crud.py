@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from sqlmodel import Session, select
+from sqlmodel import Session, func, select
 
 from app.models import (
     Campaign,
@@ -54,6 +54,16 @@ def get_last_engagement_time(session: Session, campaign_id: int) -> datetime:
         .where(Engagement.campaign_id == campaign_id)
         .order_by(Engagement.created_at.desc())
     ).first()
+
+
+def get_time_based_engagement(
+    session: Session, campaign_id: int
+) -> list[tuple[int, int]]:
+    return session.exec(
+        select(Engagement.time, func.count("*"))
+        .where(Engagement.campaign_id == campaign_id)
+        .group_by(Engagement.time)
+    ).all()
 
 
 # === Overview Cache === #

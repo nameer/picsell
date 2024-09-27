@@ -125,3 +125,17 @@ class OverviewCache(SQLModel, table=True):
     data: dict = Field(sa_column=Column(JSON))
 
     created_at: datetime = Field(default_factory=datetime.utcnow)
+
+
+# === HotSpots === #
+
+
+class PlotPoint(SQLModel):
+    x: int
+    y: int
+
+
+class HotSpots(SQLModel):
+    total_duration: PositiveInt
+    max_heat: NonNegativeInt
+    plot: list[PlotPoint]
