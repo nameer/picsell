@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import FieldWrapper from "./FieldWrapper";
 import { TrashIcon, UploadIcon } from "../../assets/icons";
 
@@ -25,6 +25,7 @@ const FileUploaderField = ({
   multiple,
   removeIcon,
   fileIcon,
+  onChange,
   ...props
 }) => {
   const inputRef = useRef();
@@ -47,6 +48,10 @@ const FileUploaderField = ({
   const handleFileRemove = (file) => {
     setUploadedFiles((prev) => prev.filter((item) => item !== file));
   };
+
+  useEffect(() => {
+    if (onChange) onChange(uploadedFiles);
+  }, [onChange, uploadedFiles]);
 
   return (
     <FieldWrapper {...props}>

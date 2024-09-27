@@ -28,7 +28,7 @@ const Overview = () => {
   };
 
   const handleCreateCampaign = () => {
-    navigate("/details");
+    fetchData();
   };
 
   const getActiveCampaigns = () => {

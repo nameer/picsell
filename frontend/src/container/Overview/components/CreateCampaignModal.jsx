@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import Modal from "../../../components/Modal";
 import InputField from "../../../components/fields/InputField";
@@ -7,13 +7,42 @@ import FileUploaderField from "../../../components/fields/FileUploaderField";
 import CampaignTypeField from "./CampaignTypeField";
 
 const CreateCampaignModal = ({ isOpen, setIsOpen, onCreate }) => {
+  const [data, setData] = useState({ name: "", document_urls: [] });
+
+  const isValid = data.name !== "" && data.document_urls.length > 0;
+
   const handleCreate = () => {
-    onCreate();
-    setIsOpen(false);
+    fetch("http://localhost:8000/campaigns", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    }).then(async (response) => {
+      onCreate();
+      setIsOpen(false);
+    });
   };
 
   const handleCancel = () => {
     setIsOpen(false);
+  };
+
+  const handleTitleChange = (value) => {
+    setData((prev) => ({ ...prev, name: value }));
+  };
+
+  const handleFilesChange = (files) => {
+    // const filePaths = [];
+
+    // for (let i = 0; i < files.length; i++) {
+    //   filePaths.push(files[i].name);
+    // }
+
+    setData((prev) => ({
+      ...prev,
+      document_urls: ["https://example.com/"],
+    }));
   };
 
   return (
@@ -28,11 +57,13 @@ const CreateCampaignModal = ({ isOpen, setIsOpen, onCreate }) => {
         className="w-full mb-6"
         label="Title"
         placeholder="Enter title"
+        onChange={handleTitleChange}
       />
       <FileUploaderField
         className="w-full mb-8 h-60"
         label="Upload associated documents"
         placeholder="Choose files from your computer"
+        onChange={handleFilesChange}
         multiple
       />
       <div className="flex items-center justify-end w-full">
@@ -44,7 +75,12 @@ const CreateCampaignModal = ({ isOpen, setIsOpen, onCreate }) => {
         >
           Cancel
         </Button>
-        <Button size="large" className="px-14" onClick={handleCreate}>
+        <Button
+          size="large"
+          className="px-14"
+          onClick={handleCreate}
+          disabled={!isValid}
+        >
           Create
         </Button>
       </div>

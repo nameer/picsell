@@ -8,6 +8,7 @@ import {
   getChipValueFromStatus,
   getChipVariantFromStatus,
 } from "../../../utils";
+import { useNavigate } from "react-router-dom";
 
 export const projectsTableColumns = [
   { id: "id", heading: "ID", value: (item) => item.id },
@@ -40,6 +41,11 @@ export const projectsTableColumns = [
 ];
 
 const CampaignsTable = ({ className, isLoading, campaigns }) => {
+  const navigate = useNavigate();
+
+  const handleCampaignClick = (item) => {
+    navigate(`/details/${item.id}`);
+  };
   return (
     <div className={`flex flex-col ${className}`}>
       <div className="text-lg font-semibold text-left mb-4">Campaigns</div>
@@ -48,7 +54,7 @@ const CampaignsTable = ({ className, isLoading, campaigns }) => {
           className="grow h-0 overflow-y-auto"
           columns={projectsTableColumns}
           data={campaigns}
-          onItemSelect={() => {}}
+          onItemSelect={handleCampaignClick}
         />
       )}
       {!isLoading && campaigns.length === 0 && "Empty"}

@@ -48,6 +48,7 @@ const Button = ({
         fullWidth,
         size,
       })}
+      disabled={disabled}
       {...restProps}
     >
       {icon}

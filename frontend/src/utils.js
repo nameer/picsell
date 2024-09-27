@@ -4,8 +4,7 @@ export const getChipVariantFromStatus = (status) => {
       return "success";
     case "progressing":
       return "warning";
-    case "draft":
-    case "queued":
+    case "drafted":
         return "muted"
     case "failed":
         return "error"
@@ -17,11 +16,10 @@ export const getChipVariantFromStatus = (status) => {
 export const getChipValueFromStatus = (status) => {
     switch (status) {
     case "completed":
-      return "Completed";
+      return "Active";
     case "progressing":
       return "Training in progress";
-    case "draft":
-    case "queued":
+    case "drafted":
         return "Draft"
     case "failed":
         return "Failed"

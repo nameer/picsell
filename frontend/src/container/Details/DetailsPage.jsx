@@ -14,7 +14,7 @@ export default function DetailsPage() {
   const [score] = useState(60);
   const [data, setData] = useState({
     id: "12345",
-    status: "draft",
+    status: "drafted",
     title: "Coffee Explainer Video",
     summary:
       "Areas for Improvement: Improved clarity on account management features",
@@ -203,7 +203,7 @@ Feature user-generated content.`,
   const [videoFile, setVideoFile] = useState(null);
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
 
-  const isDraft = data.status === "draft";
+  const isDraft = data.status === "drafted";
 
   const handleVideUpload = (file) => {
     setVideoFile(URL.createObjectURL(file));
