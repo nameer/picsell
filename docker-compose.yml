@@ -103,7 +103,7 @@ services:
     restart: unless-stopped
     build:
       context: ./frontend
-    volume:
+    volumes:
       - ./frontend/src:/app/src
       - ./frontend/public:/app/public
     depends_on:
