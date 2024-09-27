@@ -38,7 +38,6 @@ def get_campaign_overview(session: SessionDep, campaign_id: int) -> CampaignOver
         }
 
     overview_cache = crud.get_latest_overview_cache(session, campaign_id)
-    print(f"{overview_cache=}")
     if overview_cache and last_engagement_time < overview_cache.created_at:
         return overview_cache.data
 
