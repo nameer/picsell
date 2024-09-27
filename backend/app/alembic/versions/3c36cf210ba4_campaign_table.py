@@ -28,7 +28,7 @@ def upgrade():
         sa.Column(
             "status",
             sa.Enum(
-                "QUEUED", "PROCESSING", "COMPLETED", "FAILED", name="campaignstatus"
+                "DRAFTED", "PROCESSING", "COMPLETED", "FAILED", name="campaignstatus"
             ),
             nullable=False,
         ),

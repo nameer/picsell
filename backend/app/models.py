@@ -9,7 +9,7 @@ from sqlmodel import JSON, Column, Field, SQLModel
 
 
 class CampaignStatus(Enum):
-    QUEUED = "queued"
+    DRAFTED = "drafted"
     PROCESSING = "processing"
     COMPLETED = "completed"
     FAILED = "failed"
@@ -40,7 +40,7 @@ class Campaign(CampaignBase, table=True):
 
     video_url: str | None = None
     document_urls: list[str] = Field(sa_column=Column(JSON))
-    status: CampaignStatus = CampaignStatus.QUEUED
+    status: CampaignStatus = CampaignStatus.DRAFTED
 
     created_at: datetime = Field(default_factory=datetime.utcnow)
     updated_at: datetime = Field(default_factory=datetime.utcnow)
