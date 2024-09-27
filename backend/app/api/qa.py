@@ -41,6 +41,7 @@ async def question_answer_ws(websocket: WebSocket, campaign_id: int, session_id:
             question=question,
             response=response["message"],
         )
-        write_log(log_data)
 
         await websocket.send_json(response)
+
+        write_log(log_data)
