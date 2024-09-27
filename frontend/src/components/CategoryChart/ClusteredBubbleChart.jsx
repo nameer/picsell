@@ -4,6 +4,8 @@ import Card from "../Card";
 const ClusteredBubbleChart = ({ data }) => {
   const svgRef = useRef(null);
 
+  const tooltipRef = useRef(null);
+
   const getRandomColor = () => {
     const letters = "0123456789ABCDEF";
     let color = "#";
@@ -79,17 +81,26 @@ const ClusteredBubbleChart = ({ data }) => {
         .attr("opacity", 0.1);
     }
 
-    const tooltip = d3
-      .select("body")
-      .append("div")
-      .style("position", "absolute")
-      .style("background-color", "white")
-      .style("padding", "5px")
-      .style("border", "1px solid #ccc")
-      .style("border-radius", "5px")
-      .style("box-shadow", "0 2px 5px rgba(0, 0, 0, 0.2)")
-      .style("pointer-events", "none")
-      .style("opacity", 1);
+    let tooltip = tooltipRef.current;
+
+    console.log(tooltip);
+
+    if (!tooltip) {
+      tooltip = d3
+        .select("body")
+        .append("div")
+        .style("position", "absolute")
+        .style("background-color", "white")
+        .style("padding", "5px")
+        .style("border", "1px solid #ccc")
+        .style("border-radius", "5px")
+        .style("box-shadow", "0 2px 5px rgba(0, 0, 0, 0.2)")
+        .style("pointer-events", "none")
+        .style("opacity", 1);
+      tooltipRef.current = tooltip.node();
+    } else {
+      tooltip = d3.select(tooltip);
+    }
 
     // Create the root hierarchy node with a sum function
     const root = d3
@@ -141,6 +152,7 @@ const ClusteredBubbleChart = ({ data }) => {
 
     return () => {
       svg.selectAll("*").remove();
+      d3.select("div.cluster-bubble-tooltip").remove();
     };
   }, [data]);
 

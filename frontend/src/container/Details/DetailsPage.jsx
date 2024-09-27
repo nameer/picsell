@@ -70,7 +70,7 @@ export default function DetailsPage() {
         ],
       },
       {
-        name: " Management",
+        name: " Management test",
         subtopics: [
           {
             name: "Password reset",
@@ -201,7 +201,7 @@ export default function DetailsPage() {
             <LineChartWithGradient data={lineChartData} />
           </Card>
         </div>
-        <div className="w-[50%] p-2 flex flex-col gap-4 overflow-auto h-[calc(100vh-12rem)] ">
+        <div className="w-[50%] p-2 flex flex-col gap-4 overflow-auto h-[calc(100vh-17rem)] ">
           <PerformanceSection score={score} />
           <ClusteredBubbleChart data={data.topics} />
           <PerformanceSummary summary={summary} />
