@@ -1,9 +1,10 @@
 import { useState, useRef, useEffect, useId } from 'react';
 import ReactPlayer from 'react-player';
-import { AiImage, Mike } from '../assets';
+import { AiImage, Mike, Playing } from '../assets';
 import SpeechRecognition, {
   useSpeechRecognition
 } from 'react-speech-recognition';
+import CircularProgress from '@mui/material/CircularProgress';
 
 const questions = 'what are the pricing plans ?';
 
@@ -20,6 +21,9 @@ const ChatPage = () => {
   const [isRecording, setIsRecording] = useState(false);
   const [voices, setVoices] = useState(null);
   const [playVideo, setPlayVideo] = useState(false);
+  const [showLoader, setShowLoder] = useState(false);
+  const [responseData, setResponseData] = useState(null);
+  const [question, setQuestion] = useState('scratch pads for quick jots?');
   const id = useId();
 
   const loadVoices = () => {
@@ -32,7 +36,6 @@ const ChatPage = () => {
       // voice.name.toLowerCase().includes('zoe') ||
       // voice.lang === 'en-US' // Default to English if female not found
     );
-    console.log(femaleVoice);
     setVoices(femaleVoice || availableVoices[0]); // Fallback to first voice if no female found
   };
 
@@ -49,50 +52,31 @@ const ChatPage = () => {
   }, []);
 
   const handleShowMike = () => {
-    setShowMike(true);
     setPlayVideo(false);
+    setShowMike(true);
+    setResponseData(null);
   };
 
-  console.log(playVideo);
-
   const handleStartRecording = async () => {
+    window.speechSynthesis.cancel();
     setIsRecording(true);
     SpeechRecognition.startListening();
-
-    // try {
-    //   const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-    //   mediaRecorderRef.current = new MediaRecorder(stream);
-
-    //   mediaRecorderRef.current.ondataavailable = (event) => {
-    //     audioChunks.current.push(event.data);
-    //   };
-
-    //   mediaRecorderRef.current.onstop = () => {
-    //     const audioBlob = new Blob(audioChunks.current, { type: 'audio/wav' });
-    //     const audioUrl = URL.createObjectURL(audioBlob);
-    //     setAudioURL(audioUrl);
-    //     audioChunks.current = []; // Clear the chunks after stopping
-    //   };
-
-    //   mediaRecorderRef.current.start();
-    // } catch (err) {
-    //   console.error('Error accessing microphone', err);
-    // }
   };
 
   const handleStopRecording = () => {
-    console.log(transcript);
     SpeechRecognition.stopListening();
     setIsRecording(false);
-    posetQuestion();
+    postQuestion();
   };
 
-  const posetQuestion = async () => {
+  const postQuestion = async () => {
     const parameters = {
       question: transcript,
       campaign_id: '1',
       session_id: id
     };
+    setShowLoder(true);
+    setResponseData(null);
     const response = await fetch('http://localhost:8000/qa', {
       method: 'POST',
       headers: {
@@ -102,11 +86,12 @@ const ChatPage = () => {
     });
 
     const data = await response.json();
+    setShowLoder(false);
+    setResponseData(data?.message);
     speakText(data?.message);
   };
 
   const speakText = (text) => {
-    console.log(text);
     // Check if SpeechSynthesis is supported
     if ('speechSynthesis' in window) {
       if (voices) {
@@ -119,16 +104,16 @@ const ChatPage = () => {
         speech.pitch = 1; // Voice pitch
         speech.rate = 1; // Voice rate
         speech.volume = 1; // Volume (0 to 1)
-        speech.onend = function () {
+        speech.onend = () => {
           console.log('Speech has finished. Canceling...');
           window.speechSynthesis.cancel(); // This can be used to stop any further speech if needed
+          setShowMike(false);
         };
 
         speech.onerror = (event) => {
           console.error('Speech error:', event.error);
         };
 
-        console.log(speech);
         window.speechSynthesis.speak(speech);
       } else {
         console.error('No valid voice selected.');
@@ -140,7 +125,47 @@ const ChatPage = () => {
 
   const handleSendQuestions = (question) => {};
 
+  const handleOnProgress = (data) => {
+    console.log(Math.floor(data?.playedSeconds));
+    switch (Math.floor(data?.playedSeconds)) {
+      case 10:
+        setQuestion('scratch pads for quick jots? ');
+        break;
+      case 24:
+        setQuestion('Search for absolutely anything? ');
+        break;
+      case 30:
+        setQuestion('easy task management by assigning to team members ');
+        break;
+      case 35:
+        setQuestion("Can I give my todo's a priority boost!!? ");
+        break;
+      case 44:
+        setQuestion('tasks have notes context?? ');
+        break;
+      case 50:
+        setQuestion('Hmm....Can I create recurring tasks?? ');
+        break;
+      case 55:
+        setQuestion('what all documents can be included in notes?');
+        break;
+      case 66:
+        setQuestion('custom timer for reminders ?? ');
+        break;
+      case 72:
+        setQuestion('add multiple calenders?? ');
+        break;
+      case 80:
+        setQuestion('customisable home dashboard ');
+        break;
+    }
+  };
+
+  console.log(question);
+
   const handleOnVideoPlay = () => {
+    window.speechSynthesis.cancel();
+    setPlayVideo(true);
     setShowMike(false);
   };
 
@@ -155,6 +180,7 @@ const ChatPage = () => {
           playbackRate={1}
           playing={playVideo}
           onPlay={handleOnVideoPlay}
+          onProgress={handleOnProgress}
           url={'https://pic-uploadz.s3.ap-south-1.amazonaws.com/evernote.mp4'}
           style={{
             borderRadius: '8px',
@@ -184,17 +210,17 @@ const ChatPage = () => {
         )}
         <div className="absolute inset-0 text-start pt-[460px] ml-4 z-20 h-8">
           <button
-            className="mr-4 rounded-[74px] bg-[#395FCDD6] w-[285px] h-8 border border-white text-white text-sm text-center"
+            className="mr-4 rounded-[74px] bg-[#395FCDD6] w-fit pr-2 h-8 border border-white text-white text-sm text-center"
             style={{ boxShadow: '0px 5px 15px 0px rgba(32, 91, 241, 0.2)' }}
             onClick={handleSendQuestions}
           >
             <div className="flex">
               <AiImage className="size-[10px] ml-3 mt-[5px] mr-1" />
-              {questions}
+              {question}
             </div>
           </button>
         </div>
-        {showMike && (
+        {showMike && !showLoader && !responseData && (
           <div
             className={`absolute cusror-pointer inset-0 z-30 w-[1011px] h-[500px] flex justify-center pt-64 text-white bg-black bg-opacity-30 rounded-t-[8px] ${
               isRecording ? 'opacity-50' : ''
@@ -206,6 +232,28 @@ const ChatPage = () => {
               onMouseUp={handleStopRecording}
             >
               <Mike className="size-[79px]" />
+            </div>
+          </div>
+        )}
+        {showMike && showLoader && (
+          <div
+            className={`absolute cusror-pointer inset-0 z-30 w-[1011px] h-[500px] flex justify-center pt-64 text-white bg-black bg-opacity-30 rounded-t-[8px] ${
+              isRecording ? 'opacity-50' : ''
+            }`}
+          >
+            <div className="flex">
+              <CircularProgress sx={{ color: 'white' }} size={70} />
+            </div>
+          </div>
+        )}
+        {showMike && !showLoader && responseData && (
+          <div
+            className={`absolute cusror-pointer inset-0 z-30 w-[1011px] h-[500px] flex justify-center pt-64 text-white bg-black bg-opacity-30 rounded-t-[8px] ${
+              isRecording ? 'opacity-50' : ''
+            }`}
+          >
+            <div className="flex">
+              <Playing className="size-[79px] animate-ping" />
             </div>
           </div>
         )}
