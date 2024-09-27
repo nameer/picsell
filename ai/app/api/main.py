@@ -1,7 +1,7 @@
 from fastapi import APIRouter
 
 from app.core import bot
-from app.models import Summary, SummaryInput
+from app.models import QAInput, Summary, SummaryInput
 
 api_router = APIRouter()
 
@@ -11,9 +11,9 @@ def health():
     return {"status": "ok"}
 
 
-@api_router.get("/qa")
-def qa(session_id: str, query: str) -> str:
-    return bot.qa(session_id, query)
+@api_router.post("/qa")
+def qa(data: QAInput) -> str:
+    return bot.qa(data.session_id, data.query)
 
 
 @api_router.post("/summary", response_model=Summary)

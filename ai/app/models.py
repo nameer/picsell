@@ -1,6 +1,19 @@
 from pydantic import BaseModel
 
-### Request ###
+### QA ###
+
+# Request #
+
+
+class QAInput(BaseModel):
+    campaign_id: int
+    session_id: str
+    query: str
+
+
+### Summary ###
+
+# Request #
 
 
 class SessionInteraction(BaseModel):
@@ -18,7 +31,7 @@ class SummaryInput(BaseModel):
     sessions: list[SessionInput]
 
 
-### Response ###
+# Response #
 
 
 class Topic(BaseModel):
