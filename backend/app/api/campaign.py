@@ -22,7 +22,10 @@ def get_campaigns(session: SessionDep) -> list[Campaign]:
 
 
 @router.get("/{campaign_id}", response_model=Campaign)
-def get_campaign(campaign: Annotated[Campaign, Depends(get_campaign)]) -> Campaign:
+def get_campaign(
+    campaign_id: int,  # noqa: ARG001
+    campaign: Annotated[Campaign, Depends(get_campaign)],
+) -> Campaign:
     return campaign
 
 
