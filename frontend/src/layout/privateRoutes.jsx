@@ -1,12 +1,12 @@
 import { Route, Routes } from "react-router-dom";
-import Dashboard from "../container/dashboard";
+import Overview from "../container/Overview";
 
 const PrivateRoutes = () => {
-    return (
-            <Routes>
-                <Route path="/dashboard" element={<Dashboard />} />
-            </Routes>
-    )
-}
+  return (
+    <Routes>
+      <Route path="/dashboard" element={<Overview />} />
+    </Routes>
+  );
+};
 
 export default PrivateRoutes;

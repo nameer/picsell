@@ -1,12 +1,12 @@
-import { Field, Input, Label } from '@headlessui/react';
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Field, Input, Label } from "@headlessui/react";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-const userName = 'admin1234';
-const password = '12345678';
+const userName = "admin1234";
+const password = "12345678";
 const Login = () => {
-  const [name, setName] = useState('');
-  const [userPassword, setUserPassword] = useState('');
+  const [name, setName] = useState("");
+  const [userPassword, setUserPassword] = useState("");
   const navigate = useNavigate();
 
   const handleNameChange = (e) => setName(e?.target?.value);
@@ -15,15 +15,15 @@ const Login = () => {
   const handleLogin = () => {
     console.log(name, userPassword);
     if (userName === name && userPassword === password) {
-      localStorage.setItem('isLogin', true);
-      navigate('/dashboard');
+      localStorage.setItem("isLogin", true);
+      navigate("/dashboard");
     }
   };
 
   return (
     <div className="flex w-full h-lvh p-[15px]">
       <div className="w-1/2 flex flex-col">
-        <div className="text-left ml-3">logo</div>
+        <div className="text-left ml-3"></div>
         <div className="flex justify-center">
           <div className="text-left max-w-[400px] ">
             <div className="mt-48 font-bold text-4xl text-[#1F2025]">Login</div>

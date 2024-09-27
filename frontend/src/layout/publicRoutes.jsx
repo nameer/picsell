@@ -1,17 +1,19 @@
 import { Route, Routes, BrowserRouter as Router } from "react-router-dom";
 import Login from "../container/login";
 import PrivateRoutes from "./privateRoutes";
+import VideoDetails from "../container/details";
 
 const PublicLayout = () => {
-    return (
-        <Router>
-            <Routes>
-                <Route path="/login" element={< Login/>} />
-                <Route path="/" element={<Login />} />
-                <Route path="*" element={<PrivateRoutes />} />
-            </Routes>
-        </Router>
-    )
-}
+  return (
+    <Router>
+      <Routes>
+        <Route path="/login" element={<Login />} />
+        <Route path="/" element={<Login />} />
+        <Route path="/details" element={<VideoDetails />} />
+        <Route path="*" element={<PrivateRoutes />} />
+      </Routes>
+    </Router>
+  );
+};
 
-export default PublicLayout
+export default PublicLayout;
