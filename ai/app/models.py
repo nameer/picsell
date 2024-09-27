@@ -1,3 +1,5 @@
+from typing import Literal
+
 from pydantic import BaseModel
 
 # === QA === #
@@ -38,18 +40,22 @@ class SummaryInput(BaseModel):
 # Response #
 
 
-class Topic(BaseModel):
+class SubTopic(BaseModel):
     name: str
     value: int
 
 
+class Topic(BaseModel):
+    name: str
+    subtopics: list[SubTopic]
+
+
 class Sentiment(BaseModel):
     session_id: str
-    sentiment: str
+    sentiment: Literal[-1, 0, 1]
 
 
 class Summary(BaseModel):
     summary: str
-    score: int
     topics: list[Topic]
     sentiments: list[Sentiment]
