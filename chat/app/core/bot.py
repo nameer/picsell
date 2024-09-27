@@ -1,5 +1,6 @@
 from langchain.chains import create_history_aware_retriever, create_retrieval_chain
 from langchain.chains.combine_documents import create_stuff_documents_chain
+from langchain.prompts import PromptTemplate
 from langchain_chroma import Chroma
 from langchain_community.chat_message_histories import ChatMessageHistory
 from langchain_community.document_loaders import WebBaseLoader
@@ -7,6 +8,8 @@ from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain_core.runnables.history import RunnableWithMessageHistory
 from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 from langchain_text_splitters import RecursiveCharacterTextSplitter
+
+from app.models import SummaryInput
 
 # Set up OpenAI API key
 # os.environ['OPENAI_API_KEY'] = settings.OPENAI_API_KEY
@@ -17,6 +20,7 @@ llm = ChatOpenAI(model="gpt-4o-mini")
 
 # Load and process the document
 loader = WebBaseLoader("https://www.macrumors.com/roundup/iphone-16-pro/")
+
 docs = loader.load()
 
 text_splitter = RecursiveCharacterTextSplitter(
@@ -80,8 +84,88 @@ conversational_rag_chain = RunnableWithMessageHistory(
     output_messages_key="answer",
 )
 
+prompt_template = PromptTemplate.from_template(
+    """The following is a list of dictionaries where each dictionary contains a conversation between a person and a model about a product. The input will be in the following form:
+
+  {{
+    "vector_store_id": "18178712",
+    "sessions": [
+        {{
+            "session_id": 123,
+            "interactions": [
+                {{
+                "question": "How to access pricing page?",
+                "response": "Click on pricing tab"
+                }},
+                {{
+                "question": "How to access pricing page?",
+                "response": "Click on pricing tab"
+                }}
+            ]
+        }},
+        {{
+            "session_id": 124,
+            "interactions": [
+                {{
+                "question": "How to access pricing page?",
+                "response": "Click on pricing tab"
+                }},
+                {{
+                "question": "How to access pricing page?",
+                "response": "Click on pricing tab"
+                }}
+            ]
+        }}
+     ]
+  }}
+
+  Analyze the conversation and prepare a summary of the conversation. The summary generated needs to be in the following form:
+
+  {{
+    "summary": "Areas for Improvement: Energy-saving feature questions",
+    "score": 87,
+    "topics": [
+      {{
+        "name": "Login",
+        "value": 60
+      }},
+      {{
+        "name": "Pricing",
+        "value": 40
+      }}
+    ],
+    "sentiments": [
+      {{
+        "session_id": 123,
+        "sentiment": "+ve"
+      }},
+      {{
+        "session_id": 124,
+        "sentiment": "-ve"
+      }}
+    ],
+    "positive_sentiments": 1,
+    "negative_sentiments": 1
+  }}
+
+  I need to get the output summary in the above form, where the topics are based on the most frequently asked questions in different sessions. If multiple topics are discussed, give the most frequently asked topics. Also, provide the sentiment of each conversation, and finally, give the total number of positive and negative sentiments.
+  Avoid any sort of markdown in the response like ```json....``` .
+  {json_input}
+  """
+)
+
+
+# Formatting the prompt with new content
+
 
 # Chatbot function
+def summary_analysis(summary_input: SummaryInput):
+    input_data = summary_input.json()
+    formatted_prompt = prompt_template.format(json_input=input_data)
+    response = llm.invoke(formatted_prompt)
+    return response.content
+
+
 def qa(session_id, query):
     response = conversational_rag_chain.invoke(
         {"input": query}, config={"configurable": {"session_id": session_id}}
@@ -91,20 +175,58 @@ def qa(session_id, query):
 
 # Run the chatbot
 if __name__ == "__main__":
-    session_id = (
-        "user_session"  # In a real application, you'd generate unique session IDs
-    )
-    print(
-        "Chatbot: Hello! I'm ready to answer your questions. Type 'exit' to end the conversation."
-    )
+    # session_id = (
+    #     "user_session"  # In a real application, you'd generate unique session IDs
+    # )
+    # print(
+    #     "Chatbot: Hello! I'm ready to answer your questions. Type 'exit' to end the conversation."
+    # )
 
-    while True:
-        user_input = input("You: ")
+    # while True:
+    #     user_input = input("You: ")
 
-        if user_input.lower() == "exit":
-            print("Chatbot: Goodbye! Have a great day!")
-            break
+    #     if user_input.lower() == "exit":
+    #         print("Chatbot: Goodbye! Have a great day!")
+    #         break
 
-        answer = qa(session_id, user_input)
+    #     answer = qa(session_id, user_input)
 
-        print("Chatbot:", answer)
+    #     print("Chatbot:", answer)
+
+    summary_input = {
+        "vector_store_id": "18178712",
+        "sessions": [
+            {
+                "session_id": 123,
+                "interactions": [
+                    {
+                        "question": "How to access pricing page?",
+                        "response": "Click on pricing tab",
+                    },
+                    {
+                        "question": "Is there a discount on bulk purchases?",
+                        "response": "Yes, a 10% discount is available on purchases of over 100 units.",
+                    },
+                ],
+            },
+            {
+                "session_id": 124,
+                "interactions": [
+                    {
+                        "question": "How to reset my password?",
+                        "response": "Go to the login page and click on 'Forgot Password'.",
+                    },
+                    {
+                        "question": "Can I change my username?",
+                        "response": "Usernames are permanent and cannot be changed.",
+                    },
+                ],
+            },
+        ],
+    }
+
+    # Call the function with the dictionary input
+    output_summary = summary_analysis(summary_input)
+
+    # Print the output
+    print(output_summary)
