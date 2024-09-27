@@ -4,7 +4,7 @@ import { CloseIcon } from "../../assets/icons";
 import { tv } from "tailwind-variants";
 
 const modalPanelVariants = tv({
-  base: "w-full border shadow-lg rounded-xl bg-white p-6",
+  base: "w-full border shadow-lg rounded-xl bg-white p-6 max-w-3xl",
   variants: {
     size: {
       small: "max-w-lg",

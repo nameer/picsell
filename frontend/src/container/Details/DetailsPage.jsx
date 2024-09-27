@@ -1,16 +1,23 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import DetailsHeader from "./DetailsHeader";
 import DashboardLayout from "../../layout/DashboardLayout";
 import Card from "../../components/Card";
 import { CustomerIcon, LikeIcon, DislikeIcon } from "../../assets/icons";
 import GaugeChart from "../../components/scoreChart/GaugeChart";
 import ClusteredBubbleChart from "../../components/BubbleChart/BubbleChart";
+import ShareModal from "./ShareModal";
 
 export default function DetailsPage() {
   const [score] = useState(60);
+  const [isShareModalOpen, setIsShareModalOpen] = useState(false);
+
+  const handleShareClick = () => {
+    setIsShareModalOpen(true);
+  };
+
   return (
     <DashboardLayout>
-      <DetailsHeader />
+      <DetailsHeader onShareClick={handleShareClick} />
       <div className="flex border-cyan-300">
         <div className="w-2/5  p-2">
           <Card></Card>
@@ -68,6 +75,7 @@ export default function DetailsPage() {
           </div>
         </div>
       </div>
+      <ShareModal isOpen={isShareModalOpen} setIsOpen={setIsShareModalOpen} />
     </DashboardLayout>
   );
 }

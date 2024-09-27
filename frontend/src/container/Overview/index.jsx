@@ -8,10 +8,10 @@ import { useState } from "react";
 import CreateProjectModal from "./CreateProjectModal";
 
 const Overview = () => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
 
   const handleCreateModalClick = () => {
-    setIsOpen(true);
+    setIsCreateModalOpen(true);
   };
 
   const handleCreateProject = () => { };
@@ -77,8 +77,8 @@ const Overview = () => {
         </div>
       </div>
       <CreateProjectModal
-        isOpen={isOpen}
-        setIsOpen={setIsOpen}
+        isOpen={isCreateModalOpen}
+        setIsOpen={setIsCreateModalOpen}
         onCreate={handleCreateProject}
       />
     </DashboardLayout>

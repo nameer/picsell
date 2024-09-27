@@ -3,7 +3,7 @@ import React from "react";
 import Button from "../../components/Button/Button";
 import { EditLogo, ShareLogo } from "../../assets/icons";
 
-export default function DetailsHeader() {
+export default function DetailsHeader({ onShareClick }) {
   return (
     <div className="flex justify-between">
       <div className="flex flex-col">
@@ -14,7 +14,7 @@ export default function DetailsHeader() {
         </div>
       </div>
       <div className="flex gap-2 items-center">
-        <Button color={"secondary"} icon={<ShareLogo />}>
+        <Button color={"secondary"} icon={<ShareLogo />} onClick={onShareClick}>
           Share
         </Button>
         <Button icon={<EditLogo />}>Edit</Button>
