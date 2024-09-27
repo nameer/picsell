@@ -1,4 +1,5 @@
 from collections.abc import Generator
+from json import JSONDecodeError
 from typing import Annotated
 
 from fastapi import Depends, HTTPException, Request, status
@@ -18,15 +19,16 @@ SessionDep = Annotated[Session, Depends(get_db)]
 
 
 async def get_campaign(request: Request, session: SessionDep) -> Campaign:
-    campaign_id = (
-        request.query_params.get("campaign_id")
-        or request.path_params.get("campaign_id")
-        or (
-            (await request.json()).get("campaign_id")
-            if request.method == "POST"
-            else None
-        )
-    )
+    campaign_id = request.query_params.get("campaign_id")
+    if campaign_id is None:
+        campaign_id = request.path_params.get("campaign_id")
+    if campaign_id is None:
+        try:
+            body = await request.json()
+        except JSONDecodeError:
+            pass
+        else:
+            campaign_id = body.get("campaign_id")
     if not campaign_id:
         raise HTTPException(
             status.HTTP_400_BAD_REQUEST, detail="Campaign ID not provided"
