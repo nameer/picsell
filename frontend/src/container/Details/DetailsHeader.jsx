@@ -1,12 +1,31 @@
-import React from "react";
+import React, { useState } from "react";
 
 import Button from "../../components/Button/Button";
 import { EditLogo, ShareLogo } from "../../assets/icons";
 import Chip from "../../components/Chip";
 import { getChipVariantFromStatus } from "../../utils";
+import Spinner from "../../components/Spinner";
 
-export default function DetailsHeader({ status, title, id, isUploaded }) {
-  const isDraft = status === "Draft";
+export default function DetailsHeader({
+  status,
+  title,
+  id,
+  isUploaded,
+  onPublish,
+  onShare,
+}) {
+  const [isLoading, setIsLoading] = useState(false);
+
+  const isPublished = status === "Completed";
+
+  const handlePublishClick = () => {
+    setIsLoading(true);
+    setTimeout(() => {
+      onPublish();
+      setIsLoading(false);
+    }, 1000);
+  };
+
   return (
     <div className="flex justify-between mb-3">
       <div className="flex flex-col">
@@ -32,9 +51,30 @@ export default function DetailsHeader({ status, title, id, isUploaded }) {
           <Button color="secondary" icon={<EditLogo className="fill-black" />}>
             Edit
           </Button>
-          <Button icon={<ShareLogo className="fill-white size-4" />}>
-            Publish
-          </Button>
+          {!isPublished && (
+            <Button
+              icon={
+                isLoading ? (
+                  <Spinner className="!text-white size-4" />
+                ) : (
+                  <ShareLogo className="fill-white size-4" />
+                )
+              }
+              onClick={handlePublishClick}
+              disabled={isLoading}
+            >
+              Publish
+            </Button>
+          )}
+          {isPublished && (
+            <Button
+              icon={<ShareLogo className="fill-white size-4" />}
+              onClick={onShare}
+              disabled={isLoading}
+            >
+              Share
+            </Button>
+          )}
         </div>
       )}
     </div>

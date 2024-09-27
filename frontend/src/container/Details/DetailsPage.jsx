@@ -6,12 +6,12 @@ import PerformanceSection from "./PerformaceSection";
 import ClusteredBubbleChart from "../../components/CategoryChart/ClusteredBubbleChart";
 import PerformanceSummary from "./PerformanceSummary";
 import LineChartWithGradient from "../../components/EngagementChart/LineChart";
-import VideoCard from "./VideoCard";
+import VideoUploader from "./VideoCard";
 import AiSuggestionsCard from "./AiSuggestionsCard";
 
 export default function DetailsPage() {
   const [score] = useState(60);
-  const [data] = useState({
+  const [data, setData] = useState({
     id: "12345",
     status: "Draft",
     title: "Coffee Explainer Video",
@@ -76,7 +76,7 @@ export default function DetailsPage() {
         ],
       },
       {
-        name: " Management",
+        name: " Management test",
         subtopics: [
           {
             name: "Password reset",
@@ -128,23 +128,6 @@ export default function DetailsPage() {
       },
       {
         name: " Management 6",
-        subtopics: [
-          {
-            name: "Password reset",
-            value: 4,
-          },
-          {
-            name: "Account deletion",
-            value: 10,
-          },
-          {
-            name: "Two-factor authentication",
-            value: 5,
-          },
-        ],
-      },
-      {
-        name: " Management 3",
         subtopics: [
           {
             name: "Password reset",
@@ -224,6 +207,11 @@ Feature user-generated content.`,
     setVideoFile(URL.createObjectURL(file));
   };
 
+  const handlePublish = () => {
+    setData((prev) => ({ ...prev, status: "Completed" }));
+  };
+  const handleShareClick = () => {};
+
   return (
     <DashboardLayout>
       <DetailsHeader
@@ -231,9 +219,11 @@ Feature user-generated content.`,
         id={data.id}
         title={data.title}
         isUploaded={videoFile !== null}
+        onPublish={handlePublish}
+        onShare={handleShareClick}
       />
       <div className="flex gap-4">
-        <VideoCard file={videoFile} onUpload={handleVideUpload} />
+        <VideoUploader file={videoFile} onUpload={handleVideUpload} />
         {isDraft && (
           <AiSuggestionsCard
             className="w-1/2"
@@ -242,25 +232,12 @@ Feature user-generated content.`,
         )}
         {!isDraft && (
           <div className="w-1/2 flex flex-col gap-4 overflow-auto h-[calc(100vh-12rem)] ">
-            <PerformanceSection score={score} />
+            <PerformanceSection score={score} leads={data.leads} />
             <ClusteredBubbleChart data={data.topics} />
             <PerformanceSummary summary={summary} />
           </div>
         )}
       </div>
-      {data.status !== "Draft" && (
-        <div className="flex gap-4">
-          <div className="w-1/2">
-            <Card>
-              <div className="h-80 border border-gray-400 rounded-lg"></div>
-              <div className="text-left text-[13px] leading-[18px] tracking-[1px] text-gray-500 mt-4">
-                USER ENGAGEMENT
-              </div>
-              <LineChartWithGradient data={lineChartData} />
-            </Card>
-          </div>
-        </div>
-      )}
     </DashboardLayout>
   );
 }

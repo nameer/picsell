@@ -1,7 +1,7 @@
-import React, { useRef, useState } from "react";
+import React, { useRef } from "react";
 import Card from "../../components/Card";
 import Button from "../../components/Button/Button";
-import { AiIcon, UploadIcon } from "../../assets/icons";
+import { UploadIcon } from "../../assets/icons";
 import ReactPlayer from "react-player";
 
 const VideoCard = ({ file, onUpload }) => {

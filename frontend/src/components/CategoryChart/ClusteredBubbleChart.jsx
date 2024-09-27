@@ -3,16 +3,28 @@ import * as d3 from "d3";
 import Card from "../Card";
 const ClusteredBubbleChart = ({ data }) => {
   const svgRef = useRef(null);
-  const parentRef = useRef(null);
 
-  const getRandomColor = () => {
-    const letters = "0123456789ABCDEF";
-    let color = "#";
-    for (let i = 0; i < 6; i++) {
-      color += letters[Math.floor(Math.random() * 16)];
+  const tooltipRef = useRef(null);
+
+  function stringToColor(string) {
+    let hash = 0;
+    let i;
+
+    /* eslint-disable no-bitwise */
+    for (i = 0; i < string.length; i += 1) {
+      hash = string.charCodeAt(i) + ((hash << 5) - hash);
     }
+
+    let color = "#";
+
+    for (i = 0; i < 3; i += 1) {
+      const value = (hash >> (i * 8)) & 0xff;
+      color += `00${value.toString(16)}`.slice(-2);
+    }
+    /* eslint-enable no-bitwise */
+
     return color;
-  };
+  }
 
   const [colorMap, setColorMap] = useState([]);
 
@@ -20,7 +32,7 @@ const ClusteredBubbleChart = ({ data }) => {
     const newColorMap = []; // Temporary array to store colors for each topic
 
     const result = topics.flatMap((topic) => {
-      const colorCode = getRandomColor();
+      const colorCode = stringToColor(topic.name);
 
       newColorMap.push({ topic: topic.name, colorCode });
 
@@ -80,7 +92,26 @@ const ClusteredBubbleChart = ({ data }) => {
         .attr("opacity", 0.1);
     }
 
-    const tooltip = d3.select(parentRef.current).append("div");
+    let tooltip = tooltipRef.current;
+
+    console.log(tooltip);
+
+    if (!tooltip) {
+      tooltip = d3
+        .select("body")
+        .append("div")
+        .style("position", "absolute")
+        .style("background-color", "white")
+        .style("padding", "5px")
+        .style("border", "1px solid #ccc")
+        .style("border-radius", "5px")
+        .style("box-shadow", "0 2px 5px rgba(0, 0, 0, 0.2)")
+        .style("pointer-events", "none")
+        .style("opacity", 1);
+      tooltipRef.current = tooltip.node();
+    } else {
+      tooltip = d3.select(tooltip);
+    }
 
     // Create the root hierarchy node with a sum function
     const root = d3
@@ -140,12 +171,13 @@ const ClusteredBubbleChart = ({ data }) => {
 
     return () => {
       svg.selectAll("*").remove();
+      d3.select("div.cluster-bubble-tooltip").remove();
     };
   }, [data]);
 
   return (
     <Card title={"CUSTOMER QUERY OVERVIEW"}>
-      <div ref={parentRef} className="flex flex-col items-center">
+      <div className="flex flex-col items-center">
         <svg ref={svgRef}></svg>
         <div className="mt-4 w-full">
           <ul className="flex items-start gap-6 flex-wrap">
