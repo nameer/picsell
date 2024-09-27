@@ -107,3 +107,12 @@ class CampaignOverview(SQLModel):
     score: Annotated[int, Field(ge=0, le=100)]
     topics: list[Topic]
     leads: Lead
+
+
+class OverviewCache(SQLModel, table=True):
+    id: int = Field(default=None, primary_key=True)
+
+    campaign_id: int = Field(foreign_key="campaign.id")
+    data: dict = Field(sa_column=Column(JSON))
+
+    created_at: datetime = Field(default_factory=datetime.utcnow)

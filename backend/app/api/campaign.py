@@ -23,6 +23,20 @@ def get_campaign(campaign: Annotated[Campaign, Depends(get_campaign)]) -> Campai
 
 @router.get("/{campaign_id}/overview", dependencies=[Depends(get_campaign)])
 def get_campaign_overview(session: SessionDep, campaign_id: int) -> CampaignOverview:
+    last_engagement_time = crud.get_last_engagement_time(session, campaign_id)
+    if not last_engagement_time:
+        return {
+            "summary": "",
+            "score": 0,
+            "topics": [],
+            "leads": {"positive": 0, "neutral": 0, "negative": 0},
+        }
+
+    overview_cache = crud.get_latest_overview_cache(session, campaign_id)
+    print(f"{overview_cache=}")
+    if overview_cache and last_engagement_time < overview_cache.created_at:
+        return overview_cache.data
+
     engagements = crud.get_engagements(session, campaign_id)
     interactions = defaultdict(list)
     for engagement in engagements:
@@ -41,9 +55,11 @@ def get_campaign_overview(session: SessionDep, campaign_id: int) -> CampaignOver
         key = {1: "positive", 0: "neutral", -1: "negative"}.get(sentiment["sentiment"])
         leads[key] += 1
 
-    return {
+    data = {
         "summary": overview["summary"],
         "score": overview["score"],
         "topics": overview["topics"],
         "leads": dict(leads),
     }
+    crud.create_overview_cache(session, campaign_id, data)
+    return data

@@ -1,7 +1,15 @@
+from datetime import datetime
+
 from sqlalchemy.sql import select
 from sqlmodel import Session
 
-from app.models import Campaign, CampaignCreate, Engagement, EngagementCreate
+from app.models import (
+    Campaign,
+    CampaignCreate,
+    Engagement,
+    EngagementCreate,
+    OverviewCache,
+)
 
 # === Compaign === #
 
@@ -35,3 +43,41 @@ def get_engagements(session: Session, campaign_id: int) -> list[Engagement]:
         select(Engagement).where(Engagement.campaign_id == campaign_id)
     ).all()
     return [res[0] for res in engagements]
+
+
+def get_last_engagement_time(session: Session, campaign_id: int) -> datetime:
+    # TODO: potential sqlmodel failure?
+    last_time = session.exec(
+        select(Engagement.created_at)
+        .where(Engagement.campaign_id == campaign_id)
+        .order_by(Engagement.created_at.desc())
+    ).first() or (None,)
+    return last_time[0]
+
+
+# === Overview Cache === #
+
+
+def create_overview_cache(
+    session: Session,
+    campaign_id: int,
+    data: dict,
+) -> OverviewCache:
+    overview_cache = OverviewCache(campaign_id=campaign_id, data=data)
+    session.add(overview_cache)
+    session.commit()
+    session.refresh(overview_cache)
+    return overview_cache
+
+
+def get_latest_overview_cache(
+    session: Session,
+    campaign_id: int,
+) -> OverviewCache | None:
+    # TODO: potential sqlmodel failure?
+    latest = session.exec(
+        select(OverviewCache)
+        .where(OverviewCache.campaign_id == campaign_id)
+        .order_by(OverviewCache.created_at.desc())
+    ).first() or (None,)
+    return latest[0]
