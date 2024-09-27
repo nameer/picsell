@@ -8,7 +8,9 @@ const Card = ({ className, title, children, icon }) => {
       <div className="flex items-center gap-2 mb-3">
         {icon && <span>{icon}</span>}
         {title && (
-          <div className="text-left text-[11px] leading-[18px] tracking-[1px] text-gray-500">{title}</div>
+          <div className="text-left text-[13px] leading-[18px] tracking-[1px] text-gray-500">
+            {title}
+          </div>
         )}
       </div>
       {children}
