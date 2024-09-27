@@ -148,7 +148,7 @@ const ClusteredBubbleChart = ({ data, categories }) => {
     <div className="flex flex-col items-center">
       <svg ref={svgRef}></svg>
       <div className="mt-4 w-full">
-        <ul className="flex items-start gap-6 ">
+        <ul className="flex items-start gap-6 flex-wrap">
           {colorMap.map((category) => (
             <li key={category.topic} className="flex items-center">
               <span

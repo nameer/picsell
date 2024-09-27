@@ -32,15 +32,15 @@ export default function DetailsPage() {
         subtopics: [
           {
             name: "Password reset",
-            value: 1,
+            value: 4,
           },
           {
             name: "Account deletion",
-            value: 1,
+            value: 50,
           },
           {
             name: "Two-factor authentication",
-            value: 1,
+            value: 5,
           },
         ],
       },
@@ -50,6 +50,108 @@ export default function DetailsPage() {
           {
             name: "Technical support",
             value: 1,
+          },
+        ],
+      },
+      {
+        name: "Account Management 2",
+        subtopics: [
+          {
+            name: "Password reset",
+            value: 4,
+          },
+          {
+            name: "Account deletion",
+            value: 10,
+          },
+          {
+            name: "Two-factor authentication",
+            value: 5,
+          },
+        ],
+      },
+      {
+        name: " Management",
+        subtopics: [
+          {
+            name: "Password reset",
+            value: 4,
+          },
+          {
+            name: "Account deletion",
+            value: 10,
+          },
+          {
+            name: "Two-factor authentication",
+            value: 5,
+          },
+        ],
+      },
+      {
+        name: "Account ",
+        subtopics: [
+          {
+            name: "Password reset",
+            value: 4,
+          },
+          {
+            name: "Account deletion",
+            value: 10,
+          },
+          {
+            name: "Two-factor authentication",
+            value: 5,
+          },
+        ],
+      },
+      {
+        name: " Management",
+        subtopics: [
+          {
+            name: "Password reset",
+            value: 4,
+          },
+          {
+            name: "Account deletion",
+            value: 10,
+          },
+          {
+            name: "Two-factor authentication",
+            value: 5,
+          },
+        ],
+      },
+      {
+        name: " Management 6",
+        subtopics: [
+          {
+            name: "Password reset",
+            value: 4,
+          },
+          {
+            name: "Account deletion",
+            value: 10,
+          },
+          {
+            name: "Two-factor authentication",
+            value: 5,
+          },
+        ],
+      },
+      {
+        name: " Management 3",
+        subtopics: [
+          {
+            name: "Password reset",
+            value: 4,
+          },
+          {
+            name: "Account deletion",
+            value: 10,
+          },
+          {
+            name: "Two-factor authentication",
+            value: 5,
           },
         ],
       },
