@@ -1,7 +1,6 @@
 from datetime import datetime
 
-from sqlalchemy.sql import select
-from sqlmodel import Session  # , select
+from sqlmodel import Session, select
 
 from app.models import (
     Campaign,
@@ -44,20 +43,17 @@ def create_engagement(session: Session, data: EngagementCreate) -> Engagement:
 
 
 def get_engagements(session: Session, campaign_id: int) -> list[Engagement]:
-    engagements = session.exec(
+    return session.exec(
         select(Engagement).where(Engagement.campaign_id == campaign_id)
     ).all()
-    return [res[0] for res in engagements]
 
 
 def get_last_engagement_time(session: Session, campaign_id: int) -> datetime:
-    # TODO: potential sqlmodel failure?
-    last_time = session.exec(
+    return session.exec(
         select(Engagement.created_at)
         .where(Engagement.campaign_id == campaign_id)
         .order_by(Engagement.created_at.desc())
-    ).first() or (None,)
-    return last_time[0]
+    ).first()
 
 
 # === Overview Cache === #
@@ -79,10 +75,8 @@ def get_latest_overview_cache(
     session: Session,
     campaign_id: int,
 ) -> OverviewCache | None:
-    # TODO: potential sqlmodel failure?
-    latest = session.exec(
+    return session.exec(
         select(OverviewCache)
         .where(OverviewCache.campaign_id == campaign_id)
         .order_by(OverviewCache.created_at.desc())
-    ).first() or (None,)
-    return latest[0]
+    ).first()

@@ -34,7 +34,12 @@ def get_campaign_overview(session: SessionDep, campaign_id: int) -> CampaignOver
     last_engagement_time = crud.get_last_engagement_time(session, campaign_id)
     if not last_engagement_time:
         return {
-            "summary": "",
+            "summary": {
+                "engagement_peak": [],
+                "ai_query_performance": [],
+                "customer_feedback": [],
+                "additional_insights": [],
+            },
             "score": 0,
             "topics": [],
             "leads": {"positive": 0, "neutral": 0, "negative": 0},
