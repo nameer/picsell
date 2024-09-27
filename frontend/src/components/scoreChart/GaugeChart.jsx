@@ -8,6 +8,7 @@ import {
   ARC_PAD_ANGLE,
   DOTTED_ARC_PAD_ANGLE,
   DOTTED_ARC_RADIUS,
+  GRAPH_COLORS,
 } from "./constants";
 import { angleScale, arcGenerator, getCoordsOnArc } from "./utils";
 
@@ -29,10 +30,10 @@ const GaugeChart = ({ score: _score }) => {
   const angle = angleScale(score);
   const markerLocation = getCoordsOnArc(angle);
   const chartColors = [
-    { color: "#D76B66", key: 1, startAngle: 0, endAngle: 500 },
-    { color: "#F6CF7D", key: 2, startAngle: 501, endAngle: 700 },
-    { color: "#EA973D", key: 3, startAngle: 701, endAngle: 850 },
-    { color: "#75C57F", key: 4, startAngle: 851, endAngle: 1000 },
+    { color: GRAPH_COLORS.BAD, key: 1, startAngle: 0, endAngle: 50 },
+    { color: GRAPH_COLORS.NOTBAD, key: 2, startAngle: 51, endAngle: 70 },
+    { color: GRAPH_COLORS.AVERAGE, key: 3, startAngle: 71, endAngle: 85 },
+    { color: GRAPH_COLORS.GOOD, key: 4, startAngle: 86, endAngle: 100 },
   ];
 
   const pointColor =
@@ -41,8 +42,8 @@ const GaugeChart = ({ score: _score }) => {
     })?.color || null;
 
   return (
-    <div className="w-[600px]">
-      <svg viewBox="-1.2 -1.2 2.4 1.3">
+    <div className="w-[400px] flex items-center flex-col">
+      <svg viewBox="-0.9 -0.86 1.8 1">
         {chartColors.map((item) => (
           <path
             key={item.key}
@@ -64,14 +65,14 @@ const GaugeChart = ({ score: _score }) => {
               innerRadius: DOTTED_ARC_RADIUS,
               outerRadius: DOTTED_ARC_RADIUS,
               startAngle: angleScale(0),
-              endAngle: angleScale(10),
+              endAngle: angleScale(100),
               padAngle: DOTTED_ARC_PAD_ANGLE,
             }) ?? ""
           }
-          stroke={"red"}
-          strokeWidth="0.02"
+          stroke={"grey"}
+          strokeWidth="0.007"
           fill="none"
-          strokeDasharray="0.016,0.2" // Dotted effect
+          strokeDasharray="0.017,0.13" // Dotted effect
         />
         <circle
           cx={markerLocation[0]}
@@ -82,13 +83,14 @@ const GaugeChart = ({ score: _score }) => {
           stroke={pointColor}
           filter="url(#shadow)"
         />
+
         <text
           x="0"
-          y="-0.4"
+          y="-0.2"
           textAnchor="middle"
           alignmentBaseline="central"
           fill="#000"
-          fontSize="0.25"
+          fontSize="0.2"
           fontWeight="500"
         >
           {score.toFixed(1)}
@@ -103,6 +105,12 @@ const GaugeChart = ({ score: _score }) => {
           fontWeight="600"
         ></text>
       </svg>
+      <div>
+        <p className="text-xl font-medium">
+          Performance Score is <span> </span>
+          <span style={{ color: pointColor }}>Average</span>
+        </p>
+      </div>
     </div>
   );
 };
