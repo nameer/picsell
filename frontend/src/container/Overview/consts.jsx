@@ -1,4 +1,4 @@
-import { DotsHorizontal } from "../../assets/icons";
+import { DotsHorizontalIcon } from "../../assets/icons";
 import Chip from "../../components/Chip";
 
 const getStatusChipVariant = (status) => {
@@ -24,7 +24,11 @@ export const projectsTableColumns = [
       <Chip text={item.status} variant={getStatusChipVariant(item.status)} />
     ),
   },
-  { id: "actions", heading: "Actions", value: (item) => <DotsHorizontal /> },
+  {
+    id: "actions",
+    heading: "Actions",
+    value: (item) => <DotsHorizontalIcon />,
+  },
 ];
 
 export const projectsTableData = [
