@@ -6,6 +6,7 @@ import CreateCampaignModal from "./components/CreateCampaignModal";
 import CampaignsTable from "./components/CampaignsTable";
 import OverviewCards from "./components/OverviewCards";
 import { overviewData } from "./consts";
+import { useNavigate } from "react-router-dom";
 
 const Overview = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -19,12 +20,15 @@ const Overview = () => {
     },
   });
   const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleCreateModalClick = () => {
     setIsOpen(true);
   };
 
-  const handleCreateProject = () => {};
+  const handleCreateCampaign = () => {
+    navigate('/details')
+  };
 
   const fetchData = () => {
     setIsLoading(true);
@@ -70,7 +74,7 @@ const Overview = () => {
       <CreateCampaignModal
         isOpen={isOpen}
         setIsOpen={setIsOpen}
-        onCreate={handleCreateProject}
+        onCreate={handleCreateCampaign}
       />
     </DashboardLayout>
   );

@@ -5,7 +5,7 @@ import GaugeChart from "../../components/scoreChart/GaugeChart";
 
 export default function PerformanceSection(props) {
   return (
-    <div className=" grid grid-cols-3 grid-rows-4 gap-4">
+    <div className="grid grid-cols-3 grid-rows-4 gap-4">
       <Card
         className="w-full px-8 text-left"
         title="HOT LEADS"

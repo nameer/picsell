@@ -12,6 +12,7 @@ import { ReactComponent as TrashIcon } from "./trash.svg";
 import { ReactComponent as VideoIcon } from "./video.svg";
 import { ReactComponent as ImageIcon } from "./image.svg";
 import { ReactComponent as AudioIcon } from "./audio.svg";
+import { ReactComponent as AiIcon } from "./ai.svg";
 
 export {
   ArrowUpIcon,
@@ -28,4 +29,5 @@ export {
   VideoIcon,
   ImageIcon,
   AudioIcon,
+  AiIcon,
 };

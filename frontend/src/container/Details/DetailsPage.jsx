@@ -6,9 +6,15 @@ import PerformanceSection from "./PerformaceSection";
 import ClusteredBubbleChart from "../../components/CategoryChart/ClusteredBubbleChart";
 import PerformanceSummary from "./PerformanceSummary";
 import LineChartWithGradient from "../../components/EngagementChart/LineChart";
+import VideoCard from "./VideoCard";
+import AiSuggestionsCard from "./AiSuggestionsCard";
+
 export default function DetailsPage() {
   const [score] = useState(60);
   const [data] = useState({
+    id: "12345",
+    status: "Draft",
+    title: "Coffee Explainer Video",
     summary:
       "Areas for Improvement: Improved clarity on account management features",
     score: 82,
@@ -160,7 +166,30 @@ export default function DetailsPage() {
       neutral: 305,
       negative: 282,
     },
+    aiSuggestions: `Content Recommendations:
+
+Key Messaging:
+“Celebrate Diwali with Evernote!”
+“Stay organized this festive season—capture ideas and plan celebrations!”
+
+Call-to-Action:
+“Start your free trial for exclusive Diwali discounts!”
+
+Media Recommendations:
+
+Video Structure:
+Intro (0:00 - 0:15): Festive visuals with the Evernote logo.
+Features (0:15 - 0:60): Highlight note-taking, web clipper, and themed notebooks.
+Collaboration (0:60 - 1:10): Showcase family planning in real-time.
+Mobile Access (1:10 - 1:30): Capture notes on the go.
+Closing (1:30 - 1:45): Reinforce the message and include a call-to-action.
+Visual Style:
+Use festive colors and motifs—golds, reds, greens.
+Engagement Elements:
+Include clickable links for special offers.
+Feature user-generated content.`,
   });
+
   const [summary] = useState([
     {
       heading: "Engagement Peak",
@@ -177,7 +206,6 @@ export default function DetailsPage() {
       ],
     },
   ]);
-  const videoTimeLength = 8000;
 
   const [lineChartData] = useState([
     { x: 1, y: 10 },
@@ -188,25 +216,51 @@ export default function DetailsPage() {
     { x: 6, y: 0 },
   ]);
 
+  const [videoFile, setVideoFile] = useState(null);
+
+  const isDraft = data.status === "Draft";
+
+  const handleVideUpload = (file) => {
+    setVideoFile(URL.createObjectURL(file));
+  };
+
   return (
     <DashboardLayout>
-      <DetailsHeader />
-      <div className="flex border-cyan-300">
-        <div className="w-[50%]  p-2">
-          <Card>
-            <div className="h-80 border border-gray-400 rounded-lg"></div>
-            <div className="text-left text-[13px] leading-[18px] tracking-[1px] text-gray-500 mt-4">
-              USER ENGAGEMENT
-            </div>
-            <LineChartWithGradient data={lineChartData} />
-          </Card>
-        </div>
-        <div className="w-[50%] p-2 flex flex-col gap-4 overflow-auto h-[calc(100vh-12rem)] ">
-          <PerformanceSection score={score} />
-          <ClusteredBubbleChart data={data.topics} />
-          <PerformanceSummary summary={summary} />
-        </div>
+      <DetailsHeader
+        status={data.status}
+        id={data.id}
+        title={data.title}
+        isUploaded={videoFile !== null}
+      />
+      <div className="flex gap-4">
+        <VideoCard file={videoFile} onUpload={handleVideUpload} />
+        {isDraft && (
+          <AiSuggestionsCard
+            className="w-1/2"
+            aiSuggestions={data.aiSuggestions}
+          />
+        )}
+        {!isDraft && (
+          <div className="w-1/2 flex flex-col gap-4 overflow-auto h-[calc(100vh-12rem)] ">
+            <PerformanceSection score={score} />
+            <ClusteredBubbleChart data={data.topics} />
+            <PerformanceSummary summary={summary} />
+          </div>
+        )}
       </div>
+      {data.status !== "Draft" && (
+        <div className="flex gap-4">
+          <div className="w-1/2">
+            <Card>
+              <div className="h-80 border border-gray-400 rounded-lg"></div>
+              <div className="text-left text-[13px] leading-[18px] tracking-[1px] text-gray-500 mt-4">
+                USER ENGAGEMENT
+              </div>
+              <LineChartWithGradient data={lineChartData} />
+            </Card>
+          </div>
+        </div>
+      )}
     </DashboardLayout>
   );
 }

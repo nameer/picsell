@@ -4,17 +4,7 @@ import { DotsHorizontalIcon } from "../../../assets/icons";
 import Chip from "../../../components/Chip";
 import Table from "../../../components/Table";
 import Spinner from "../../../components/Spinner";
-
-const getStatusChipVariant = (status) => {
-  switch (status) {
-    case "Completed":
-      return "success";
-    case "Training in progress":
-      return "warning";
-    default:
-      return "";
-  }
-};
+import { getChipVariantFromStatus } from "../../../utils";
 
 export const projectsTableColumns = [
   { id: "id", heading: "ID", value: (item) => item.id },
@@ -25,7 +15,10 @@ export const projectsTableColumns = [
     id: "status",
     heading: "Status",
     value: (item) => (
-      <Chip text={item.status} variant={getStatusChipVariant(item.status)} />
+      <Chip
+        text={item.status}
+        variant={getChipVariantFromStatus(item.status)}
+      />
     ),
   },
   {

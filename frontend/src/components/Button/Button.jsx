@@ -2,15 +2,14 @@ import { tv } from "tailwind-variants";
 
 const button = tv(
   {
-    base: "flex m-1 items-center justify-center gap-x-2 rounded-lg text-sm font-medium leading-5 text-JET_GREY transition-all duration-300",
+    base: "flex m-1 items-center justify-center gap-x-2 rounded-lg text-sm font-medium leading-5 transition-all duration-300",
     variants: {
       color: {
         primary: "bg-[#205BF1] text-white shadow-lg shadow-[#205BF1]/30",
-        secondary: "text-black bg-WHITE border border-[#BBBBBB]",
-        nonActive: "border bg-PALE_SILVER text-black",
+        secondary: "text-black bg-white border border-[#BBBBBB]",
       },
       size: {
-        normal: "px-9 py-2",
+        normal: "px-10 py-2",
         large: "p-4",
         small: "p-2",
       },
@@ -18,7 +17,7 @@ const button = tv(
         true: "w-full",
       },
       disabled: {
-        true: "bg-neutral-400",
+        true: "text-white bg-gray-400 shadow-none border-0",
       },
     },
     defaultVariants: {

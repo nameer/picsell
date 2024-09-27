@@ -3,6 +3,7 @@ import * as d3 from "d3";
 import Card from "../Card";
 const ClusteredBubbleChart = ({ data }) => {
   const svgRef = useRef(null);
+  const parentRef = useRef(null);
 
   const getRandomColor = () => {
     const letters = "0123456789ABCDEF";
@@ -79,17 +80,7 @@ const ClusteredBubbleChart = ({ data }) => {
         .attr("opacity", 0.1);
     }
 
-    const tooltip = d3
-      .select("body")
-      .append("div")
-      .style("position", "absolute")
-      .style("background-color", "white")
-      .style("padding", "5px")
-      .style("border", "1px solid #ccc")
-      .style("border-radius", "5px")
-      .style("box-shadow", "0 2px 5px rgba(0, 0, 0, 0.2)")
-      .style("pointer-events", "none")
-      .style("opacity", 1);
+    const tooltip = d3.select(parentRef.current).append("div");
 
     // Create the root hierarchy node with a sum function
     const root = d3
@@ -121,6 +112,14 @@ const ClusteredBubbleChart = ({ data }) => {
       .on("mouseover", (event, d) => {
         // Show the tooltip on hover
         tooltip
+          .style("position", "absolute")
+          .style("background-color", "white")
+          .style("padding", "5px")
+          .style("border", "1px solid #ccc")
+          .style("border-radius", "5px")
+          .style("box-shadow", "0 2px 5px rgba(0, 0, 0, 0.2)")
+          .style("pointer-events", "none")
+          .style("opacity", 1)
           .style("opacity", 0.8)
           .html(
             `<strong>Topic: </strong> ${d.data.parent}<br/><strong>Sub-topic:</strong> ${d.data.name}`
@@ -146,7 +145,7 @@ const ClusteredBubbleChart = ({ data }) => {
 
   return (
     <Card title={"CUSTOMER QUERY OVERVIEW"}>
-      <div className="flex flex-col items-center">
+      <div ref={parentRef} className="flex flex-col items-center">
         <svg ref={svgRef}></svg>
         <div className="mt-4 w-full">
           <ul className="flex items-start gap-6 flex-wrap">

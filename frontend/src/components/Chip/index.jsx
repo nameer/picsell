@@ -9,6 +9,7 @@ const chipVariants = tv({
       success: "bg-green-100 text-green-900",
       warning: "bg-yellow-100 text-yellow-900",
       error: "bg-red-100 text-red-900",
+      muted: "bg-gray-200 text-gray-500",
     },
   },
 });
@@ -21,6 +22,7 @@ const chipDotVariants = tv({
       success: "bg-green-500",
       warning: "bg-yellow-500",
       error: "bg-red-500",
+      muted: "bg-gray-400",
     },
   },
 });
