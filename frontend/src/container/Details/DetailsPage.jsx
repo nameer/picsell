@@ -5,25 +5,175 @@ import Card from "../../components/Card";
 import PerformanceSection from "./PerformaceSection";
 import ClusteredBubbleChart from "../../components/CategoryChart/ClusteredBubbleChart";
 import { CHART_CATEGORIES } from "../../components/CategoryChart/constants";
+
 export default function DetailsPage() {
   const [score] = useState(60);
-  const bubbleData = [
-    { name: "Subcategory 1", value: 30, color: "#ff9999" },
-    { name: "Subcategory 1", value: 30, color: "#ff9999" },
-    { name: "Subcategory 2", value: 20, color: "blue" },
-    { name: "Subcategory 2", value: 20, color: "blue" },
-    { name: "Subcategory 3", value: 50, color: "green" },
-    { name: "Subcategory 3", value: 50, color: "green" },
-    { name: "Subcategory 4", value: 30, color: "grey" },
-    { name: "Subcategory 4", value: 60, color: "grey" },
-    { name: "Subcategory 4", value: 30, color: "grey" },
-    { name: "Subcategory 4", value: 60, color: "grey" },
-    { name: "Subcategory 6", value: 10, color: "red" },
-    { name: "Subcategory 6", value: 10, color: "red" },
-    { name: "Subcategory 7", value: 6, color: "lightblue" },
-    { name: "Subcategory 7", value: 6, color: "lightblue" },
-    { name: "Subcategory 8", value: 70, color: "#66cc99" },
-    { name: "Subcategory 8", value: 70, color: "#66cc99" },
+
+  const data = {
+    summary:
+      "Areas for Improvement: Improved clarity on account management features",
+    score: 82,
+    topics: [
+      {
+        name: "Pricing",
+        subtopics: [
+          {
+            name: "Accessing pricing page",
+            value: 3,
+          },
+          {
+            name: "Discounts",
+            value: 2,
+          },
+        ],
+      },
+      {
+        name: "Account Management",
+        subtopics: [
+          {
+            name: "Password reset",
+            value: 4,
+          },
+          {
+            name: "Account deletion",
+            value: 50,
+          },
+          {
+            name: "Two-factor authentication",
+            value: 5,
+          },
+        ],
+      },
+      {
+        name: "Support",
+        subtopics: [
+          {
+            name: "Technical support",
+            value: 1,
+          },
+        ],
+      },
+      {
+        name: "Account Management 2",
+        subtopics: [
+          {
+            name: "Password reset",
+            value: 4,
+          },
+          {
+            name: "Account deletion",
+            value: 10,
+          },
+          {
+            name: "Two-factor authentication",
+            value: 5,
+          },
+        ],
+      },
+      {
+        name: " Management",
+        subtopics: [
+          {
+            name: "Password reset",
+            value: 4,
+          },
+          {
+            name: "Account deletion",
+            value: 10,
+          },
+          {
+            name: "Two-factor authentication",
+            value: 5,
+          },
+        ],
+      },
+      {
+        name: "Account ",
+        subtopics: [
+          {
+            name: "Password reset",
+            value: 4,
+          },
+          {
+            name: "Account deletion",
+            value: 10,
+          },
+          {
+            name: "Two-factor authentication",
+            value: 5,
+          },
+        ],
+      },
+      {
+        name: " Management",
+        subtopics: [
+          {
+            name: "Password reset",
+            value: 4,
+          },
+          {
+            name: "Account deletion",
+            value: 10,
+          },
+          {
+            name: "Two-factor authentication",
+            value: 5,
+          },
+        ],
+      },
+      {
+        name: " Management 6",
+        subtopics: [
+          {
+            name: "Password reset",
+            value: 4,
+          },
+          {
+            name: "Account deletion",
+            value: 10,
+          },
+          {
+            name: "Two-factor authentication",
+            value: 5,
+          },
+        ],
+      },
+      {
+        name: " Management 3",
+        subtopics: [
+          {
+            name: "Password reset",
+            value: 4,
+          },
+          {
+            name: "Account deletion",
+            value: 10,
+          },
+          {
+            name: "Two-factor authentication",
+            value: 5,
+          },
+        ],
+      },
+    ],
+    leads: {
+      positive: 560,
+      neutral: 305,
+      negative: 282,
+    },
+  };
+
+  const summary = [
+    {
+      heading: "Heading 1",
+      desc: "Description for heading 1",
+      details: ["Details 1.1", "Details 1.2"],
+    },
+    {
+      heading: "Heading 2",
+      desc: "Description for heading 2",
+      details: ["Details 2.1", "Details 2.2"],
+    },
   ];
   return (
     <DashboardLayout>
@@ -34,14 +184,30 @@ export default function DetailsPage() {
         </div>
         <div className="w-[50%] p-2 flex flex-col gap-4 overflow-auto h-[calc(100vh-19rem)]">
           <PerformanceSection score={score} />
-          <div>
-            <Card title={"CUSTOMER QUERY OVERVIEW"}>
-              <ClusteredBubbleChart
-                data={bubbleData}
-                categories={CHART_CATEGORIES}
-              />
-            </Card>
-          </div>
+          <Card title={"CUSTOMER QUERY OVERVIEW"}>
+            <ClusteredBubbleChart
+              data={data.topics}
+              categories={CHART_CATEGORIES}
+            />
+          </Card>
+          <Card title={"PERFORMANCE SUMMARY"}>
+            <div className="p-4 bg-gray-50 rounded-md">
+              <ul className="list-disc list-inside space-y-4 flex flex-col place-items-start">
+                {summary.map((item, index) => (
+                  <li key={index} className="text-gray-800 mb-3 text-xs">
+                    <span className="font-medium text-lg">{item.heading}:</span>
+                    <ul className="list-disc list-inside ml-5">
+                      {item.details.map((detail, detailIndex) => (
+                        <li key={detailIndex} className="text-gray-700 text-xs">
+                          <span className="text-lg">{detail}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </Card>
         </div>
       </div>
     </DashboardLayout>

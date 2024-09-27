@@ -30,7 +30,7 @@ const Modal = ({ isOpen, setIsOpen, title, children, size }) => {
         <div className="flex min-h-full bg-black/20 items-center justify-center p-4">
           <DialogPanel transition className={modalPanelVariants({ size })}>
             <DialogTitle className="mb-6 flex items-center justify-between">
-              <h3 className="text-base/6 font-bold">{title}</h3>
+              <div className="text-base/6 font-bold">{title}</div>
               <CloseIcon className="cursor-pointer" onClick={handleClose} />
             </DialogTitle>
             {children}

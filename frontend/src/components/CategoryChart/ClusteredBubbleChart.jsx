@@ -1,10 +1,42 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import * as d3 from "d3";
 
 const ClusteredBubbleChart = ({ data, categories }) => {
   const svgRef = useRef(null);
 
+  const getRandomColor = () => {
+    const letters = "0123456789ABCDEF";
+    let color = "#";
+    for (let i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+  };
+
+  const [colorMap, setColorMap] = useState([]);
+
+  const generateSubtopicsArray = (topics) => {
+    const newColorMap = []; // Temporary array to store colors for each topic
+
+    const result = topics.flatMap((topic) => {
+      const colorCode = getRandomColor();
+
+      newColorMap.push({ topic: topic.name, colorCode });
+
+      return topic.subtopics.map((subtopic) => ({
+        parent: topic.name,
+        name: subtopic.name,
+        value: subtopic.value,
+        color: colorCode,
+      }));
+    });
+
+    setColorMap(newColorMap);
+
+    return result;
+  };
   useEffect(() => {
+    const updatedData = generateSubtopicsArray(data);
     const width = 700;
     const height = 400;
     const numXGridLines = 10; // Number of horizontal and vertical grid lines
@@ -14,11 +46,11 @@ const ClusteredBubbleChart = ({ data, categories }) => {
       .select(svgRef.current)
       .attr("width", width)
       .attr("height", height)
-      //   .style('background-color', '#f8fafc') // Tailwind color
       .style("border-radius", "0.5rem")
       .style("display", "block")
       .style("margin", "0 auto");
 
+    // Ensure the grid is drawn behind the bubbles
     const grid = svg.append("g").attr("class", "grid");
 
     // Draw vertical grid lines
@@ -47,9 +79,21 @@ const ClusteredBubbleChart = ({ data, categories }) => {
         .attr("opacity", 0.1);
     }
 
+    const tooltip = d3
+      .select("body")
+      .append("div")
+      .style("position", "absolute")
+      .style("background-color", "white")
+      .style("padding", "5px")
+      .style("border", "1px solid #ccc")
+      .style("border-radius", "5px")
+      .style("box-shadow", "0 2px 5px rgba(0, 0, 0, 0.2)")
+      .style("pointer-events", "none")
+      .style("opacity", 1);
+
     // Create the root hierarchy node with a sum function
     const root = d3
-      .hierarchy({ children: data })
+      .hierarchy({ children: updatedData })
       .sum((d) => d.value)
       .sort((a, b) => b.value - a.value);
 
@@ -73,24 +117,45 @@ const ClusteredBubbleChart = ({ data, categories }) => {
       .append("circle")
       .attr("r", (d) => d.r)
       .attr("fill", (d) => d.data.color)
-      .attr("opacity", 0.8);
+      .attr("opacity", 0.4)
+      .on("mouseover", (event, d) => {
+        // Show the tooltip on hover
+        tooltip
+          .style("opacity", 0.8)
+          .html(
+            `<strong>Topic: </strong> ${d.data.parent}<br/><strong>Sub-topic:</strong> ${d.data.name}`
+          )
+          .style("left", `${event.pageX + 10}px`)
+          .style("top", `${event.pageY + 10}px`);
+      })
+      .on("mousemove", (event) => {
+        // Move the tooltip with the mouse
+        tooltip
+          .style("left", `${event.pageX + 10}px`)
+          .style("top", `${event.pageY + 10}px`);
+      })
+      .on("mouseout", () => {
+        // Hide the tooltip on mouseout
+        tooltip.style("opacity", 0);
+      });
+
+    return () => {
+      svg.selectAll("*").remove();
+    };
   }, [data]);
 
   return (
-    <div className="flex flex-col">
-      <div className="flex justify-center">
-        <svg ref={svgRef}></svg>
-      </div>
-
-      <div className="mt-4">
-        <ul className="flex items-center gap-6">
-          {categories.map((category) => (
-            <li key={category.name} className="flex items-center">
+    <div className="flex flex-col items-center">
+      <svg ref={svgRef}></svg>
+      <div className="mt-4 w-full">
+        <ul className="flex items-start gap-6 flex-wrap">
+          {colorMap.map((category) => (
+            <li key={category.topic} className="flex items-center">
               <span
                 className="w-3 h-3 mr-2 "
-                style={{ backgroundColor: category.color }}
+                style={{ backgroundColor: category.colorCode }}
               ></span>
-              <span className="text-xs font-medium">{category.name}</span>
+              <span className="text-xs font-medium">{category.topic}</span>
             </li>
           ))}
         </ul>

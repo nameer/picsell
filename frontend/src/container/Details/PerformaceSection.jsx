@@ -8,21 +8,17 @@ export default function PerformanceSection(props) {
     <div className=" grid grid-cols-3 grid-rows-4 gap-4">
       <Card
         className="w-full px-8 text-left"
-        title="TOTAL UPLOADS"
-        icon={<CustomerIcon />}
-      >
-        <div className="text-3xl font-bold">3,525</div>
-      </Card>
-      <Card
-        className="w-full px-8 text-left"
-        title="TOTAL PROMOTERS"
+        title="HOT LEADS"
         icon={<LikeIcon />}
       >
         <div className="text-3xl font-bold">3,525</div>
       </Card>
+      <Card className="w-full px-8 text-left" title="WARM LEADS">
+        <div className="text-3xl font-bold">3,525</div>
+      </Card>
       <Card
         className="w-full px-8 text-left"
-        title="TOTAL RETRACTORS"
+        title="COLD LEADS"
         icon={<DislikeIcon />}
       >
         <div className="text-3xl font-bold">3,525</div>

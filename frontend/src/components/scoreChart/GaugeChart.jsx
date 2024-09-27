@@ -15,8 +15,6 @@ import { angleScale, arcGenerator, getCoordsOnArc } from "./utils";
 const GaugeChart = ({ score: _score }) => {
   const [score, setScore] = useState(0);
 
-  console.log(score);
-
   useEffect(() => {
     const cancelAnimation = easeInOutAnimation(
       (value) => setScore(value),
@@ -93,7 +91,7 @@ const GaugeChart = ({ score: _score }) => {
           fontSize="0.2"
           fontWeight="500"
         >
-          {score.toFixed(1)}
+          {score.toFixed(0)}
         </text>
         <text
           x="0"
@@ -107,7 +105,7 @@ const GaugeChart = ({ score: _score }) => {
       </svg>
       <div>
         <p className="text-xl font-medium">
-          Performance Score is <span> </span>
+          Campaign Score is <span> </span>
           <span style={{ color: pointColor }}>Average</span>
         </p>
       </div>

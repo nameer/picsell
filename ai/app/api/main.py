@@ -21,3 +21,9 @@ def qa(data: QAInput) -> dict:
 def summary(input: SummaryInput) -> dict:
     bot_response = bot.summary_analysis(input)
     return eval(bot_response)
+
+
+@api_router.post("/suggestion", response_model=str)
+def suggestion(input: str) -> str:
+    suggestion_response = bot.premarket_suggestion(input)
+    return suggestion_response
