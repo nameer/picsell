@@ -2,16 +2,18 @@ import React from "react";
 
 import Button from "../../components/Button/Button";
 import { EditLogo, ShareLogo } from "../../assets/icons";
+import Chip from "../../components/Chip";
 
 export default function DetailsHeader() {
   return (
     <div className="flex justify-between">
       <div className="flex flex-col">
-        <p className="text-2xl font-semibold">Coffee Explainer Video</p>
-        <div className="p-1 bg-green-100 w-fit rounded-2xl mt-1 flex items-center">
-          <span className="bg-green-600 w-2 h-2 rounded-xl mx-2"></span>
-          <p className="text-sm text-green-900 pr-3">Completed</p>
+        <div className="flex items-center gap-3">
+          <div className="text-gray-500 text-sm">ID 12345</div>
+          <Chip text={"Completed"} variant={"success"} />
         </div>
+
+        <p className="text-2xl font-semibold">Coffee Explainer Video</p>
       </div>
       <div className="flex gap-2 items-center">
         <Button color={"secondary"} icon={<ShareLogo />}>
