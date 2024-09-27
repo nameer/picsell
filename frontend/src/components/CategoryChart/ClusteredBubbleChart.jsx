@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import * as d3 from "d3";
-
+import Card from "../Card";
 const ClusteredBubbleChart = ({ data }) => {
   const svgRef = useRef(null);
 
@@ -145,22 +145,24 @@ const ClusteredBubbleChart = ({ data }) => {
   }, [data]);
 
   return (
-    <div className="flex flex-col items-center">
-      <svg ref={svgRef}></svg>
-      <div className="mt-4 w-full">
-        <ul className="flex items-start gap-6 flex-wrap">
-          {colorMap.map((category) => (
-            <li key={category.topic} className="flex items-center">
-              <span
-                className="w-3 h-3 mr-2 "
-                style={{ backgroundColor: category.colorCode }}
-              ></span>
-              <span className="text-xs font-medium">{category.topic}</span>
-            </li>
-          ))}
-        </ul>
+    <Card title={"CUSTOMER QUERY OVERVIEW"}>
+      <div className="flex flex-col items-center">
+        <svg ref={svgRef}></svg>
+        <div className="mt-4 w-full">
+          <ul className="flex items-start gap-6 flex-wrap">
+            {colorMap.map((category) => (
+              <li key={category.topic} className="flex items-center">
+                <span
+                  className="w-3 h-3 mr-2 "
+                  style={{ backgroundColor: category.colorCode }}
+                ></span>
+                <span className="text-xs font-medium">{category.topic}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
-    </div>
+    </Card>
   );
 };
 
