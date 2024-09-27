@@ -1,6 +1,6 @@
 from datetime import datetime
 from enum import Enum
-from typing import Any
+from typing import Annotated, Any
 
 from pydantic import HttpUrl, model_validator
 from sqlmodel import JSON, Column, Field, SQLModel
@@ -31,7 +31,6 @@ class CampaignUpdate(CampaignBase):
 
 class Campaign(CampaignBase, table=True):
     id: int = Field(default=None, primary_key=True)
-    vector_store_id: str | None = None
 
     video_url: str
     document_urls: list[str] = Field(sa_column=Column(JSON))
@@ -82,3 +81,45 @@ class QAInput(QAQuestion):
 
 class QAOutput(SQLModel):
     message: str
+
+
+# === Overview === #
+
+
+class SubTopic(SQLModel):
+    name: str
+    value: Annotated[int, Field(ge=0)]
+
+
+class Topic(SQLModel):
+    name: str
+    subtopics: list[SubTopic]
+
+
+class Summaries(SQLModel):
+    engagement_peak: list[str]
+    ai_query_performance: list[str]
+    customer_feedback: list[str]
+    additional_insights: list[str]
+
+
+class Lead(SQLModel):
+    positive: int = 0
+    neutral: int = 0
+    negative: int = 0
+
+
+class CampaignOverview(SQLModel):
+    summary: Summaries
+    score: Annotated[int, Field(ge=0, le=100)]
+    topics: list[Topic]
+    leads: Lead
+
+
+class OverviewCache(SQLModel, table=True):
+    id: int = Field(default=None, primary_key=True)
+
+    campaign_id: int = Field(foreign_key="campaign.id")
+    data: dict = Field(sa_column=Column(JSON))
+
+    created_at: datetime = Field(default_factory=datetime.utcnow)

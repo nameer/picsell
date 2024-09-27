@@ -32,7 +32,6 @@ def upgrade():
             ),
             nullable=False,
         ),
-        sa.Column("vector_store_id", sqlmodel.sql.sqltypes.AutoString(), nullable=True),
         sa.Column("created_at", sa.DateTime(), nullable=False),
         sa.Column("updated_at", sa.DateTime(), nullable=False),
         sa.PrimaryKeyConstraint("id"),

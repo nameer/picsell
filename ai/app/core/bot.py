@@ -111,7 +111,6 @@ prompt_template = PromptTemplate.from_template(
     The following is a list of dictionaries where each dictionary contains a conversation between a person and a model about a product. The input will be in the following form:
 
     {{
-      "vector_store_id": "18178712",
       "sessions": [
           {{
               "session_id": "abc123",
@@ -266,7 +265,6 @@ if __name__ == "__main__":
     #     print("Chatbot:", answer)
 
     summary_input = {
-        "vector_store_id": "18178712",
         "sessions": [
             {
                 "session_id": "abc123",
