@@ -6,8 +6,6 @@ import SpeechRecognition, {
 } from 'react-speech-recognition';
 import CircularProgress from '@mui/material/CircularProgress';
 
-const questions = 'what are the pricing plans ?';
-
 const ChatPage = () => {
   const [showMike, setShowMike] = useState(false);
 
@@ -23,7 +21,8 @@ const ChatPage = () => {
   const [playVideo, setPlayVideo] = useState(false);
   const [showLoader, setShowLoder] = useState(false);
   const [responseData, setResponseData] = useState(null);
-  const [question, setQuestion] = useState('scratch pads for quick jots?');
+  const [currentTime, setCurrentTime] = useState(0);
+  const [questions, setQuestions] = useState([]);
   const id = useId();
 
   const loadVoices = () => {
@@ -69,11 +68,12 @@ const ChatPage = () => {
     postQuestion();
   };
 
-  const postQuestion = async () => {
+  const postQuestion = async (text = null) => {
     const parameters = {
-      question: transcript,
+      question: text || transcript,
       campaign_id: '1',
-      session_id: id
+      session_id: id,
+      time: currentTime
     };
     setShowLoder(true);
     setResponseData(null);
@@ -95,26 +95,62 @@ const ChatPage = () => {
     // Check if SpeechSynthesis is supported
     if ('speechSynthesis' in window) {
       if (voices) {
-        const speech = new SpeechSynthesisUtterance();
-        speech.text = text;
-        speech.voice = voices; // Use the selected voice
-        speech.lang = voices.lang; // Set language based on selected voice
+        // const speech = new SpeechSynthesisUtterance();
+        // speech.text = text;
+        // speech.voice = voices; // Use the selected voice
+        // speech.lang = voices.lang; // Set language based on selected voice
 
-        // Optional: Set other speech properties
-        speech.pitch = 1; // Voice pitch
-        speech.rate = 1; // Voice rate
-        speech.volume = 1; // Volume (0 to 1)
-        speech.onend = () => {
-          console.log('Speech has finished. Canceling...');
-          window.speechSynthesis.cancel(); // This can be used to stop any further speech if needed
-          setShowMike(false);
+        // // Optional: Set other speech properties
+        // speech.pitch = 1; // Voice pitch
+        // speech.rate = 1; // Voice rate
+        // speech.volume = 1; // Volume (0 to 1)
+        // speech.onend = () => {
+        //   console.log('Speech has finished. Canceling...');
+        //   window.speechSynthesis.cancel(); // This can be used to stop any further speech if needed
+        //   setShowMike(false);
+        //   setResponseData(null);
+        // };
+
+        const chunks = text.match(/.{1,200}/g); // Adjust chunk size as needed
+        let index = 0; // Track the current chunk index
+
+        const speakNextChunk = () => {
+          if (index < chunks.length) {
+            const speech = new SpeechSynthesisUtterance(chunks[index]);
+            speech.voice = voices; // Use the selected voice
+            speech.lang = voices.lang; // Set language based on selected voice
+
+            // Optional: Set other speech properties
+            speech.pitch = 1; // Voice pitch
+            speech.rate = 1; // Voice rate
+            speech.volume = 1; // Volume (0 to 1)
+            speech.onend = () => {
+              console.log(`Chunk ${index + 1} has finished.`);
+              index++; // Move to the next chunk
+              speakNextChunk(); // Recursively speak the next chunk
+            };
+
+            speech.onerror = (event) => {
+              console.error('Speech error:', event.error);
+            };
+
+            window.speechSynthesis.speak(speech);
+          } else {
+            // All chunks have been spoken
+            console.log('All speech has finished.');
+            setShowMike(false);
+            setResponseData(null); // Replace with your desired message
+          }
         };
 
-        speech.onerror = (event) => {
-          console.error('Speech error:', event.error);
-        };
+        // Start speaking the first chunk
+        speakNextChunk();
 
-        window.speechSynthesis.speak(speech);
+        // speech.onerror = (event) => {
+        //   console.error('Speech error:', event.error);
+        // };
+
+        // window.speechSynthesis.speak(speech);
       } else {
         console.error('No valid voice selected.');
       }
@@ -123,45 +159,59 @@ const ChatPage = () => {
     }
   };
 
-  const handleSendQuestions = (question) => {};
+  const handleSendQuestions = (question) => {
+    postQuestion(question);
+    setShowMike(true);
+    setPlayVideo(false);
+    window.speechSynthesis.cancel();
+  };
 
   const handleOnProgress = (data) => {
-    console.log(Math.floor(data?.playedSeconds));
+    setCurrentTime(Math.floor(data?.playedSeconds));
     switch (Math.floor(data?.playedSeconds)) {
       case 10:
-        setQuestion('scratch pads for quick jots? ');
+        setQuestions([
+          'scratch pads for quick jots? ',
+          'is there an offline access'
+        ]);
         break;
-      case 24:
-        setQuestion('Search for absolutely anything? ');
+      case 25:
+        setQuestions(['Search for absolutely anything? ']);
         break;
       case 30:
-        setQuestion('easy task management by assigning to team members ');
+        setQuestions([
+          `Can I give my todo's a priority boost!!? tasks inside notes??`,
+          'Hmm....Can I create recurring tasks?? '
+        ]);
         break;
-      case 35:
-        setQuestion("Can I give my todo's a priority boost!!? ");
+      case 45:
+        setQuestions([
+          'what all documents can be included in notes?',
+          'web clippings? how does that work??',
+          'Scan documents too??'
+        ]);
         break;
-      case 44:
-        setQuestion('tasks have notes context?? ');
-        break;
-      case 50:
-        setQuestion('Hmm....Can I create recurring tasks?? ');
-        break;
-      case 55:
-        setQuestion('what all documents can be included in notes?');
-        break;
-      case 66:
-        setQuestion('custom timer for reminders ?? ');
+      case 56:
+        setQuestions([
+          'custom timer for reminders ??',
+          'is there an email alert ??'
+        ]);
         break;
       case 72:
-        setQuestion('add multiple calenders?? ');
+        setQuestions([
+          'add multiple calenders??',
+          'we can link notes to calenders too??',
+          'automatic reminders to take minutes for scheduled meetings?'
+        ]);
         break;
-      case 80:
-        setQuestion('customisable home dashboard ');
+      case 90:
+        setQuestions([
+          'customisable home dashboard',
+          'customise element placings?'
+        ]);
         break;
     }
   };
-
-  console.log(question);
 
   const handleOnVideoPlay = () => {
     window.speechSynthesis.cancel();
@@ -208,17 +258,19 @@ const ChatPage = () => {
             </button>
           </div>
         )}
-        <div className="absolute inset-0 text-start pt-[460px] ml-4 z-20 h-8">
-          <button
-            className="mr-4 rounded-[74px] bg-[#395FCDD6] w-fit pr-2 h-8 border border-white text-white text-sm text-center"
-            style={{ boxShadow: '0px 5px 15px 0px rgba(32, 91, 241, 0.2)' }}
-            onClick={handleSendQuestions}
-          >
-            <div className="flex">
-              <AiImage className="size-[10px] ml-3 mt-[5px] mr-1" />
-              {question}
-            </div>
-          </button>
+        <div className="absolute inset-0 text-start pt-[460px] ml-4 z-20 h-8 flex flex-wrap">
+          {questions?.map((item) => (
+            <button
+              className="mr-2 rounded-[74px] bg-[#395FCDD6] w-fit pr-2 h-8 border border-white text-white text-sm text-center"
+              style={{ boxShadow: '0px 5px 15px 0px rgba(32, 91, 241, 0.2)' }}
+              onClick={() => handleSendQuestions(item)}
+            >
+              <div className="flex">
+                <AiImage className="size-[10px] ml-3 mt-[5px] mr-1" />
+                {item}
+              </div>
+            </button>
+          ))}
         </div>
         {showMike && !showLoader && !responseData && (
           <div
