@@ -17,3 +17,8 @@ def create_engagement(session: Session, data: EngagementCreate) -> Engagement:
     session.commit()
     session.refresh(engagement)
     return engagement
+
+
+def get_campaign(session: Session, campaign_id: int) -> Campaign | None:
+    campaign = session.get(Campaign, campaign_id)
+    return campaign
