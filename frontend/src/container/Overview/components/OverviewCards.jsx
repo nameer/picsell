@@ -30,23 +30,23 @@ const OverviewCards = ({ data, isLoading }) => {
   return (
     <div className="flex items-center gap-4 mb-10">
       <OverViewCard
-        title="TOTAL UPLOADS"
+        title="TOTAL CAMPAIGNS"
         value={data.totalUploads}
         isLoading={isLoading}
       />
       <OverViewCard
-        title="TOTAL USER ENGAGED"
+        title="ACTIVE CAMPAIGNS"
         value={data.totalUserEngaged}
         isLoading={isLoading}
       />
       <OverViewCard
-        title="TOTAL PROMOTERS"
+        title="TOTAL IMPRESSIONS"
         value={data.totalPromoters}
         subValue="+36%"
         isLoading={isLoading}
       />
       <OverViewCard
-        title="TOTAL DETRACTORS"
+        title="ENGAGEMENT RATE"
         value={data.totalUserDetractors}
         subValue="+36%"
         isLoading={isLoading}
