@@ -29,7 +29,7 @@ class Settings(BaseSettings):
             path=self.POSTGRES_DB,
         )
 
-    CHAT_ENDPOINT: HttpUrl
+    AI_ENDPOINT: HttpUrl
 
 
 settings = Settings()

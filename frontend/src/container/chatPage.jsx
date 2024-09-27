@@ -1,10 +1,11 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useId } from 'react';
 import ReactPlayer from 'react-player';
 import { AiImage, Mike } from '../assets';
 import SpeechRecognition, {
   useSpeechRecognition
 } from 'react-speech-recognition';
-import Speech from 'react-speech';
+
+const questions = 'what are the pricing plans ?';
 
 const ChatPage = () => {
   const [showMike, setShowMike] = useState(false);
@@ -17,9 +18,9 @@ const ChatPage = () => {
   } = useSpeechRecognition();
 
   const [isRecording, setIsRecording] = useState(false);
-  const mediaRecorderRef = useRef(null);
-  const [voices, setVoices] = useState([]);
+  const [voices, setVoices] = useState(null);
   const [playVideo, setPlayVideo] = useState(false);
+  const id = useId();
 
   const loadVoices = () => {
     const availableVoices = window.speechSynthesis.getVoices();
@@ -49,7 +50,10 @@ const ChatPage = () => {
 
   const handleShowMike = () => {
     setShowMike(true);
+    setPlayVideo(false);
   };
+
+  console.log(playVideo);
 
   const handleStartRecording = async () => {
     setIsRecording(true);
@@ -79,17 +83,35 @@ const ChatPage = () => {
   const handleStopRecording = () => {
     console.log(transcript);
     SpeechRecognition.stopListening();
-    speakText();
     setIsRecording(false);
-    mediaRecorderRef?.current?.stop();
+    posetQuestion();
   };
 
-  const speakText = () => {
+  const posetQuestion = async () => {
+    const parameters = {
+      question: transcript,
+      campaign_id: '1',
+      session_id: id
+    };
+    const response = await fetch('http://localhost:8000/qa', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json' // Specify that you're sending JSON data
+      },
+      body: JSON.stringify(parameters) // Convert the object to a JSON string
+    });
+
+    const data = await response.json();
+    speakText(data?.message);
+  };
+
+  const speakText = (text) => {
+    console.log(text);
     // Check if SpeechSynthesis is supported
     if ('speechSynthesis' in window) {
       if (voices) {
         const speech = new SpeechSynthesisUtterance();
-        speech.text = transcript;
+        speech.text = text;
         speech.voice = voices; // Use the selected voice
         speech.lang = voices.lang; // Set language based on selected voice
 
@@ -97,7 +119,16 @@ const ChatPage = () => {
         speech.pitch = 1; // Voice pitch
         speech.rate = 1; // Voice rate
         speech.volume = 1; // Volume (0 to 1)
+        speech.onend = function () {
+          console.log('Speech has finished. Canceling...');
+          window.speechSynthesis.cancel(); // This can be used to stop any further speech if needed
+        };
 
+        speech.onerror = (event) => {
+          console.error('Speech error:', event.error);
+        };
+
+        console.log(speech);
         window.speechSynthesis.speak(speech);
       } else {
         console.error('No valid voice selected.');
@@ -105,6 +136,12 @@ const ChatPage = () => {
     } else {
       console.error('Speech Synthesis not supported in this browser.');
     }
+  };
+
+  const handleSendQuestions = (question) => {};
+
+  const handleOnVideoPlay = () => {
+    setShowMike(false);
   };
 
   return (
@@ -117,6 +154,7 @@ const ChatPage = () => {
           pip={false}
           playbackRate={1}
           playing={playVideo}
+          onPlay={handleOnVideoPlay}
           url={'https://pic-uploadz.s3.ap-south-1.amazonaws.com/evernote.mp4'}
           style={{
             borderRadius: '8px',
@@ -131,7 +169,7 @@ const ChatPage = () => {
           }}
         />
         {!showMike && (
-          <div className="absolute inset-0 w-full pt-5 text-end h-20 ">
+          <div className="absolute inset-0 w-full pt-5 text-end h-20 z-30 ">
             <button
               className="mr-4 rounded-[74px] bg-[#395FCDD6] w-[82px] h-8 border border-white text-white text-sm font-bold text-center"
               style={{ boxShadow: '0px 5px 15px 0px rgba(32, 91, 241, 0.2)' }}
@@ -144,9 +182,21 @@ const ChatPage = () => {
             </button>
           </div>
         )}
+        <div className="absolute inset-0 text-start pt-[460px] ml-4 z-20 h-8">
+          <button
+            className="mr-4 rounded-[74px] bg-[#395FCDD6] w-[285px] h-8 border border-white text-white text-sm text-center"
+            style={{ boxShadow: '0px 5px 15px 0px rgba(32, 91, 241, 0.2)' }}
+            onClick={handleSendQuestions}
+          >
+            <div className="flex">
+              <AiImage className="size-[10px] ml-3 mt-[5px] mr-1" />
+              {questions}
+            </div>
+          </button>
+        </div>
         {showMike && (
           <div
-            className={`absolute cusror-pointer inset-0 z-10 w-[1011px] h-[569px] flex justify-center pt-64 text-white bg-black bg-opacity-30 rounded-[8px] ${
+            className={`absolute cusror-pointer inset-0 z-30 w-[1011px] h-[500px] flex justify-center pt-64 text-white bg-black bg-opacity-30 rounded-t-[8px] ${
               isRecording ? 'opacity-50' : ''
             }`}
           >
