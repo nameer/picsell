@@ -15,7 +15,7 @@ const Table = ({ className, columns, data, onItemSelect }) => {
             {columns.map((column) => (
               <th
                 key={column.id}
-                className="ps-6 py-3 text-sm font-semibold text-[#667085]"
+                className="ps-6 py-3 text-sm font-semibold leading-[18px] text-[#667085]"
               >
                 {column.heading}
               </th>
