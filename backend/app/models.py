@@ -50,13 +50,30 @@ class Campaign(CampaignBase, table=True):
         return values
 
 
+# === Engagement === #
+
+
+class EngagementCreate(SQLModel):
+    campaign_id: int = Field(foreign_key="campaign.id")
+    session_id: str
+
+    question: str
+    response: str
+
+
+class Engagement(EngagementCreate, table=True):
+    id: int = Field(default=None, primary_key=True)
+
+    created_at: datetime = Field(default_factory=datetime.utcnow)
+
+
 # === QA === #
 
 
 class QAInput(SQLModel):
     campaign_id: int
     session_id: str
-    query: str
+    question: str
 
 
 class QAOutput(SQLModel):
