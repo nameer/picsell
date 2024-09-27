@@ -84,74 +84,115 @@ conversational_rag_chain = RunnableWithMessageHistory(
     output_messages_key="answer",
 )
 
-prompt_template = PromptTemplate.from_template(
-    """The following is a list of dictionaries where each dictionary contains a conversation between a person and a model about a product. The input will be in the following form:
+suggestion_template = PromptTemplate.from_template(
+    """
+    You are a sales platform that helps companies run advertising campaigns for their products. You will be provided with a product description, and based on this description, perform the following tasks:
 
-  {{
-    "vector_store_id": "18178712",
-    "sessions": [
+    1. **Key Points for Ad Video**: Identify essential elements or key points that should be highlighted in the product advertisement video.
+
+    2. **Competitor Insights**: Provide details about the strategies or features that other companies in the same domain have included in their advertisement campaigns.
+
+    3. **Common Customer Queries**: List the most important or frequently asked questions that potential customers or viewers might ask about the product.
+
+    Ensure your responses are concise and relevant.
+
+    Product Description: {description}
+
+    give the response as string , donot include things like \n ,**  in the response .
+    """
+)
+
+
+prompt_template = PromptTemplate.from_template(
+    """
+    The following is a list of dictionaries where each dictionary contains a conversation between a person and a model about a product. The input will be in the following form:
+
+    {{
+      "vector_store_id": "18178712",
+      "sessions": [
+          {{
+              "session_id": "abc123",
+              "interactions": [
+                  {{
+                  "question": "How to access pricing page?",
+                  "response": "Click on pricing tab"
+                  }},
+                  {{
+                  "question": "How to access pricing page?",
+                  "response": "Click on pricing tab"
+                  }}
+              ]
+          }},
+          {{
+              "session_id": "def124",
+              "interactions": [
+                  {{
+                  "question": "How to access pricing page?",
+                  "response": "Click on pricing tab"
+                  }},
+                  {{
+                  "question": "How to access pricing page?",
+                  "response": "Click on pricing tab"
+                  }}
+              ]
+          }}
+       ]
+    }}
+
+    Analyze the conversation and prepare a summary of the conversation. The summary generated needs to be in the following form:
+
+    {{
+      "summary": "Areas for Improvement: Energy-saving feature questions",
+      "topics": [
+      {{
+        name: "Pricing",
+        subtopics: [
         {{
-            "session_id": "abc123",
-            "interactions": [
-                {{
-                "question": "How to access pricing page?",
-                "response": "Click on pricing tab"
-                }},
-                {{
-                "question": "How to access pricing page?",
-                "response": "Click on pricing tab"
-                }}
-            ]
+          "name": "Basic Plan",
+          "value": 60
         }},
         {{
-            "session_id": "def124",
-            "interactions": [
-                {{
-                "question": "How to access pricing page?",
-                "response": "Click on pricing tab"
-                }},
-                {{
-                "question": "How to access pricing page?",
-                "response": "Click on pricing tab"
-                }}
-            ]
+          "name": "Enterprise plan",
+          "value": 40
         }}
-     ]
-  }}
-
-  Analyze the conversation and prepare a summary of the conversation. The summary generated needs to be in the following form:
-
-  {{
-    "summary": "Areas for Improvement: Energy-saving feature questions",
-    "score": 87,
-    "topics": [
-      {{
-        "name": "Login",
-        "value": 60
+        ]
       }},
       {{
-        "name": "Pricing",
-        "value": 40
+        name: "Technical support",
+        subtopics: [
+        {{
+          "name": "Downtime queries",
+          "value": 50
+        }},
+        {{
+          "name": "API support",
+          "value": 27
+        }},
+        {{
+          "name": "Payment failures",
+          "value": 33
+        }}
+        ]
       }}
-    ],
-    "sentiments": [
-      {{
-        "session_id": "abc123",
-        "sentiment": "+ve"
-      }},
-      {{
-        "session_id": "def124",
-        "sentiment": "-ve"
-      }}
-    ],
-    "positive_sentiments": 1,
-    "negative_sentiments": 1
-  }}
+      ],
+      "sentiments": [
+        {{
+          "session_id": "abc123",
+          "sentiment": 1
+        }},
+        {{
+          "session_id": "def124",
+          "sentiment": -1
+        }}
+      ]
+    }}
 
-  I need to get the output summary in the above form, where the topics are based on the most frequently asked questions in different sessions. If multiple topics are discussed, give the most frequently asked topics. Also, provide the sentiment of each conversation, and finally, give the total number of positive and negative sentiments.
-  Avoid any sort of markdown in the response like ```json....``` .
-  {json_input}
-  """
+    The "sentiment" value should be an integer: `1` for positive, `-1` for negative, and `0` for neutral. Topics should be based on the most frequently asked questions across different sessions. If multiple topics are discussed, give the most frequently mentioned ones. Also, provide the sentiment for each session and calculate the total number of positive and negative sentiments.
+
+    Avoid any sort of markdown in the response like ```json....```.
+
+    {json_input}
+    """
 )
 
 
@@ -163,6 +204,14 @@ def summary_analysis(summary_input: SummaryInput):
     input_data = summary_input.json()
     formatted_prompt = prompt_template.format(json_input=input_data)
     response = llm.invoke(formatted_prompt)
+    return response.content
+
+
+def premarket_suggestion(product_description):
+    formatted_suggestion_prompt = suggestion_template.format(
+        description=product_description
+    )
+    response = llm.invoke(formatted_suggestion_prompt)
     return response.content
 
 
