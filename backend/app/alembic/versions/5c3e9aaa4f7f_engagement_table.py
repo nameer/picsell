@@ -24,6 +24,7 @@ def upgrade():
         sa.Column("id", sa.Integer(), nullable=False),
         sa.Column("campaign_id", sa.Integer(), nullable=False),
         sa.Column("session_id", sqlmodel.sql.sqltypes.AutoString(), nullable=False),
+        sa.Column("time", sa.Integer(), nullable=False),
         sa.Column("question", sqlmodel.sql.sqltypes.AutoString(), nullable=False),
         sa.Column("response", sqlmodel.sql.sqltypes.AutoString(), nullable=False),
         sa.Column("created_at", sa.DateTime(), nullable=False),

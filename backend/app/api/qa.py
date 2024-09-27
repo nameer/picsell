@@ -35,17 +35,17 @@ async def question_answer_ws(websocket: WebSocket, campaign_id: int, session_id:
     while True:
         data = await websocket.receive_json()
         try:
-            question = QAQuestion(**data).question
+            input = QAQuestion(**data)
         except ValidationError:
             await websocket.send_json({"error": "Invalid format"})
             continue
-        response = ai.qa(campaign_id, session_id, question)
+        response = ai.qa(campaign_id, session_id, input.question)
         await websocket.send_json(response)
 
         log_data = EngagementCreate(
+            **input.dict(),
             campaign_id=campaign_id,
             session_id=session_id,
-            question=question,
             response=response["message"],
         )
         write_log(log_data)

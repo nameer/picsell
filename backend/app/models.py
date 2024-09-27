@@ -2,7 +2,7 @@ from datetime import datetime
 from enum import Enum
 from typing import Annotated, Any
 
-from pydantic import HttpUrl, model_validator
+from pydantic import HttpUrl, NonNegativeInt, PositiveInt, model_validator
 from sqlmodel import JSON, Column, Field, SQLModel
 
 # === Campaign === #
@@ -18,6 +18,7 @@ class CampaignStatus(Enum):
 class CampaignBase(SQLModel):
     name: str
     video_url: HttpUrl
+    video_duration: PositiveInt
     document_urls: list[HttpUrl]
 
 
@@ -56,6 +57,7 @@ class EngagementCreate(SQLModel):
     campaign_id: int = Field(foreign_key="campaign.id")
     session_id: str
 
+    time: NonNegativeInt
     question: str
     response: str
 
@@ -71,12 +73,12 @@ class Engagement(EngagementCreate, table=True):
 
 class QAQuestion(SQLModel):
     question: str
+    time: NonNegativeInt
 
 
 class QAInput(QAQuestion):
     campaign_id: int
     session_id: str
-    question: str
 
 
 class QAOutput(SQLModel):
