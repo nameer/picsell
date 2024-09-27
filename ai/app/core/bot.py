@@ -21,6 +21,7 @@ llm = ChatOpenAI(model="gpt-4o-mini")
 # Load and process the document
 loader = WebBaseLoader("https://www.macrumors.com/roundup/iphone-16-pro/")
 
+
 docs = loader.load()
 
 text_splitter = RecursiveCharacterTextSplitter(
@@ -45,10 +46,12 @@ contextualize_q_prompt = ChatPromptTemplate.from_messages(
     ]
 )
 
-qa_system_prompt = """You are an assistant for question-answering tasks. \
+qa_system_prompt = """You are an sales assistant for question-answering tasks. \
 Use the following pieces of retrieved context to answer the question. \
 If you don't know the answer, just say that you don't know. \
 Use three sentences maximum and keep the answer concise.\
+Only answer from the retrieved context.
+if any out of context question is asked, reply politely saying its out of your knowledge .
 
 {context}"""
 qa_prompt = ChatPromptTemplate.from_messages(
