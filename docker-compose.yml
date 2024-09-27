@@ -72,6 +72,7 @@ services:
     env_file:
       - .env
     environment:
+      - POSTGRES_SERVER=db
       - CHAT_ENDPOINT=http://chat:${CHAT_PORT}
     command:
       - fastapi
