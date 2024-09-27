@@ -1,20 +1,44 @@
-import Card from "../../components/Card";
 import DashboardLayout from "../../layout/DashboardLayout";
-import { ArrowUpIcon, PlusIcon } from "../../assets/icons";
-import Table from "../../components/Table";
-import { projectsTableColumns, projectsTableData } from "./consts";
+import { PlusIcon } from "../../assets/icons";
 import Button from "../../components/Button/Button";
-import { useState } from "react";
-import CreateProjectModal from "./CreateProjectModal";
+import { useEffect, useState } from "react";
+import CreateCampaignModal from "./components/CreateCampaignModal";
+import CampaignsTable from "./components/CampaignsTable";
+import OverviewCards from "./components/OverviewCards";
+import { overviewData } from "./consts";
 
 const Overview = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [data, setData] = useState({
+    campaigns: [],
+    overviews: {
+      totalUploads: 0,
+      totalUserEngaged: 0,
+      totalPromoters: 0,
+      totalUserDetractors: 0,
+    },
+  });
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleCreateModalClick = () => {
     setIsOpen(true);
   };
 
-  const handleCreateProject = () => { };
+  const handleCreateProject = () => {};
+
+  const fetchData = () => {
+    setIsLoading(true);
+    const timeout = setTimeout(() => {
+      setData(overviewData);
+      setIsLoading(false);
+    }, 1000);
+
+    return () => {
+      clearTimeout(timeout);
+    };
+  };
+
+  useEffect(fetchData, []);
 
   return (
     <DashboardLayout>
@@ -33,50 +57,17 @@ const Overview = () => {
             size="large"
             onClick={handleCreateModalClick}
           >
-            Create New
+            New Campaign
           </Button>
         </div>
-        <div className="flex items-center gap-4 mb-10">
-          <Card className="w-full px-8 text-left" title="TOTAL UPLOADS">
-            <div className="text-[21px] leading-8 font-bold">35</div>
-          </Card>
-          <Card className="w-full px-8 text-left" title="TOTAL USER ENGAGED ">
-            <div className="text-[21px] leading-8 font-bold">3,525 </div>
-          </Card>
-          <Card className="w-full px-8 text-left" title="TOTAL PROMOTERS">
-            <div className="flex items-end justify-between">
-              <div className="text-[21px] leading-8 font-bold">3,525</div>
-              <div className="flex items-center gap-1">
-                <div className="text-green-500 font-medium text-[13px] leading-[21px]">
-                  +36%
-                </div>
-                <ArrowUpIcon />
-              </div>
-            </div>
-          </Card>
-          <Card className="w-full px-8 text-left" title="TOTAL RETRACTORS">
-            <div className="flex items-end justify-between">
-              <div className="text-[21px] leading-8 font-bold">1,245</div>
-              <div className="flex items-center gap-1">
-                <div className="text-green-500 font-medium text-[13px] leading-[21px]">
-                  +36%
-                </div>
-                <ArrowUpIcon />
-              </div>
-            </div>
-          </Card>
-        </div>
-        <div className="grow flex flex-col">
-          <div className="text-lg font-semibold text-left mb-4">Projects</div>
-          <Table
-            className="grow h-0 overflow-y-auto"
-            columns={projectsTableColumns}
-            data={projectsTableData}
-            onItemSelect={() => {}}
-          />
-        </div>
+        <OverviewCards data={data.overviews} isLoading={isLoading} />
+        <CampaignsTable
+          className="grow"
+          campaigns={data.campaigns}
+          isLoading={isLoading}
+        />
       </div>
-      <CreateProjectModal
+      <CreateCampaignModal
         isOpen={isOpen}
         setIsOpen={setIsOpen}
         onCreate={handleCreateProject}

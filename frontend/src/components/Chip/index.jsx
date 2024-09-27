@@ -14,7 +14,7 @@ const chipVariants = tv({
 });
 
 const chipDotVariants = tv({
-  base: "size-3 rounded-full",
+  base: "size-2 rounded-full",
   variants: {
     variant: {
       info: "bg-blue-500",

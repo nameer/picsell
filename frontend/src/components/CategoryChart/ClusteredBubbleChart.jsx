@@ -1,8 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
 import * as d3 from "d3";
-
-const ClusteredBubbleChart = ({ data, categories }) => {
+import Card from "../Card";
+const ClusteredBubbleChart = ({ data }) => {
   const svgRef = useRef(null);
+
+  const tooltipRef = useRef(null);
 
   const getRandomColor = () => {
     const letters = "0123456789ABCDEF";
@@ -79,17 +81,26 @@ const ClusteredBubbleChart = ({ data, categories }) => {
         .attr("opacity", 0.1);
     }
 
-    const tooltip = d3
-      .select("body")
-      .append("div")
-      .style("position", "absolute")
-      .style("background-color", "white")
-      .style("padding", "5px")
-      .style("border", "1px solid #ccc")
-      .style("border-radius", "5px")
-      .style("box-shadow", "0 2px 5px rgba(0, 0, 0, 0.2)")
-      .style("pointer-events", "none")
-      .style("opacity", 1);
+    let tooltip = tooltipRef.current;
+
+    console.log(tooltip);
+
+    if (!tooltip) {
+      tooltip = d3
+        .select("body")
+        .append("div")
+        .style("position", "absolute")
+        .style("background-color", "white")
+        .style("padding", "5px")
+        .style("border", "1px solid #ccc")
+        .style("border-radius", "5px")
+        .style("box-shadow", "0 2px 5px rgba(0, 0, 0, 0.2)")
+        .style("pointer-events", "none")
+        .style("opacity", 1);
+      tooltipRef.current = tooltip.node();
+    } else {
+      tooltip = d3.select(tooltip);
+    }
 
     // Create the root hierarchy node with a sum function
     const root = d3
@@ -117,7 +128,7 @@ const ClusteredBubbleChart = ({ data, categories }) => {
       .append("circle")
       .attr("r", (d) => d.r)
       .attr("fill", (d) => d.data.color)
-      .attr("opacity", 0.4)
+      .attr("opacity", 0.5)
       .on("mouseover", (event, d) => {
         // Show the tooltip on hover
         tooltip
@@ -141,26 +152,29 @@ const ClusteredBubbleChart = ({ data, categories }) => {
 
     return () => {
       svg.selectAll("*").remove();
+      d3.select("div.cluster-bubble-tooltip").remove();
     };
   }, [data]);
 
   return (
-    <div className="flex flex-col items-center">
-      <svg ref={svgRef}></svg>
-      <div className="mt-4 w-full">
-        <ul className="flex items-start gap-6 flex-wrap">
-          {colorMap.map((category) => (
-            <li key={category.topic} className="flex items-center">
-              <span
-                className="w-3 h-3 mr-2 "
-                style={{ backgroundColor: category.colorCode }}
-              ></span>
-              <span className="text-xs font-medium">{category.topic}</span>
-            </li>
-          ))}
-        </ul>
+    <Card title={"CUSTOMER QUERY OVERVIEW"}>
+      <div className="flex flex-col items-center">
+        <svg ref={svgRef}></svg>
+        <div className="mt-4 w-full">
+          <ul className="flex items-start gap-6 flex-wrap">
+            {colorMap.map((category) => (
+              <li key={category.topic} className="flex items-center">
+                <span
+                  className="w-3 h-3 mr-2 "
+                  style={{ backgroundColor: category.colorCode }}
+                ></span>
+                <span className="text-xs font-medium">{category.topic}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
-    </div>
+    </Card>
   );
 };
 

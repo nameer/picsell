@@ -10,6 +10,8 @@ import { ReactComponent as CloseIcon } from "./close.svg";
 import { ReactComponent as UploadIcon } from "./upload.svg";
 import { ReactComponent as TrashIcon } from "./trash.svg";
 import { ReactComponent as VideoIcon } from "./video.svg";
+import { ReactComponent as ImageIcon } from "./image.svg";
+import { ReactComponent as AudioIcon } from "./audio.svg";
 
 export {
   ArrowUpIcon,
@@ -24,4 +26,6 @@ export {
   UploadIcon,
   TrashIcon,
   VideoIcon,
+  ImageIcon,
+  AudioIcon,
 };

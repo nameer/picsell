@@ -34,13 +34,13 @@ export default function PerformanceSection(props) {
       </Card>
 
       <Card className="w-full px-8 text-left" title="AVG WATCH TIME">
-        <div className="text-2xl font-semibold">3:25 min</div>
+        <div className="text-xl font-semibold">3:25 min</div>
       </Card>
       <Card className="w-full px-8 text-left" title="PEAK VIEW TIME">
-        <div className="text-2xl font-semibold">1:56 - 2:03 min</div>
+        <div className="text-xl font-semibold">1:56 - 2:03 min</div>
       </Card>
       <Card className="w-full px-8 text-left" title="VIDEO COMPLETION RATE">
-        <div className="text-2xl font-semibold">34%</div>
+        <div className="text-xl font-semibold">34%</div>
       </Card>
     </div>
   );

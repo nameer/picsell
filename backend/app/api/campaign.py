@@ -16,6 +16,11 @@ def create_campaign(session: SessionDep, data: CampaignCreate) -> Campaign:
     return crud.create_campaign(session, data)
 
 
+@router.get("", response_model=list[Campaign])
+def get_campaigns(session: SessionDep) -> list[Campaign]:
+    return crud.get_campaigns(session)
+
+
 @router.get("/{campaign_id}", response_model=Campaign)
 def get_campaign(campaign: Annotated[Campaign, Depends(get_campaign)]) -> Campaign:
     return campaign

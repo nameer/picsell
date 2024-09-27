@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from sqlalchemy.sql import select
-from sqlmodel import Session
+from sqlmodel import Session  # , select
 
 from app.models import (
     Campaign,
@@ -20,6 +20,11 @@ def create_campaign(session: Session, data: CampaignCreate) -> Campaign:
     session.commit()
     session.refresh(campaign)
     return campaign
+
+
+def get_campaigns(session: Session) -> list[Campaign]:
+    campaigns = session.exec(select(Campaign)).all()
+    return campaigns
 
 
 def get_campaign(session: Session, campaign_id: int) -> Campaign | None:
