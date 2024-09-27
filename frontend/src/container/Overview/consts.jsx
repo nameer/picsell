@@ -100,8 +100,6 @@ export const overviewData = {
     },
   ],
   overviews: {
-    totalUploads: 35,
-    totalUserEngaged: 3255,
     totalPromoters: 3255,
     totalUserDetractors: 3255,
   },

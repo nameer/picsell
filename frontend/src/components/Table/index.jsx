@@ -9,7 +9,7 @@ const Table = ({ className, columns, data, onItemSelect }) => {
     <div
       className={`text-left border border-[#EAECF0] rounded-lg overflow-hidden ${className}`}
     >
-      <table className="h-full w-full">
+      <table className="w-full">
         <thead>
           <tr className="sticky top-0 bg-white">
             {columns.map((column) => (

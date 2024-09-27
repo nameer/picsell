@@ -19,6 +19,7 @@ const Overview = () => {
       totalUserDetractors: 0,
     },
   });
+
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -27,19 +28,27 @@ const Overview = () => {
   };
 
   const handleCreateCampaign = () => {
-    navigate('/details')
+    navigate("/details");
+  };
+
+  const getActiveCampaigns = () => {
+    return data.campaigns.filter((item) => item.status === "completed");
   };
 
   const fetchData = () => {
     setIsLoading(true);
-    const timeout = setTimeout(() => {
-      setData(overviewData);
-      setIsLoading(false);
-    }, 1000);
 
-    return () => {
-      clearTimeout(timeout);
-    };
+    fetch("http://localhost:8000/campaigns", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }).then(async (response) => {
+      const data = await response.json();
+
+      setData((prev) => ({ ...prev, campaigns: data }));
+      setIsLoading(false);
+    });
   };
 
   useEffect(fetchData, []);
@@ -64,7 +73,11 @@ const Overview = () => {
             New Campaign
           </Button>
         </div>
-        <OverviewCards data={data.overviews} isLoading={isLoading} />
+        <OverviewCards
+          totalCampaigns={data.campaigns.length}
+          activeCampaigns={getActiveCampaigns().length}
+          isLoading={isLoading}
+        />
         <CampaignsTable
           className="grow"
           campaigns={data.campaigns}
