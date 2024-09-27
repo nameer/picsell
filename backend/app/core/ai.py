@@ -14,7 +14,7 @@ def qa(campaign_id: str, session_id: str, question: str) -> dict:
         json={
             "campaign_id": campaign_id,
             "session_id": session_id,
-            "query": question,
+            "question": question,
         },
     )
     return v.json()

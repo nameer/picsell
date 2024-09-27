@@ -8,7 +8,7 @@ from pydantic import BaseModel
 class QAInput(BaseModel):
     campaign_id: int
     session_id: str
-    query: str
+    question: str
 
 
 class QAOutput(BaseModel):

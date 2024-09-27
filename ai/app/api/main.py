@@ -13,7 +13,7 @@ def health():
 
 @api_router.post("/qa", response_model=QAOutput)
 def qa(data: QAInput) -> dict:
-    message = bot.qa(data.session_id, data.query)
+    message = bot.qa(data.session_id, data.question)
     return {"message": message}
 
 
