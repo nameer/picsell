@@ -1,6 +1,9 @@
 import Card from "../../components/Card";
 import DashboardLayout from "../../layout/DashboardLayout";
-import { ArrowUp } from "../../assets/icons";
+import { ArrowUp, Plus } from "../../assets/icons";
+import Table from "../../components/Table";
+import { projectsTableColumns, projectsTableData } from "./consts";
+import Button from '../../components/Button/Button'
 
 const Overview = () => (
   <DashboardLayout>
@@ -12,7 +15,7 @@ const Overview = () => (
             here’s your overall product performance today
           </p>
         </div>
-        <button className=""></button>
+        <Button icon={<Plus />} size="large">Create New</Button>
       </div>
       <div className="flex items-center gap-4 mb-10">
         <Card className="w-full px-8 text-left" title="TOTAL UPLOADS">
@@ -41,7 +44,13 @@ const Overview = () => (
         </Card>
       </div>
       <div className="grow flex flex-col">
-        <div className="text-lg font-semibold text-left">Projects</div>
+        <div className="text-lg font-semibold text-left mb-4">Projects</div>
+        <Table
+          className="grow h-0 overflow-y-auto"
+          columns={projectsTableColumns}
+          data={projectsTableData}
+          onItemSelect={() => {}}
+        />
       </div>
     </div>
   </DashboardLayout>
