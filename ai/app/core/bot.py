@@ -91,7 +91,7 @@ prompt_template = PromptTemplate.from_template(
     "vector_store_id": "18178712",
     "sessions": [
         {{
-            "session_id": 123,
+            "session_id": "abc123",
             "interactions": [
                 {{
                 "question": "How to access pricing page?",
@@ -104,7 +104,7 @@ prompt_template = PromptTemplate.from_template(
             ]
         }},
         {{
-            "session_id": 124,
+            "session_id": "def124",
             "interactions": [
                 {{
                 "question": "How to access pricing page?",
@@ -136,11 +136,11 @@ prompt_template = PromptTemplate.from_template(
     ],
     "sentiments": [
       {{
-        "session_id": 123,
+        "session_id": "abc123",
         "sentiment": "+ve"
       }},
       {{
-        "session_id": 124,
+        "session_id": "def124",
         "sentiment": "-ve"
       }}
     ],
@@ -197,7 +197,7 @@ if __name__ == "__main__":
         "vector_store_id": "18178712",
         "sessions": [
             {
-                "session_id": 123,
+                "session_id": "abc123",
                 "interactions": [
                     {
                         "question": "How to access pricing page?",
@@ -210,7 +210,7 @@ if __name__ == "__main__":
                 ],
             },
             {
-                "session_id": 124,
+                "session_id": "def124",
                 "interactions": [
                     {
                         "question": "How to reset my password?",

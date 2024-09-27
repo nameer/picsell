@@ -5,6 +5,8 @@ from typing import Any
 from pydantic import HttpUrl, model_validator
 from sqlmodel import JSON, Column, Field, SQLModel
 
+# === Campaign === #
+
 
 class CampaignStatus(Enum):
     QUEUED = "queued"
@@ -46,3 +48,37 @@ class Campaign(CampaignBase, table=True):
         values.video_url = str(values.video_url)
         values.document_urls = [str(url) for url in values.document_urls]
         return values
+
+
+# === Engagement === #
+
+
+class EngagementCreate(SQLModel):
+    campaign_id: int = Field(foreign_key="campaign.id")
+    session_id: str
+
+    question: str
+    response: str
+
+
+class Engagement(EngagementCreate, table=True):
+    id: int = Field(default=None, primary_key=True)
+
+    created_at: datetime = Field(default_factory=datetime.utcnow)
+
+
+# === QA === #
+
+
+class QAQuestion(SQLModel):
+    question: str
+
+
+class QAInput(QAQuestion):
+    campaign_id: int
+    session_id: str
+    question: str
+
+
+class QAOutput(SQLModel):
+    message: str
