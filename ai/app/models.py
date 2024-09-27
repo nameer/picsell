@@ -9,7 +9,7 @@ class SessionInteraction(BaseModel):
 
 
 class SessionInput(BaseModel):
-    session_id: int
+    session_id: str
     interactions: list[SessionInteraction]
 
 
@@ -27,7 +27,7 @@ class Topic(BaseModel):
 
 
 class Sentiment(BaseModel):
-    session_id: int
+    session_id: str
     sentiment: str
 
 
