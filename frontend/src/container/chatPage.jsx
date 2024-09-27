@@ -140,6 +140,8 @@ const ChatPage = () => {
             console.log('All speech has finished.');
             setShowMike(false);
             setResponseData(null); // Replace with your desired message
+            setPlayVideo(true);
+            handleOnVideoPlay();
           }
         };
 
