@@ -1,6 +1,16 @@
+from datetime import datetime
+
 from sqlmodel import Session, select
 
-from app.models import Campaign, CampaignCreate, Engagement, EngagementCreate
+from app.models import (
+    Campaign,
+    CampaignCreate,
+    Engagement,
+    EngagementCreate,
+    OverviewCache,
+)
+
+# === Compaign === #
 
 
 def create_campaign(session: Session, data: CampaignCreate) -> Campaign:
@@ -11,6 +21,19 @@ def create_campaign(session: Session, data: CampaignCreate) -> Campaign:
     return campaign
 
 
+def get_campaigns(session: Session) -> list[Campaign]:
+    campaigns = session.exec(select(Campaign)).all()
+    return campaigns
+
+
+def get_campaign(session: Session, campaign_id: int) -> Campaign | None:
+    campaign = session.get(Campaign, campaign_id)
+    return campaign
+
+
+# === Engagement === #
+
+
 def create_engagement(session: Session, data: EngagementCreate) -> Engagement:
     engagement = Engagement.from_orm(data)
     session.add(engagement)
@@ -19,12 +42,41 @@ def create_engagement(session: Session, data: EngagementCreate) -> Engagement:
     return engagement
 
 
-def get_campaigns(session: Session) -> list[Campaign]:
-    campaigns = session.exec(select(Campaign)).all()
-    return campaigns
+def get_engagements(session: Session, campaign_id: int) -> list[Engagement]:
+    return session.exec(
+        select(Engagement).where(Engagement.campaign_id == campaign_id)
+    ).all()
 
 
-def get_campaign_by_id(session: Session, id: int) -> Campaign:
-    statement = select(Campaign).where(Campaign.id == id)
-    session_campaign = session.exec(statement).first()
-    return session_campaign
+def get_last_engagement_time(session: Session, campaign_id: int) -> datetime:
+    return session.exec(
+        select(Engagement.created_at)
+        .where(Engagement.campaign_id == campaign_id)
+        .order_by(Engagement.created_at.desc())
+    ).first()
+
+
+# === Overview Cache === #
+
+
+def create_overview_cache(
+    session: Session,
+    campaign_id: int,
+    data: dict,
+) -> OverviewCache:
+    overview_cache = OverviewCache(campaign_id=campaign_id, data=data)
+    session.add(overview_cache)
+    session.commit()
+    session.refresh(overview_cache)
+    return overview_cache
+
+
+def get_latest_overview_cache(
+    session: Session,
+    campaign_id: int,
+) -> OverviewCache | None:
+    return session.exec(
+        select(OverviewCache)
+        .where(OverviewCache.campaign_id == campaign_id)
+        .order_by(OverviewCache.created_at.desc())
+    ).first()
