@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import * as d3 from "d3";
 
-const ClusteredBubbleChart = ({ data, categories }) => {
+const ClusteredBubbleChart = ({ data }) => {
   const svgRef = useRef(null);
 
   const getRandomColor = () => {
@@ -117,7 +117,7 @@ const ClusteredBubbleChart = ({ data, categories }) => {
       .append("circle")
       .attr("r", (d) => d.r)
       .attr("fill", (d) => d.data.color)
-      .attr("opacity", 0.4)
+      .attr("opacity", 0.5)
       .on("mouseover", (event, d) => {
         // Show the tooltip on hover
         tooltip

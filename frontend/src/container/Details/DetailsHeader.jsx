@@ -6,7 +6,7 @@ import Chip from "../../components/Chip";
 
 export default function DetailsHeader() {
   return (
-    <div className="flex justify-between">
+    <div className="ml-4 flex justify-between">
       <div className="flex flex-col">
         <div className="flex items-center gap-3">
           <div className="text-gray-500 text-sm">ID 12345</div>
