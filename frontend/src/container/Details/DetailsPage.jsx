@@ -7,7 +7,7 @@ import GaugeChart from "../../components/scoreChart/GaugeChart";
 import ClusteredBubbleChart from "../../components/BubbleChart/BubbleChart";
 
 export default function DetailsPage() {
-  const [score, setScore] = useState(60);
+  const [score] = useState(60);
   return (
     <DashboardLayout>
       <DetailsHeader />
