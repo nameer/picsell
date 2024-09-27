@@ -2,7 +2,7 @@ import DashboardLayout from "../../layout/DashboardLayout";
 import { PlusIcon } from "../../assets/icons";
 import Button from "../../components/Button/Button";
 import { useEffect, useState } from "react";
-import CreateCampaignModal from "./components/CreateCampignModal";
+import CreateCampaignModal from "./components/CreateCampaignModal";
 import CampaignsTable from "./components/CampaignsTable";
 import OverviewCards from "./components/OverviewCards";
 import { overviewData } from "./consts";

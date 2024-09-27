@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 
-import Modal from "../../components/Modal";
-import InputField from "../../components/fields/InputField";
-import Button from "../../components/Button/Button";
-import FileUploaderField from "../../components/fields/FileUploaderField";
-import { VideoIcon } from "../../assets/icons";
+import Modal from "../../../components/Modal";
+import InputField from "../../../components/fields/InputField";
+import Button from "../../../components/Button/Button";
+import FileUploaderField from "../../../components/fields/FileUploaderField";
+import { VideoIcon } from "../../../assets/icons";
+import CampaignTypeField from "./CampaignTypeField";
 
-const CreateProjectModal = ({ isOpen, setIsOpen, onCreate }) => {
+const CreateCampaignModal = ({ isOpen, setIsOpen, onCreate }) => {
   const [step, setStep] = useState(1);
 
   const handleNext = () => {
@@ -36,23 +37,24 @@ const CreateProjectModal = ({ isOpen, setIsOpen, onCreate }) => {
     <Modal
       isOpen={isOpen}
       setIsOpen={setIsOpen}
-      title="Create new project"
+      title="Create new campaign"
       size="medium"
     >
       {step === 1 && (
         <>
+          <CampaignTypeField className="mb-6" />
           <InputField
             className="w-full mb-6"
-            label="Project title"
+            label="Title"
             placeholder="Enter title"
           />
-          <FileUploaderField
+          {/* <FileUploaderField
             className="w-full mb-8 "
             label="Upload video"
             placeholder="Upload product video"
             removeIcon={<div className="text-[#D92626] text-sm/5">Delete</div>}
             fileIcon={<VideoIcon />}
-          />
+          /> */}
         </>
       )}
       {step === 2 && (
@@ -94,4 +96,4 @@ const CreateProjectModal = ({ isOpen, setIsOpen, onCreate }) => {
   );
 };
 
-export default CreateProjectModal;
+export default CreateCampaignModal;
