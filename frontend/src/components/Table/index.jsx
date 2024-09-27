@@ -6,17 +6,21 @@ const Table = ({ className, columns, data, onItemSelect }) => {
   };
 
   return (
-    <div className={`text-left border border-[#EAECF0] rounded-lg overflow-hidden ${className}`}>
+    <div
+      className={`text-left border border-[#EAECF0] rounded-lg overflow-hidden ${className}`}
+    >
       <table className="h-full w-full">
-        <thead className="sticky top-0 bg-white">
-          {columns.map((column) => (
-            <th
-              key={column.id}
-              className="ps-6 py-3 text-sm font-semibold text-[#667085]"
-            >
-              {column.heading}
-            </th>
-          ))}
+        <thead>
+          <tr className="sticky top-0 bg-white">
+            {columns.map((column) => (
+              <th
+                key={column.id}
+                className="ps-6 py-3 text-sm font-semibold text-[#667085]"
+              >
+                {column.heading}
+              </th>
+            ))}
+          </tr>
         </thead>
         <tbody>
           {data.map((item, i) => (
