@@ -5,6 +5,8 @@ from typing import Any
 from pydantic import HttpUrl, model_validator
 from sqlmodel import JSON, Column, Field, SQLModel
 
+# === Campaign === #
+
 
 class CampaignStatus(Enum):
     QUEUED = "queued"
@@ -46,3 +48,16 @@ class Campaign(CampaignBase, table=True):
         values.video_url = str(values.video_url)
         values.document_urls = [str(url) for url in values.document_urls]
         return values
+
+
+# === QA === #
+
+
+class QAInput(SQLModel):
+    campaign_id: int
+    session_id: str
+    query: str
+
+
+class QAOutput(SQLModel):
+    message: str
