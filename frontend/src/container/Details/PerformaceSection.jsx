@@ -8,21 +8,17 @@ export default function PerformanceSection(props) {
     <div className=" grid grid-cols-3 grid-rows-4 gap-4">
       <Card
         className="w-full px-8 text-left"
-        title="TOTAL UPLOADS"
-        icon={<CustomerIcon />}
-      >
-        <div className="text-3xl font-bold">3,525</div>
-      </Card>
-      <Card
-        className="w-full px-8 text-left"
-        title="TOTAL PROMOTERS"
+        title="HOT LEADS"
         icon={<LikeIcon />}
       >
         <div className="text-3xl font-bold">3,525</div>
       </Card>
+      <Card className="w-full px-8 text-left" title="WARM LEADS">
+        <div className="text-3xl font-bold">3,525</div>
+      </Card>
       <Card
         className="w-full px-8 text-left"
-        title="TOTAL RETRACTORS"
+        title="COLD LEADS"
         icon={<DislikeIcon />}
       >
         <div className="text-3xl font-bold">3,525</div>
@@ -38,13 +34,13 @@ export default function PerformanceSection(props) {
       </Card>
 
       <Card className="w-full px-8 text-left" title="AVG WATCH TIME">
-        <div className="text-2xl font-semibold">3:25 min</div>
+        <div className="text-xl font-semibold">3:25 min</div>
       </Card>
       <Card className="w-full px-8 text-left" title="PEAK VIEW TIME">
-        <div className="text-2xl font-semibold">1:56 - 2:03 min</div>
+        <div className="text-xl font-semibold">1:56 - 2:03 min</div>
       </Card>
       <Card className="w-full px-8 text-left" title="VIDEO COMPLETION RATE">
-        <div className="text-2xl font-semibold">34%</div>
+        <div className="text-xl font-semibold">34%</div>
       </Card>
     </div>
   );
