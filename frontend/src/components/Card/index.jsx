@@ -1,6 +1,6 @@
 import React from "react";
 
-const Card = ({ className, title, children, icon }) => {
+const Card = ({ className, title, children, icon, color }) => {
   const textClasses = "text-left text-sm text-gray-500 ";
   return (
     <div
