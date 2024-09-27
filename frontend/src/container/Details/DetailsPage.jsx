@@ -8,6 +8,7 @@ import PerformanceSummary from "./PerformanceSummary";
 import LineChartWithGradient from "../../components/EngagementChart/LineChart";
 import VideoUploader from "./VideoCard";
 import AiSuggestionsCard from "./AiSuggestionsCard";
+import ShareModal from "./ShareModal";
 
 export default function DetailsPage() {
   const [score] = useState(60);
@@ -200,6 +201,7 @@ Feature user-generated content.`,
   ]);
 
   const [videoFile, setVideoFile] = useState(null);
+  const [isShareModalOpen, setIsShareModalOpen] = useState(false);
 
   const isDraft = data.status === "Draft";
 
@@ -210,7 +212,9 @@ Feature user-generated content.`,
   const handlePublish = () => {
     setData((prev) => ({ ...prev, status: "Completed" }));
   };
-  const handleShareClick = () => {};
+  const handleShareClick = () => {
+    setIsShareModalOpen(true);
+  };
 
   return (
     <DashboardLayout>
@@ -223,7 +227,17 @@ Feature user-generated content.`,
         onShare={handleShareClick}
       />
       <div className="flex gap-4">
-        <VideoUploader file={videoFile} onUpload={handleVideUpload} />
+        <Card className="w-1/2 h-fit">
+          <VideoUploader file={videoFile} onUpload={handleVideUpload} />
+          {!isDraft && (
+            <>
+              <div className="text-left text-[13px] leading-[18px] tracking-[1px] text-gray-500 mt-4">
+                USER ENGAGEMENT
+              </div>
+              <LineChartWithGradient data={lineChartData} />
+            </>
+          )}
+        </Card>
         {isDraft && (
           <AiSuggestionsCard
             className="w-1/2"
@@ -231,13 +245,14 @@ Feature user-generated content.`,
           />
         )}
         {!isDraft && (
-          <div className="w-1/2 flex flex-col gap-4 overflow-auto h-[calc(100vh-12rem)] ">
+          <div className="w-1/2 flex flex-col gap-4 overflow-auto h-[calc(100vh-18rem)] ">
             <PerformanceSection score={score} leads={data.leads} />
             <ClusteredBubbleChart data={data.topics} />
             <PerformanceSummary summary={summary} />
           </div>
         )}
       </div>
+      <ShareModal isOpen={isShareModalOpen} setIsOpen={setIsShareModalOpen} />
     </DashboardLayout>
   );
 }

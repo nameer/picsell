@@ -4,7 +4,7 @@ import Button from "../../components/Button/Button";
 import { UploadIcon } from "../../assets/icons";
 import ReactPlayer from "react-player";
 
-const VideoCard = ({ file, onUpload }) => {
+const VideoPlayer = ({ file, onUpload }) => {
   const uploadInput = useRef();
 
   const handleUploadClick = () => {
@@ -16,7 +16,7 @@ const VideoCard = ({ file, onUpload }) => {
   };
 
   return (
-    <Card className="w-1/2 h-fit">
+    <>
       {!file && (
         <div className="h-72 border border-dashed border-[#D0D5DD] rounded-lg bg-[#FBFBFB] flex items-center justify-center">
           <input
@@ -59,8 +59,8 @@ const VideoCard = ({ file, onUpload }) => {
           }}
         />
       )}
-    </Card>
+    </>
   );
 };
 
-export default VideoCard;
+export default VideoPlayer;

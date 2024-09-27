@@ -13,6 +13,8 @@ import { ReactComponent as VideoIcon } from "./video.svg";
 import { ReactComponent as ImageIcon } from "./image.svg";
 import { ReactComponent as AudioIcon } from "./audio.svg";
 import { ReactComponent as AiIcon } from "./ai.svg";
+import { ReactComponent as CopyIcon } from "./copy.svg";
+import { ReactComponent as CheckIcon } from "./check.svg";
 
 export {
   ArrowUpIcon,
@@ -30,4 +32,6 @@ export {
   ImageIcon,
   AudioIcon,
   AiIcon,
+  CopyIcon,
+  CheckIcon,
 };
