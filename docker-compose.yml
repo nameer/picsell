@@ -55,6 +55,24 @@ services:
       timeout: 5s
       retries: 5
 
+  prestart:
+    container_name: picsell-prestart
+    build:
+      context: ./backend
+    volumes:
+      - ./backend/app/alembic:/app/app/alembic
+      - ./backend/script:/app/scripts
+    depends_on:
+      db:
+        condition: service_healthy
+        restart: true
+    command: bash scripts/prestart.sh
+    env_file:
+      - .env
+    environment:
+      - POSTGRES_SERVER=db
+      - CHAT_ENDPOINT=http://chat:${CHAT_PORT}
+
   backend:
     container_name: picsell-backend
     restart: unless-stopped
