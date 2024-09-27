@@ -1,7 +1,6 @@
 import { Field, Input, Label } from "@headlessui/react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ReactComponent as Logo } from "../assets/logo.svg";
 
 const userName = "admin1234";
 const password = "12345678";
