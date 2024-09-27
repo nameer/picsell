@@ -21,13 +21,13 @@ services:
       start_period: 30s
       timeout: 10s
 
-  chat:
-    container_name: picsell-chat
+  ai:
+    container_name: picsell-ai
     restart: unless-stopped
     build:
-      context: ./chat
+      context: ./ai
     volumes:
-      - ./chat/app:/app/app
+      - ./ai/app:/app/app
     env_file:
       - .env
     command:
@@ -36,21 +36,21 @@ services:
       - --reload
       - "app/main.py"
       - --port
-      - "${CHAT_PORT:-8080}"
+      - "${AI_PORT:-8080}"
     develop:
       watch:
-        - path: ./chat
+        - path: ./ai
           action: sync
           target: /app
           ignore:
-            - ./chat/.venv
+            - ./ai/.venv
             - .venv
-        - path: ./chat/pyproject.toml
+        - path: ./ai/pyproject.toml
           action: rebuild
     ports:
-      - "${CHAT_PORT:-8080}:${CHAT_PORT:-8080}"
+      - "${AI_PORT:-8080}:${AI_PORT:-8080}"
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:${CHAT_PORT:-8080}/health/"]
+      test: ["CMD", "curl", "-f", "http://localhost:${AI_PORT:-8080}/health/"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -71,7 +71,7 @@ services:
       - .env
     environment:
       - POSTGRES_SERVER=db
-      - CHAT_ENDPOINT=http://chat:${CHAT_PORT}
+      - AI_ENDPOINT=http://ai:${AI_PORT}
 
   backend:
     container_name: picsell-backend
@@ -84,14 +84,14 @@ services:
       db:
         condition: service_healthy
         restart: true
-      chat:
+      ai:
         condition: service_healthy
         restart: true
     env_file:
       - .env
     environment:
       - POSTGRES_SERVER=db
-      - CHAT_ENDPOINT=http://chat:${CHAT_PORT}
+      - AI_ENDPOINT=http://ai:${AI_PORT}
     command:
       - fastapi
       - run
