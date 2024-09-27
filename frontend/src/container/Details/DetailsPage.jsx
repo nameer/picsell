@@ -6,6 +6,7 @@ import PerformanceSection from "./PerformaceSection";
 import ClusteredBubbleChart from "../../components/CategoryChart/ClusteredBubbleChart";
 import PerformanceSummary from "./PerformanceSummary";
 import LineChartWithGradient from "../../components/EngagementChart/LineChart";
+import ReactPlayer from "react-player";
 export default function DetailsPage() {
   const [score] = useState(60);
   const [data] = useState({
@@ -137,23 +138,6 @@ export default function DetailsPage() {
           },
         ],
       },
-      {
-        name: " Management 3",
-        subtopics: [
-          {
-            name: "Password reset",
-            value: 4,
-          },
-          {
-            name: "Account deletion",
-            value: 10,
-          },
-          {
-            name: "Two-factor authentication",
-            value: 5,
-          },
-        ],
-      },
     ],
     leads: {
       positive: 560,
@@ -188,21 +172,48 @@ export default function DetailsPage() {
     { x: 6, y: 0 },
   ]);
 
+  const lineData = [];
+  for (let i = 0; i < 10; i++) {
+    lineData.push({ x: videoTimeLength / 10 + i * 10 });
+  }
+
   return (
     <DashboardLayout>
       <DetailsHeader />
       <div className="flex border-cyan-300">
-        <div className="w-[50%]  p-2">
+        <div className="w-[50%] p-2">
           <Card>
-            <div className="h-80 border border-gray-400 rounded-lg"></div>
+            <div className="h-90  rounded-lg overflow-hidden">
+              <ReactPlayer
+                controls={true}
+                pip={false}
+                playbackRate={1}
+                playing={true}
+                url={
+                  "https://pic-uploadz.s3.ap-south-1.amazonaws.com/evernote.mp4"
+                }
+                width="100%"
+                height="100%"
+                style={{
+                  borderRadius: "8px",
+                }}
+                config={{
+                  file: {
+                    attributes: {
+                      controlsList: "nodownload",
+                    },
+                  },
+                }}
+              />
+            </div>
             <div className="text-left text-[13px] leading-[18px] tracking-[1px] text-gray-500 mt-4">
               USER ENGAGEMENT
             </div>
             <LineChartWithGradient data={lineChartData} />
           </Card>
         </div>
-        <div className="w-[50%] p-2 flex flex-col gap-4 overflow-auto h-[calc(100vh-17rem)] ">
-          <PerformanceSection score={score} />
+        <div className="w-[50%] p-2 flex flex-col gap-4 overflow-auto h-[calc(100vh-17rem)]">
+          <PerformanceSection score={score} leads={data.leads} />
           <ClusteredBubbleChart data={data.topics} />
           <PerformanceSummary summary={summary} />
         </div>

@@ -11,17 +11,17 @@ export default function PerformanceSection(props) {
         title="HOT LEADS"
         icon={<LikeIcon />}
       >
-        <div className="text-3xl font-bold">3,525</div>
+        <div className="text-3xl font-bold">{props.leads.positive}</div>
       </Card>
       <Card className="w-full px-8 text-left" title="WARM LEADS">
-        <div className="text-3xl font-bold">3,525</div>
+        <div className="text-3xl font-bold">{props.leads.neutral}</div>
       </Card>
       <Card
         className="w-full px-8 text-left"
         title="COLD LEADS"
         icon={<DislikeIcon />}
       >
-        <div className="text-3xl font-bold">3,525</div>
+        <div className="text-3xl font-bold">{props.leads.negative}</div>
       </Card>
 
       <Card className="col-span-2 row-span-3" title="OVERALL SCORE">
