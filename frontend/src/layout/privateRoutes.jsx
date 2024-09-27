@@ -1,5 +1,5 @@
 import { Route, Routes } from "react-router-dom";
-import Overview from "../container/dashboard";
+import Overview from "../container/Overview";
 
 const PrivateRoutes = () => {
   return (
