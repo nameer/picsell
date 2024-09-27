@@ -31,7 +31,6 @@ class CampaignUpdate(CampaignBase):
 
 class Campaign(CampaignBase, table=True):
     id: int = Field(default=None, primary_key=True)
-    vector_store_id: str | None = None
 
     video_url: str
     document_urls: list[str] = Field(sa_column=Column(JSON))

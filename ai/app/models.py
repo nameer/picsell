@@ -33,7 +33,6 @@ class SessionInput(BaseModel):
 
 
 class SummaryInput(BaseModel):
-    vector_store_id: str
     sessions: list[SessionInput]
 
 
