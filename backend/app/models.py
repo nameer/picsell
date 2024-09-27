@@ -70,7 +70,11 @@ class Engagement(EngagementCreate, table=True):
 # === QA === #
 
 
-class QAInput(SQLModel):
+class QAQuestion(SQLModel):
+    question: str
+
+
+class QAInput(QAQuestion):
     campaign_id: int
     session_id: str
     question: str
