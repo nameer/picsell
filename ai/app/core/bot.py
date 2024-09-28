@@ -98,21 +98,24 @@ conversational_rag_chain = RunnableWithMessageHistory(
 )
 
 suggestion_template = PromptTemplate.from_template(
-    """
-    You are a sales platform that helps companies run advertising campaigns for their products. You will be provided with a product description, and based on this description, perform the following tasks:
-
-    1. **Key Points for Ad Video**: Identify essential elements or key points that should be highlighted in the product advertisement video.
-
-    2. **Competitor Insights**: Provide details about the strategies or features that other companies in the same domain have included in their advertisement campaigns.
-
-    3. **Common Customer Queries**: List the most important or frequently asked questions that potential customers or viewers might ask about the product.
-
-    Ensure your responses are concise and relevant.
-
-    Product Description: {description}
-
-    give the response as string , donot include things like \n ,**  in the response .
-    """
+                """You are a content recommendation platform that helps companies create engaging messaging and media recommendations for advertising campaigns. You will be provided with a product description, and based on this description, perform the following tasks:
+            1. Key Messaging: Identify key messages that resonate with the target audience and highlight the product's unique value propositions.
+            2. Call-to-Action: Provide a compelling call-to-action that drives engagement and conversions.
+            3. Media Recommendations:
+            - Video Structure: Outline a suggested video structure, including a breakdown of sections with corresponding timestamps.
+            - Visual Style: Recommend a visual style that aligns with the product's brand and campaign goals.
+            - Engagement Elements: Suggest interactive elements (e.g., clickable links, user-generated content) that encourage audience participation.
+            Ensure the responses are cohesive and in the form of complete sentences, without including any special formatting or line breaks in the response.
+            Product Description: A new campaign video to promote gumlet among tech startups
+            An example response:
+            Content Recommendations:
+            Key Messaging: Gumlet is the ultimate solution for tech startups looking to optimize their media delivery. With Gumlet, you can ensure faster load times, seamless video streaming, and superior image quality, all while reducing bandwidth costs. Our platform is designed to scale with your business, providing robust analytics and easy integration with your existing tech stack. Choose Gumlet to enhance user experience and drive growth.
+            Call-to-Action: Discover how Gumlet can transform your media delivery! Sign up for a free trial today and experience the difference!
+            Media Recommendations:
+            Video Structure: Introduction (0:00-0:10): Briefly introduce Gumlet and its relevance to tech startups. Problem Statement (0:10-0:30): Highlight common media delivery challenges faced by tech startups. Solution Overview (0:30-1:00): Explain how Gumlet addresses these challenges with its unique features. Benefits (1:00-1:30): Showcase the key benefits of using Gumlet, such as faster load times, superior image quality, and cost savings. Customer Testimonials (1:30-2:00): Include testimonials from existing tech startup clients who have successfully used Gumlet. Call-to-Action (2:00-2:10): Encourage viewers to sign up for a free trial.
+            Visual Style: The visual style should be modern and tech-savvy, incorporating sleek animations and clean graphics that reflect the innovative nature of Gumlet. Use a color palette that aligns with Gumlet's branding, such as blues and whites, to maintain brand consistency.
+            Engagement Elements: Incorporate clickable links within the video that direct viewers to sign up for a free trial or learn more about specific features. Encourage user-generated content by asking viewers to share their experiences with Gumlet on social media using a branded hashtag. Additionally, consider adding interactive polls or quizzes to keep the audience engaged and gather valuable feedback.
+            """
 )
 
 

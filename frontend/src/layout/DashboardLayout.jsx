@@ -8,7 +8,7 @@ const DashboardLayout = ({ children }) => {
       <div className="flex items-center justify-between px-16 bg-white">
         <img src={logo} alt="Picsell logo" />
         <div className="bg-[#38456C] flex items-center justify-center size-8 text-white rounded-full">
-          E
+          D
         </div>
       </div>
       <div className="grow bg-gray-50 px-16 py-10">{children}</div>

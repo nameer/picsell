@@ -2,28 +2,47 @@ import React, { useEffect, useRef, useState } from "react";
 import Card from "../../components/Card";
 import { AiIcon } from "../../assets/icons";
 import Button from "../../components/Button/Button";
+import { aiSuggestions } from "./consts";
 
-const AiSuggestionsCard = ({ className, aiSuggestions }) => {
+const AiSuggestionsCard = ({ className }) => {
+  const [fullText, setFullText] = useState("");
   const [displayText, setDisplayText] = useState("");
   const textareaRef = useRef();
 
+  const fetchSuggestions = () => {
+    fetch("http://localhost:8080/suggestion", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/text",
+      },
+      body: "",
+    })
+      .then((response) => {
+        setFullText(response);
+      })
+      .catch(() => {
+        setFullText(aiSuggestions);
+      });
+  };
+
   useEffect(() => {
-    if(aiSuggestions){
+    fetchSuggestions();
+  }, []);
+
+  useEffect(() => {
+    if (typeof fullText === "string" && fullText.length) {
       let i = 0;
       const intervalId = setInterval(() => {
-        setDisplayText(aiSuggestions.slice(0, i));
+        setDisplayText(fullText.slice(0, i));
         textareaRef.current.scrollTop = textareaRef.current.scrollHeight;
-
         i++;
-
-        if (i > aiSuggestions.length) {
+        if (i > fullText.length) {
           clearInterval(intervalId);
         }
       }, 10);
-
       return () => clearInterval(intervalId);
     }
-  }, [aiSuggestions]);
+  }, [fullText]);
 
   return (
     <Card className={className} title="AI SUGGESTIONS" icon={<AiIcon />}>

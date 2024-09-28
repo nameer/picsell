@@ -10,7 +10,7 @@ import VideoUploader from "./VideoCard";
 import AiSuggestionsCard from "./AiSuggestionsCard";
 import ShareModal from "./ShareModal";
 import { useParams } from "react-router-dom";
-import { aiSuggestions, videoUrl } from "./consts";
+import { videoDuration, videoUrl } from "./consts";
 
 export default function DetailsPage() {
   const { campaignId } = useParams();
@@ -154,8 +154,10 @@ export default function DetailsPage() {
   const [campaignData, setCampaignData] = useState({
     id: "",
     name: "",
-    status: "",
+    status: "drafted",
   });
+
+  const isDraft = campaignData.status === "drafted";
 
   const [summary, setSummary] = useState({
     engagement_peak: [],
@@ -172,17 +174,8 @@ export default function DetailsPage() {
 
   const [isDetailLoading, setIsDetailLoading] = useState(false);
 
-  const fetchData = (campaignId) => {
-    setIsDetailLoading(true);
-
-    fetch(`http://localhost:8000/campaigns/${campaignId}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    }).then(async (response) => {
-      const campaignData = await response.json();
-      setCampaignData(campaignData);
+  const fetchOverview = () => {
+    if (!isDraft) {
       fetch(`http://localhost:8000/campaigns/${campaignId}/overview`, {
         method: "GET",
         headers: {
@@ -194,32 +187,47 @@ export default function DetailsPage() {
         setScore(overviewData.score);
         setSummary(overviewData.summary);
       });
-      setIsDetailLoading(false);
-    });
+    }
   };
 
-  const fetchLineChartData = (campaignId) => {
-    fetch(`http://localhost:8000/campaigns/${campaignId}/hot-spots`, {
+  const fetchData = (campaignId) => {
+    setIsDetailLoading(true);
+
+    fetch(`http://localhost:8000/campaigns/${campaignId}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
       },
     }).then(async (response) => {
-      const chartData = await response.json();
-      setLineChartData(chartData);
+      const campaignData = await response.json();
+      setCampaignData(campaignData);
+      setIsDetailLoading(false);
     });
+  };
+
+  const fetchLineChartData = (campaignId) => {
+    if (!isDraft) {
+      fetch(`http://localhost:8000/campaigns/${campaignId}/hot-spots`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }).then(async (response) => {
+        const chartData = await response.json();
+        setLineChartData(chartData);
+      });
+    }
   };
 
   useEffect(() => {
     fetchData(campaignId);
     fetchLineChartData(campaignId);
+    fetchOverview();
   }, [campaignId]);
 
   const [videoFile, setVideoFile] = useState(null);
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
   const [isPublishing, setIsPublishing] = useState(false);
-
-  const isDraft = campaignData.status === "drafted";
 
   const handleVideUpload = (file) => {
     setVideoFile(URL.createObjectURL(file));
@@ -228,12 +236,13 @@ export default function DetailsPage() {
   const handlePublish = () => {
     setIsPublishing(true);
     fetch(`http://localhost:8000/campaigns/${campaignId}`, {
-      method: "PATCH",
+      method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
         video_url: videoUrl,
+        video_duration: videoDuration,
       }),
     }).then(async (response) => {
       const data = await response.json();
@@ -273,7 +282,7 @@ export default function DetailsPage() {
           )}
         </Card>
         {isDraft && (
-          <AiSuggestionsCard className="w-1/2" aiSuggestions={aiSuggestions} />
+          <AiSuggestionsCard className="w-1/2" />
         )}
         {!isDraft && (
           <div className="w-1/2 flex flex-col gap-4 overflow-auto h-[calc(100vh-18rem)] ">

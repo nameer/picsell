@@ -89,3 +89,5 @@ export const SUMMARY_HEADING = {
 'customer_feedback': 'Customer Feedback',
 'additional_insights': 'Additional Insights'
 }
+
+export const videoDuration = 120;
