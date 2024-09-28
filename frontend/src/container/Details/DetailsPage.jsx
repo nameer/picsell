@@ -11,6 +11,7 @@ import AiSuggestionsCard from "./AiSuggestionsCard";
 import ShareModal from "./ShareModal";
 import { useParams } from "react-router-dom";
 import { videoDuration, videoUrl } from "./consts";
+import Spinner from "../../components/Spinner";
 
 export default function DetailsPage() {
   const { campaignId } = useParams();
@@ -56,7 +57,7 @@ export default function DetailsPage() {
   const [isDetailLoading, setIsDetailLoading] = useState(false);
 
   const fetchOverview = () => {
-    if (!isDraft) {
+    if (isCompleted) {
       fetch(`http://localhost:8000/campaigns/${campaignId}/overview`, {
         method: "GET",
         headers: {
@@ -87,7 +88,7 @@ export default function DetailsPage() {
   };
 
   const fetchLineChartData = (campaignId) => {
-    if (!isDraft) {
+    if (isCompleted) {
       fetch(`http://localhost:8000/campaigns/${campaignId}/hot-spots`, {
         method: "GET",
         headers: {
@@ -106,7 +107,7 @@ export default function DetailsPage() {
     fetchData(campaignId);
     fetchLineChartData(campaignId);
     fetchOverview();
-  }, [campaignId]);
+  }, [campaignId, isCompleted]);
 
   const [videoFile, setVideoFile] = useState(null);
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
@@ -170,15 +171,22 @@ export default function DetailsPage() {
             </Card>
           </div>
           {isDraft && (
-            <AiSuggestionsCard className="w-1/2" campaignId={campaignId} />
+            <AiSuggestionsCard className="w-1/2 h-fit" campaignId={campaignId} />
           )}
-          {!isDraft && (
-            <div className="w-1/2 flex flex-col gap-4 overflow-auto">
-              <div className="grow h-0 overflow-y-auto">
-                <PerformanceSection score={score} leads={data.leads} />
-                <ClusteredBubbleChart data={data.topics} />
-                <PerformanceSummary summary={summary} />
-              </div>
+          {isCompleted && (
+            <div className="w-1/2 flex flex-col gap-4 overflow-auto relative">
+              {!isDetailLoading && (
+                <div className="grow h-0 overflow-y-auto">
+                  <PerformanceSection score={score} leads={data.leads} />
+                  <ClusteredBubbleChart data={data.topics} />
+                  <PerformanceSummary summary={summary} />
+                </div>
+              )}
+              {isDetailLoading && (
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+                  <Spinner className="size-10" />
+                </div>
+              )}
             </div>
           )}
         </div>
