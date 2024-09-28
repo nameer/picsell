@@ -1,7 +1,14 @@
 from fastapi import APIRouter
 
 from app.core import bot
-from app.models import Overview, QAInput, QAOutput, SummaryInput
+from app.models import (
+    Overview,
+    QAInput,
+    QAOutput,
+    Suggestion,
+    SuggestionInput,
+    SummaryInput,
+)
 
 api_router = APIRouter()
 
@@ -23,7 +30,7 @@ def summary(input: SummaryInput) -> dict:
     return eval(bot_response)
 
 
-@api_router.post("/suggestion", response_model=str)
-def suggestion(input: str) -> str:
-    suggestion_response = bot.premarket_suggestion(input)
-    return suggestion_response
+@api_router.post("/suggestion", response_model=Suggestion)
+def suggestion(input: SuggestionInput) -> dict:
+    suggestion = bot.premarket_suggestion(input)
+    return {"suggestion": suggestion}
