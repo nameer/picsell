@@ -218,7 +218,7 @@ Feature user-generated content.`,
   };
 
   const fetchLineChartData = (campaignId) => {
-    fetch(`http://localhost:8000/${campaignId}/1/hot-spots`, {
+    fetch(`http://localhost:8000/campaigns/${campaignId}/hot-spots`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -229,7 +229,10 @@ Feature user-generated content.`,
     });
   };
 
-  useEffect(() => fetchData(campaignId), [campaignId]);
+  useEffect(() => {
+    fetchData(campaignId);
+    fetchLineChartData(campaignId);
+  }, [campaignId]);
 
   const [videoFile, setVideoFile] = useState(null);
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
