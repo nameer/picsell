@@ -36,6 +36,10 @@ class SummaryInput(BaseModel):
     sessions: list[SessionInput]
 
 
+class SuggestionInput(BaseModel):
+    query: str
+
+
 # Response #
 
 
@@ -66,3 +70,7 @@ class Overview(BaseModel):
     score: int
     topics: list[Topic]
     sentiments: list[Sentiment]
+
+
+class Suggestion(BaseModel):
+    suggestion: str

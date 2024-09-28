@@ -158,3 +158,14 @@ class HotSpots(SQLModel):
     total_duration: PositiveInt
     max_heat: NonNegativeInt
     plot: list[PlotPoint]
+
+
+# === Suggestion === #
+
+
+class SuggestionInput(SQLModel):
+    query: str
+
+
+class Suggestion(SQLModel):
+    suggestion: str
