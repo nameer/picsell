@@ -171,9 +171,12 @@ export default function DetailsPage() {
             </Card>
           </div>
           {isDraft && (
-            <AiSuggestionsCard className="w-1/2 h-fit" campaignId={campaignId} />
+            <AiSuggestionsCard
+              className="w-1/2 h-fit"
+              campaignId={campaignId}
+            />
           )}
-          {isCompleted && (
+          {(isCompleted || isProcessing) && (
             <div className="w-1/2 flex flex-col gap-4 overflow-auto relative">
               {!isDetailLoading && (
                 <div className="grow h-0 overflow-y-auto">
