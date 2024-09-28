@@ -155,7 +155,7 @@ class PlotPoint(SQLModel):
 
 
 class HotSpots(SQLModel):
-    total_duration: PositiveInt
+    total_duration: PositiveInt | None
     max_heat: NonNegativeInt
     plot: list[PlotPoint]
 
