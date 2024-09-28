@@ -29,7 +29,7 @@ const Demo = () => {
         >
           <div className="flex">
             <div className="text-4xl font-bold text-black ml-5 font-serif ">
-              EverNote
+              Gumlet
             </div>
             <div className="ml-16 mt-1">
               <Button
@@ -41,7 +41,7 @@ const Demo = () => {
                   fontWeight: 600
                 }}
               >
-                Why Evernote
+                Why Gumlet
               </Button>
               <Button
                 color="inherit"
@@ -157,7 +157,7 @@ const Demo = () => {
               marginTop: 5
             }}
           >
-            Get Evernote Free
+            Get Gumlet Free
           </Button>
         </div>
         <div className="flex justify-evenly my-28 ">
