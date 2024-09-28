@@ -2,6 +2,7 @@ import { Field, Input, Label } from "@headlessui/react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import logo from "../assets/images/logo.svg";
+import login from "../assets/images/login.png";
 
 const userName = "admin1234";
 const password = "12345678";
@@ -23,9 +24,9 @@ const Login = () => {
 
   return (
     <div className="flex w-full h-lvh p-[15px]">
-      <div className="w-1/2 flex flex-col">
+      <div className="w-full flex flex-col">
         <img
-          className="w-24 mt-[35px] mx-[20px]"
+          className="w-24"
           src={logo}
           alt="Picsell logo"
         />
@@ -68,7 +69,11 @@ const Login = () => {
           </div>
         </div>
       </div>
-      <div className="w-1/2 bg-[#1F1737] rounded-xl" />
+      <img
+        src={login}
+        className="bg-[#1F1737] rounded-xl object-cover"
+        alt="Login"
+      />
     </div>
   );
 };
