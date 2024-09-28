@@ -44,7 +44,7 @@ export default function PerformanceSection(props) {
             props.leads.positive &&
             props.leads.neutral
           )
-            ? ""
+            ? "-"
             : "3:25 min"}
         </div>
       </Card>
@@ -55,7 +55,7 @@ export default function PerformanceSection(props) {
             props.leads.positive &&
             props.leads.neutral
           )
-            ? ""
+            ? "-"
             : "0:12 - 0:56 min"}
         </div>
       </Card>
@@ -66,7 +66,7 @@ export default function PerformanceSection(props) {
             props.leads.positive &&
             props.leads.neutral
           )
-            ? ""
+            ? "-"
             : "4%"}
         </div>
       </Card>
