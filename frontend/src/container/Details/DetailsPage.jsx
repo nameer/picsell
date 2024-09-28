@@ -206,6 +206,7 @@ export default function DetailsPage() {
       },
     }).then(async (response) => {
       const chartData = await response.json();
+      chartData.plot.push({ x: 0, y: 0 });
       setLineChartData(chartData);
     });
   };
