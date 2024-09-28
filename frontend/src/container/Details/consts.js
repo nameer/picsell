@@ -49,3 +49,10 @@ export const embedCode = `<!DOCTYPE html>
 </html>`;
 
 export const embedLink = "https://dribbble.com/shots/24044559-AI-Chatbot-Interface-ChatGpt-Redesign";
+
+export const SUMMARY_HEADING = {
+'engagement_peak': 'Engagement Peak',
+'ai_query_performance': 'AI Query Performance',
+'customer_feedback': 'Customer Feedback',
+'additional_insights': 'Additional Insights'
+}

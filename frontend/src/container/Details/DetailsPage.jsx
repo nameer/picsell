@@ -176,22 +176,12 @@ Include clickable links for special offers.
 Feature user-generated content.`,
   });
   const [capaignData, setCampaignData] = useState();
-  const [summary] = useState([
-    {
-      heading: "Engagement Peak",
-      details: [
-        "Product setup demonstration (3:00 - 5:30)",
-        "45% of interactions occur after this segment",
-      ],
-    },
-    {
-      heading: "AI Query Performance",
-      details: [
-        'Top Query Handled Well: "How does Model X integrate with other devices?" – 95% accuracy',
-        "Areas for Improvement: Energy-saving feature questions – 89% accuracy",
-      ],
-    },
-  ]);
+  const [summary, setSummary] = useState({
+    engagement_peak: [],
+    ai_query_performance: [],
+    customer_feedback: [],
+    additional_insights: [],
+  });
 
   const [lineChartData] = useState([
     { x: 1, y: 10 },
@@ -224,6 +214,7 @@ Feature user-generated content.`,
         const overviewData = await response.json();
         setData(overviewData);
         setScore(overviewData.score);
+        setSummary(overviewData.summary);
       });
       setIsDetailLoading(false);
     });
