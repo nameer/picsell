@@ -15,11 +15,13 @@ export default function DetailsHeader({
   onPublish,
   onShare,
 }) {
-  const isPublished = status === "processing";
+  const isProcessing = status === "processing";
+  const isCompleted = status === "completed";
+  const isDraft = status === "drafted";
 
   return (
     <div className="flex justify-between mb-3">
-      <div className="flex flex-col">
+      <div className="flex flex-col items-start">
         <div className="flex items-center gap-3 mb-3">
           <div className="text-gray-500 text-sm">ID: {id}</div>
           <Chip
@@ -45,7 +47,7 @@ export default function DetailsHeader({
           <Button color="secondary" icon={<EditLogo className="fill-black" />}>
             Edit
           </Button>
-          {!isPublished && (
+          {isDraft && (
             <Button
               icon={
                 isPublishing ? (
@@ -60,7 +62,12 @@ export default function DetailsHeader({
               Publish
             </Button>
           )}
-          {isPublished && (
+          {isProcessing && (
+            <Button icon={<ShareLogo className="fill-white size-4" />} disabled>
+              Share
+            </Button>
+          )}
+          {isCompleted && (
             <Button
               icon={<ShareLogo className="fill-white size-4" />}
               onClick={onShare}

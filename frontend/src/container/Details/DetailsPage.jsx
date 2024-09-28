@@ -158,6 +158,8 @@ export default function DetailsPage() {
   });
 
   const isDraft = campaignData.status === "drafted";
+  const isProcessing = campaignData.status === "processing";
+  const isCompleted = campaignData.status === "completed";
 
   const [summary, setSummary] = useState({
     engagement_peak: [],
@@ -263,7 +265,9 @@ export default function DetailsPage() {
         status={campaignData.status}
         id={campaignData.id}
         title={campaignData.name}
-        isUploaded={videoFile !== null}
+        isUploaded={
+          isDraft ? videoFile !== null : campaignData.video_url !== ""
+        }
         isPublishing={isPublishing}
         onPublish={handlePublish}
         onShare={handleShareClick}

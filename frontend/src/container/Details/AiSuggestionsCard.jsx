@@ -10,7 +10,7 @@ const AiSuggestionsCard = ({ className }) => {
   const textareaRef = useRef();
 
   const fetchSuggestions = () => {
-    fetch("http://localhost:8080/suggestion", {
+    fetch("http://localhost:8000/suggestion", {
       method: "POST",
       headers: {
         "Content-Type": "application/text",
@@ -18,7 +18,11 @@ const AiSuggestionsCard = ({ className }) => {
       body: "",
     })
       .then((response) => {
-        setFullText(response);
+        if (typeof response !== "string") {
+          setFullText(aiSuggestions);
+        } else {
+          setFullText(response);
+        }
       })
       .catch(() => {
         setFullText(aiSuggestions);

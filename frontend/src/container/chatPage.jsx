@@ -1,11 +1,11 @@
-import { useState, useRef, useEffect, useId } from 'react';
-import ReactPlayer from 'react-player';
-import { AiImage, Mike, Playing } from '../assets';
+import { useState, useRef, useEffect, useId } from "react";
+import ReactPlayer from "react-player";
+import { AiImage, Mike, Playing } from "../assets";
 import SpeechRecognition, {
-  useSpeechRecognition
-} from 'react-speech-recognition';
-import Spinner from '../assets/minnaminung.gif';
-import { v4 as uuidv4 } from 'uuid';
+  useSpeechRecognition,
+} from "react-speech-recognition";
+import Spinner from "../assets/minnaminung.gif";
+import { v4 as uuidv4 } from "uuid";
 
 const ChatPage = () => {
   const [showMike, setShowMike] = useState(false);
@@ -14,7 +14,7 @@ const ChatPage = () => {
     transcript,
     listening,
     resetTranscript,
-    browserSupportsSpeechRecognition
+    browserSupportsSpeechRecognition,
   } = useSpeechRecognition();
 
   const [isRecording, setIsRecording] = useState(false);
@@ -35,7 +35,7 @@ const ChatPage = () => {
 
     // Select a female voice if available
     const femaleVoice = availableVoices.find(
-      (voice) => voice.name.toLowerCase().includes('female')
+      (voice) => voice.name.toLowerCase().includes("female")
       // voice.name.toLowerCase().includes('susan') ||
       // voice.name.toLowerCase().includes('zoe') ||
       // voice.lang === 'en-US' // Default to English if female not found
@@ -76,18 +76,18 @@ const ChatPage = () => {
   const postQuestion = async (text = null) => {
     const parameters = {
       question: text || transcript,
-      campaign_id: '1',
-      session_id: id
-      //   time: currentTime
+      campaign_id: "1",
+      session_id: id,
+      time: currentTime,
     };
     setShowLoder(true);
     setResponseData(null);
-    const response = await fetch('http://localhost:8000/qa', {
-      method: 'POST',
+    const response = await fetch("http://localhost:8000/qa", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json' // Specify that you're sending JSON data
+        "Content-Type": "application/json", // Specify that you're sending JSON data
       },
-      body: JSON.stringify(parameters) // Convert the object to a JSON string
+      body: JSON.stringify(parameters), // Convert the object to a JSON string
     });
 
     const data = await response.json();
@@ -98,7 +98,7 @@ const ChatPage = () => {
 
   const speakText = (text) => {
     // Check if SpeechSynthesis is supported
-    if ('speechSynthesis' in window) {
+    if ("speechSynthesis" in window) {
       if (voices) {
         // const speech = new SpeechSynthesisUtterance();
         // speech.text = text;
@@ -136,13 +136,13 @@ const ChatPage = () => {
             };
 
             speech.onerror = (event) => {
-              console.error('Speech error:', event.error);
+              console.error("Speech error:", event.error);
             };
 
             window.speechSynthesis.speak(speech);
           } else {
             // All chunks have been spoken
-            console.log('All speech has finished.');
+            console.log("All speech has finished.");
             setShowMike(false);
             setResponseData(null); // Replace with your desired message
             setPlayVideo(true);
@@ -159,10 +159,10 @@ const ChatPage = () => {
 
         // window.speechSynthesis.speak(speech);
       } else {
-        console.error('No valid voice selected.');
+        console.error("No valid voice selected.");
       }
     } else {
-      console.error('Speech Synthesis not supported in this browser.');
+      console.error("Speech Synthesis not supported in this browser.");
     }
   };
 
@@ -178,22 +178,22 @@ const ChatPage = () => {
     switch (Math.floor(data?.playedSeconds)) {
       case 0:
         setQuestions([
-          'what all platforms are supported for video uploads? ',
-          'DRM?',
-          'can authenticated users record and download content?'
+          "what all platforms are supported for video uploads? ",
+          "DRM?",
+          "can authenticated users record and download content?",
         ]);
         break;
       case 21:
         setQuestions([
-          'explain possible customizations? ',
-          'subtitles generation possible? ',
-          'multiple video generation is possible?'
+          "explain possible customizations? ",
+          "subtitles generation possible? ",
+          "multiple video generation is possible?",
         ]);
         break;
       case 60:
         setQuestions([
           `different pricing plans?`,
-          'any region specific streaming issues?'
+          "any region specific streaming issues?",
         ]);
         break;
     }
@@ -217,24 +217,24 @@ const ChatPage = () => {
           playing={playVideo}
           onPlay={handleOnVideoPlay}
           onProgress={handleOnProgress}
-          url={'https://pic-uploadz.s3.ap-south-1.amazonaws.com/Gumlet.mp4'}
+          url={"https://pic-uploadz.s3.ap-south-1.amazonaws.com/Gumlet.mp4"}
           style={{
-            borderRadius: '8px',
-            overflow: 'hidden'
+            borderRadius: "8px",
+            overflow: "hidden",
           }}
           config={{
             file: {
               attributes: {
-                controlsList: 'nodownload'
-              }
-            }
+                controlsList: "nodownload",
+              },
+            },
           }}
         />
         {!showMike && (
           <div className="absolute inset-0 w-full pt-5 text-end h-20 z-30 ">
             <button
               className="mr-4 rounded-[74px] bg-[#395FCDD6] w-[90px] h-8 border border-white text-white text-sm font-bold text-center"
-              style={{ boxShadow: '0px 5px 15px 0px rgba(32, 91, 241, 0.2)' }}
+              style={{ boxShadow: "0px 5px 15px 0px rgba(32, 91, 241, 0.2)" }}
               onClick={handleShowMike}
             >
               <div className="flex">
@@ -248,7 +248,7 @@ const ChatPage = () => {
           {questions?.map((item) => (
             <button
               className="mr-2 rounded-[74px] bg-[#395FCDD6] w-fit pr-2 h-8 border border-white text-white text-sm text-center bg-opacity-100"
-              style={{ boxShadow: '0px 5px 15px 0px rgba(32, 91, 241, 0.2)' }}
+              style={{ boxShadow: "0px 5px 15px 0px rgba(32, 91, 241, 0.2)" }}
               onClick={() => handleSendQuestions(item)}
             >
               <div className="flex">
@@ -261,7 +261,7 @@ const ChatPage = () => {
         {showMike && !showLoader && !responseData && (
           <div
             className={`absolute cusror-pointer inset-0 z-30 w-[1011px] h-[500px] flex justify-center pt-64 bg-gradient-to-r from-[#2246ADCC] to-[#A963A1AB] text-white 
-             rounded-t-[8px] ${isRecording ? 'opacity-50' : ''}`}
+             rounded-t-[8px] ${isRecording ? "opacity-50" : ""}`}
           >
             <div
               className="cursor-pointer"
@@ -275,7 +275,7 @@ const ChatPage = () => {
         {showMike && showLoader && (
           <div
             className={`absolute cusror-pointer inset-0 z-30 w-[1011px] h-[500px] flex justify-center pt-52 text-white bg-gradient-to-r from-[#2246ADCC] to-[#A963A1AB]  bg-opacity-30 rounded-t-[8px] ${
-              isRecording ? 'opacity-50' : ''
+              isRecording ? "opacity-50" : ""
             }`}
           >
             <div className="flex">
@@ -286,7 +286,7 @@ const ChatPage = () => {
         {showMike && !showLoader && responseData && (
           <div
             className={`absolute cusror-pointer inset-0 z-30 w-[1011px] h-[500px] flex justify-center pt-64 text-white bg-gradient-to-r from-[#2246ADCC] to-[#A963A1AB] bg-opacity-30 rounded-t-[8px] ${
-              isRecording ? 'opacity-50' : ''
+              isRecording ? "opacity-50" : ""
             }`}
           >
             <div className="flex">
