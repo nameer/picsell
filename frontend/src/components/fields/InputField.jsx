@@ -9,7 +9,9 @@ const InputField = ({ value, placeholder, onChange, disabled, ...props }) => {
   return (
     <FieldWrapper {...props}>
       <input
-        className="border rounded-md outline-blue-500 outline-1 py-5 px-4 text-sm/5 placeholder:text-[#605E5F] w-full"
+        className={`border rounded-md outline-blue-500 outline-1 py-5 px-4 text-sm/5 placeholder:text-[#605E5F] w-full ${
+          disabled ? "text-[#5A5A5A]" : ""
+        }`}
         placeholder={placeholder}
         onChange={handleChange}
         value={value}

@@ -60,7 +60,7 @@ const ShareModal = ({ isOpen, setIsOpen }) => {
       </div>
 
       <div className="relative">
-        <InputField label="Link" value="test" disabled />
+        <InputField label="Link" value={embedLink} disabled />
 
         <CopyButton
           className="!absolute top-11 right-6"
