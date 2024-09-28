@@ -5,6 +5,7 @@ import SpeechRecognition, {
   useSpeechRecognition
 } from 'react-speech-recognition';
 import Spinner from '../assets/minnaminung.gif';
+import { v4 as uuidv4 } from 'uuid';
 
 const ChatPage = () => {
   const [showMike, setShowMike] = useState(false);
@@ -23,7 +24,11 @@ const ChatPage = () => {
   const [responseData, setResponseData] = useState(null);
   const [currentTime, setCurrentTime] = useState(0);
   const [questions, setQuestions] = useState([]);
-  const id = useId();
+  const [id, setId] = useState();
+
+  useEffect(() => {
+    setId(uuidv4());
+  }, []);
 
   const loadVoices = () => {
     const availableVoices = window.speechSynthesis.getVoices();
@@ -72,8 +77,8 @@ const ChatPage = () => {
     const parameters = {
       question: text || transcript,
       campaign_id: '1',
-      session_id: id,
-      time: currentTime
+      session_id: id
+      //   time: currentTime
     };
     setShowLoder(true);
     setResponseData(null);
@@ -171,45 +176,24 @@ const ChatPage = () => {
   const handleOnProgress = (data) => {
     setCurrentTime(Math.floor(data?.playedSeconds));
     switch (Math.floor(data?.playedSeconds)) {
-      case 10:
+      case 0:
         setQuestions([
-          'scratch pads for quick jots? ',
-          'is there an offline access'
+          'what all platforms are supported for video uploads? ',
+          'DRM?',
+          'can authenticated users record and download content?'
         ]);
         break;
-      case 25:
-        setQuestions(['Search for absolutely anything? ']);
-        break;
-      case 30:
+      case 21:
         setQuestions([
-          `Can I give my todo's a priority boost!!? tasks inside notes??`,
-          'Hmm....Can I create recurring tasks?? '
+          'explain possible customizations? ',
+          'subtitles generation possible? ',
+          'multiple video generation is possible?'
         ]);
         break;
-      case 45:
+      case 60:
         setQuestions([
-          'what all documents can be included in notes?',
-          'web clippings? how does that work??',
-          'Scan documents too??'
-        ]);
-        break;
-      case 56:
-        setQuestions([
-          'custom timer for reminders ??',
-          'is there an email alert ??'
-        ]);
-        break;
-      case 72:
-        setQuestions([
-          'add multiple calenders??',
-          'we can link notes to calenders too??',
-          'automatic reminders to take minutes for scheduled meetings?'
-        ]);
-        break;
-      case 90:
-        setQuestions([
-          'customisable home dashboard',
-          'customise element placings?'
+          `different pricing plans?`,
+          'any region specific streaming issues?'
         ]);
         break;
     }
