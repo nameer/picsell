@@ -6,7 +6,13 @@ from fastapi import APIRouter, Depends, status
 from app import crud
 from app.api.deps import SessionDep, get_campaign
 from app.core import ai
-from app.models import Campaign, CampaignCreate, CampaignOverview, CampaignUpdate
+from app.models import (
+    Campaign,
+    CampaignCreate,
+    CampaignOverview,
+    CampaignUpdate,
+    HotSpots,
+)
 
 router = APIRouter()
 
@@ -27,6 +33,24 @@ def get_campaign_details(
     campaign: Annotated[Campaign, Depends(get_campaign)],
 ) -> Campaign:
     return campaign
+
+
+@router.get("/{campaign_id}/hot-spots", response_model=HotSpots)
+def get_campaign_video_hot_spots(
+    session: SessionDep,
+    campaign: Annotated[Campaign, Depends(get_campaign)],
+    campaign_id: int,
+) -> dict:
+    points = crud.get_time_based_engagement(session, campaign_id)
+
+    plots = [{"x": x, "y": y} for x, y in points]
+    max_heat = max(y for _, y in points)
+
+    return {
+        "total_duration": campaign.video_duration,
+        "max_heat": max_heat,
+        "plot": plots,
+    }
 
 
 @router.get("/{campaign_id}/overview", dependencies=[Depends(get_campaign)])
@@ -77,13 +101,11 @@ def get_campaign_overview(session: SessionDep, campaign_id: int) -> CampaignOver
     return data
 
 
-@router.patch("/{id}", response_model=Campaign)
-def update_campaign(id: int, session: SessionDep, data: CampaignUpdate):
-    db_campaign = session.get(Campaign, id)
-    if not db_campaign:
-        raise HTTPException(
-            status_code=404,
-            detail="Campaign not found",
-        )
-    db_campaign = crud.update_campaign(session, db_campaign, data)
-    return db_campaign
+@router.put("/{campaign_id}")
+def update_campaign(
+    session: SessionDep,
+    campaign: Annotated[Campaign, Depends(get_campaign)],
+    campaign_id: int,  # noqa: ARG001
+    data: CampaignUpdate,
+) -> Campaign:
+    return crud.update_campaign(session, campaign, data)

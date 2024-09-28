@@ -2,7 +2,7 @@ from datetime import datetime
 from enum import Enum
 from typing import Annotated, Any, Self
 
-from pydantic import HttpUrl, model_validator
+from pydantic import HttpUrl, NonNegativeInt, PositiveInt, model_validator
 from sqlmodel import JSON, Column, Field, SQLModel
 
 # === Campaign === #
@@ -17,8 +17,15 @@ class CampaignStatus(Enum):
 
 class CampaignBase(SQLModel):
     name: str
-    video_url: HttpUrl | None = Field(default=None)
-    document_urls: list[HttpUrl] | None = Field(default=[])
+    video_url: HttpUrl | None = None
+    video_duration: PositiveInt | None = None
+    document_urls: list[HttpUrl] | None = None
+
+    @model_validator(mode="after")
+    def validate_video_fields(self) -> Self:
+        if bool(self.video_url) ^ bool(self.video_duration):
+            raise ValueError("video_duration must be provided with video_url")
+        return self
 
 
 class CampaignCreate(CampaignBase):
@@ -32,14 +39,21 @@ class CampaignCreate(CampaignBase):
 class CampaignUpdate(SQLModel):
     name: str | None = None
     video_url: HttpUrl | None = None
+    video_duration: PositiveInt | None = None
     document_urls: list[HttpUrl] | None = []
+
+    @model_validator(mode="after")
+    def validate_video_fields(self) -> Self:
+        if bool(self.video_url) ^ bool(self.video_duration):
+            raise ValueError("video_duration must be provided with video_url")
+        return self
 
 
 class Campaign(CampaignBase, table=True):
     id: int = Field(default=None, primary_key=True)
 
     video_url: str | None = None
-    document_urls: list[str] = Field(sa_column=Column(JSON))
+    document_urls: list[str] | None = Field(None, sa_column=Column(JSON))
     status: CampaignStatus = CampaignStatus.DRAFTED
 
     created_at: datetime = Field(default_factory=datetime.utcnow)
@@ -64,6 +78,7 @@ class EngagementCreate(SQLModel):
     campaign_id: int = Field(foreign_key="campaign.id")
     session_id: str
 
+    time: NonNegativeInt
     question: str
     response: str
 
@@ -79,12 +94,12 @@ class Engagement(EngagementCreate, table=True):
 
 class QAQuestion(SQLModel):
     question: str
+    time: NonNegativeInt
 
 
 class QAInput(QAQuestion):
     campaign_id: int
     session_id: str
-    question: str
 
 
 class QAOutput(SQLModel):
@@ -131,3 +146,17 @@ class OverviewCache(SQLModel, table=True):
     data: dict = Field(sa_column=Column(JSON))
 
     created_at: datetime = Field(default_factory=datetime.utcnow)
+
+
+# === HotSpots === #
+
+
+class PlotPoint(SQLModel):
+    x: int
+    y: int
+
+
+class HotSpots(SQLModel):
+    total_duration: PositiveInt
+    max_heat: NonNegativeInt
+    plot: list[PlotPoint]
