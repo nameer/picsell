@@ -3,7 +3,7 @@ import Card from "../../components/Card";
 import { AiIcon } from "../../assets/icons";
 import Button from "../../components/Button/Button";
 import { aiSuggestions } from "./consts";
-import { json } from "d3";
+import Spinner from "../../components/Spinner";
 
 const AiSuggestionsCard = ({ className, campaignId }) => {
   const [fullText, setFullText] = useState("");
@@ -57,12 +57,19 @@ const AiSuggestionsCard = ({ className, campaignId }) => {
 
   return (
     <Card className={className} title="AI SUGGESTIONS" icon={<AiIcon />}>
-      <textarea
-        ref={textareaRef}
-        className="w-full h-96 border border-[#F3E8C9] bg-[#FFF9EA80] p-3 rounded-lg mb-3"
-        value={displayText}
-        disabled
-      ></textarea>
+      <div className="relative">
+        <textarea
+          ref={textareaRef}
+          className="w-full h-96 border border-[#F3E8C9] bg-[#FFF9EA80] p-3 rounded-lg mb-3"
+          value={displayText}
+          disabled
+        ></textarea>
+        {isLoading && (
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+            <Spinner className="size-10" />
+          </div>
+        )}
+      </div>
       <div className="flex justify-end">
         <Button
           icon={<AiIcon />}
