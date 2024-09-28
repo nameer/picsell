@@ -3,29 +3,36 @@ import Card from "../../components/Card";
 import { AiIcon } from "../../assets/icons";
 import Button from "../../components/Button/Button";
 import { aiSuggestions } from "./consts";
+import { json } from "d3";
 
-const AiSuggestionsCard = ({ className }) => {
+const AiSuggestionsCard = ({ className, campaignId }) => {
   const [fullText, setFullText] = useState("");
   const [displayText, setDisplayText] = useState("");
   const textareaRef = useRef();
+  const [isLoading, setIsLoading] = useState(false);
 
   const fetchSuggestions = () => {
-    fetch("http://localhost:8000/suggestion", {
+    setIsLoading(true);
+    fetch(`http://localhost:8000/campaigns/${campaignId}/suggestion`, {
       method: "POST",
       headers: {
-        "Content-Type": "application/text",
+        "Content-Type": "application/json",
       },
-      body: "",
+      body: JSON.stringify({
+        query: "string",
+      }),
     })
       .then((response) => {
-        if (typeof response !== "string") {
+        if (typeof response.suggestion !== "string") {
           setFullText(aiSuggestions);
         } else {
-          setFullText(response);
+          setFullText(response.suggestion);
         }
+        setIsLoading(false);
       })
       .catch(() => {
         setFullText(aiSuggestions);
+        setIsLoading(false);
       });
   };
 

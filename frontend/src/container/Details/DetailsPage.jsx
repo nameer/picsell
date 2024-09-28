@@ -166,7 +166,7 @@ export default function DetailsPage() {
             </>
           )}
         </Card>
-        {isDraft && <AiSuggestionsCard className="w-1/2" />}
+        {isDraft && <AiSuggestionsCard className="w-1/2" campaignId={campaignId}/>}
         {!isDraft && (
           <div className="w-1/2 flex flex-col gap-4 overflow-auto h-[calc(100vh-18rem)] ">
             <PerformanceSection score={score} leads={data.leads} />
