@@ -1,6 +1,6 @@
 from datetime import datetime
 from enum import Enum
-from typing import Annotated, Any
+from typing import Annotated, Any, Self
 
 from pydantic import HttpUrl, NonNegativeInt, PositiveInt, model_validator
 from sqlmodel import JSON, Column, Field, SQLModel
@@ -9,7 +9,7 @@ from sqlmodel import JSON, Column, Field, SQLModel
 
 
 class CampaignStatus(Enum):
-    QUEUED = "queued"
+    DRAFTED = "drafted"
     PROCESSING = "processing"
     COMPLETED = "completed"
     FAILED = "failed"
@@ -17,25 +17,44 @@ class CampaignStatus(Enum):
 
 class CampaignBase(SQLModel):
     name: str
-    video_url: HttpUrl
-    video_duration: PositiveInt
-    document_urls: list[HttpUrl]
+    video_url: HttpUrl | None = None
+    video_duration: PositiveInt | None = None
+    document_urls: list[HttpUrl] | None = None
+
+    @model_validator(mode="after")
+    def validate_video_fields(self) -> Self:
+        if bool(self.video_url) ^ bool(self.video_duration):
+            raise ValueError("video_duration must be provided with video_url")
+        return self
 
 
 class CampaignCreate(CampaignBase):
-    pass
+    @model_validator(mode="after")
+    def validate_urls(self) -> Self:
+        if not self.video_url and not self.document_urls:
+            raise ValueError("Either video_url or document_urls must be provided")
+        return self
 
 
-class CampaignUpdate(CampaignBase):
-    pass
+class CampaignUpdate(SQLModel):
+    name: str | None = None
+    video_url: HttpUrl | None = None
+    video_duration: PositiveInt | None = None
+    document_urls: list[HttpUrl] | None = []
+
+    @model_validator(mode="after")
+    def validate_video_fields(self) -> Self:
+        if bool(self.video_url) ^ bool(self.video_duration):
+            raise ValueError("video_duration must be provided with video_url")
+        return self
 
 
 class Campaign(CampaignBase, table=True):
     id: int = Field(default=None, primary_key=True)
 
-    video_url: str
-    document_urls: list[str] = Field(sa_column=Column(JSON))
-    status: CampaignStatus = CampaignStatus.QUEUED
+    video_url: str | None = None
+    document_urls: list[str] | None = Field(None, sa_column=Column(JSON))
+    status: CampaignStatus = CampaignStatus.DRAFTED
 
     created_at: datetime = Field(default_factory=datetime.utcnow)
     updated_at: datetime = Field(default_factory=datetime.utcnow)
@@ -45,8 +64,10 @@ class Campaign(CampaignBase, table=True):
     def validate_urls(cls, values: dict[str, Any]) -> dict[str, Any]:
         if not isinstance(values, CampaignBase):
             return values
-        values.video_url = str(values.video_url)
-        values.document_urls = [str(url) for url in values.document_urls]
+        if values.video_url:
+            values.video_url = str(values.video_url)
+        if values.document_urls:
+            values.document_urls = [str(url) for url in values.document_urls]
         return values
 
 

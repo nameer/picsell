@@ -6,7 +6,13 @@ from fastapi import APIRouter, Depends, status
 from app import crud
 from app.api.deps import SessionDep, get_campaign
 from app.core import ai
-from app.models import Campaign, CampaignCreate, CampaignOverview, HotSpots
+from app.models import (
+    Campaign,
+    CampaignCreate,
+    CampaignOverview,
+    CampaignUpdate,
+    HotSpots,
+)
 
 router = APIRouter()
 
@@ -93,3 +99,13 @@ def get_campaign_overview(session: SessionDep, campaign_id: int) -> CampaignOver
     }
     crud.create_overview_cache(session, campaign_id, data)
     return data
+
+
+@router.put("/{campaign_id}")
+def update_campaign(
+    session: SessionDep,
+    campaign: Annotated[Campaign, Depends(get_campaign)],
+    campaign_id: int,  # noqa: ARG001
+    data: CampaignUpdate,
+) -> Campaign:
+    return crud.update_campaign(session, campaign, data)

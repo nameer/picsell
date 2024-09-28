@@ -14,7 +14,7 @@ export default function DetailsPage() {
   const [score] = useState(60);
   const [data, setData] = useState({
     id: "12345",
-    status: "Draft",
+    status: "drafted",
     title: "Coffee Explainer Video",
     summary:
       "Areas for Improvement: Improved clarity on account management features",
@@ -203,14 +203,14 @@ Feature user-generated content.`,
   const [videoFile, setVideoFile] = useState(null);
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
 
-  const isDraft = data.status === "Draft";
+  const isDraft = data.status === "drafted";
 
   const handleVideUpload = (file) => {
     setVideoFile(URL.createObjectURL(file));
   };
 
   const handlePublish = () => {
-    setData((prev) => ({ ...prev, status: "Completed" }));
+    setData((prev) => ({ ...prev, status: "completed" }));
   };
   const handleShareClick = () => {
     setIsShareModalOpen(true);

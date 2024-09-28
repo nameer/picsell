@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import Button from "../../components/Button/Button";
 import { EditLogo, ShareLogo } from "../../assets/icons";
 import Chip from "../../components/Chip";
-import { getChipVariantFromStatus } from "../../utils";
+import { getChipValueFromStatus, getChipVariantFromStatus } from "../../utils";
 import Spinner from "../../components/Spinner";
 
 export default function DetailsHeader({
@@ -16,7 +16,7 @@ export default function DetailsHeader({
 }) {
   const [isLoading, setIsLoading] = useState(false);
 
-  const isPublished = status === "Completed";
+  const isPublished = status === "completed";
 
   const handlePublishClick = () => {
     setIsLoading(true);
@@ -31,7 +31,10 @@ export default function DetailsHeader({
       <div className="flex flex-col">
         <div className="flex items-center gap-3 mb-3">
           <div className="text-gray-500 text-sm">ID: {id}</div>
-          <Chip text={status} variant={getChipVariantFromStatus(status)} />
+          <Chip
+            text={getChipValueFromStatus(status)}
+            variant={getChipVariantFromStatus(status)}
+          />
         </div>
 
         <p className="text-2xl font-semibold">{title}</p>

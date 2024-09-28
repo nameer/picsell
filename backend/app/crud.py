@@ -5,6 +5,7 @@ from sqlmodel import Session, func, select
 from app.models import (
     Campaign,
     CampaignCreate,
+    CampaignUpdate,
     Engagement,
     EngagementCreate,
     OverviewCache,
@@ -29,6 +30,17 @@ def get_campaigns(session: Session) -> list[Campaign]:
 def get_campaign(session: Session, campaign_id: int) -> Campaign | None:
     campaign = session.get(Campaign, campaign_id)
     return campaign
+
+
+def update_campaign(
+    session: Session, db_campaign: Campaign, campaign_in: CampaignUpdate
+) -> Campaign:
+    update_data = eval(campaign_in.json(exclude_unset=True))
+    db_campaign.sqlmodel_update(update_data)
+    session.add(db_campaign)
+    session.commit()
+    session.refresh(db_campaign)
+    return db_campaign
 
 
 # === Engagement === #
