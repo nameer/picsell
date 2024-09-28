@@ -31,8 +31,8 @@ class CampaignBase(SQLModel):
 class CampaignCreate(CampaignBase):
     @model_validator(mode="after")
     def validate_urls(self) -> Self:
-        if not self.video_url and not self.document_urls:
-            raise ValueError("Either video_url or document_urls must be provided")
+        if not self.document_urls:
+            raise ValueError("Document_urls must be provided")
         return self
 
 
@@ -40,7 +40,7 @@ class CampaignUpdate(SQLModel):
     name: str | None = None
     video_url: HttpUrl | None = None
     video_duration: PositiveInt | None = None
-    document_urls: list[HttpUrl] | None = []
+    document_urls: list[HttpUrl] | None = None
 
     @model_validator(mode="after")
     def validate_video_fields(self) -> Self:
@@ -62,16 +62,10 @@ class Campaign(CampaignBase, table=True):
     @model_validator(mode="before")
     @classmethod
     def validate_urls(cls, values: dict[str, Any]) -> dict[str, Any]:
-        if not isinstance(values, CampaignBase):
-            if values["video_url"] and values["document_urls"]:
-                values["status"] = CampaignStatus.PROCESSING
-                return values
-        if values.video_url:
-            values.video_url = str(values.video_url)
-        if values.document_urls:
-            values.document_urls = [str(url) for url in values.document_urls]
-        if values.video_url and values.document_urls:
-            values.status = CampaignStatus.PROCESSING
+        if isinstance(values, CampaignBase):
+            values = eval(values.json(exclude_none=True))
+        if "video_url" in values and "document_urls" in values:
+            values["status"] = CampaignStatus.PROCESSING
         return values
 
 
