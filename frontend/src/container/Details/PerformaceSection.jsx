@@ -1,6 +1,6 @@
 import React from "react";
 import Card from "../../components/Card";
-import { CustomerIcon, LikeIcon, DislikeIcon } from "../../assets/icons";
+import { HotLead, ColdLead, WarmLead } from "../../assets/icons";
 import GaugeChart from "../../components/scoreChart/GaugeChart";
 
 export default function PerformanceSection(props) {
@@ -9,17 +9,21 @@ export default function PerformanceSection(props) {
       <Card
         className="w-full px-8 text-left"
         title="HOT LEADS"
-        icon={<LikeIcon />}
+        icon={<HotLead />}
       >
         <div className="text-3xl font-bold">{props.leads.positive}</div>
       </Card>
-      <Card className="w-full px-8 text-left" title="WARM LEADS">
+      <Card
+        className="w-full px-8 text-left"
+        title="WARM LEADS"
+        icon={<WarmLead />}
+      >
         <div className="text-3xl font-bold">{props.leads.neutral}</div>
       </Card>
       <Card
         className="w-full px-8 text-left"
         title="COLD LEADS"
-        icon={<DislikeIcon />}
+        icon={<ColdLead />}
       >
         <div className="text-3xl font-bold">{props.leads.negative}</div>
       </Card>

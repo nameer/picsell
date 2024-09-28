@@ -9,12 +9,14 @@ import LineChartWithGradient from "../../components/EngagementChart/LineChart";
 import VideoUploader from "./VideoCard";
 import AiSuggestionsCard from "./AiSuggestionsCard";
 import ShareModal from "./ShareModal";
+import { useParams } from "react-router-dom";
 
 export default function DetailsPage() {
-  const [score] = useState(60);
+  const { campaignId } = useParams();
+  const [score, setScore] = useState(0);
   const [data, setData] = useState({
     id: "12345",
-    status: "drafted",
+    status: "Completed",
     title: "Coffee Explainer Video",
     summary:
       "Areas for Improvement: Improved clarity on account management features",
@@ -173,7 +175,7 @@ Engagement Elements:
 Include clickable links for special offers.
 Feature user-generated content.`,
   });
-
+  const [capaignData, setCampaignData] = useState();
   const [summary] = useState([
     {
       heading: "Engagement Peak",
@@ -199,6 +201,35 @@ Feature user-generated content.`,
     { x: 5, y: 80 },
     { x: 6, y: 0 },
   ]);
+
+  const [isDetailLoading, setIsDetailLoading] = useState(false);
+
+  const fetchData = (campaignId) => {
+    setIsDetailLoading(true);
+
+    fetch(`http://localhost:8000/campaigns/${campaignId}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }).then(async (response) => {
+      const campaignData = await response.json();
+      setCampaignData(campaignData);
+      fetch(`http://localhost:8000/campaigns/${campaignId}/overview`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }).then(async (response) => {
+        const overviewData = await response.json();
+        setData(overviewData);
+        setScore(overviewData.score);
+      });
+      setIsDetailLoading(false);
+    });
+  };
+
+  useEffect(() => fetchData(campaignId), [campaignId]);
 
   const [videoFile, setVideoFile] = useState(null);
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);

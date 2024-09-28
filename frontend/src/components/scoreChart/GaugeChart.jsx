@@ -9,11 +9,13 @@ import {
   DOTTED_ARC_PAD_ANGLE,
   DOTTED_ARC_RADIUS,
   GRAPH_COLORS,
+  SCORE_CATEGORY,
 } from "./constants";
 import { angleScale, arcGenerator, getCoordsOnArc } from "./utils";
 
 const GaugeChart = ({ score: _score }) => {
   const [score, setScore] = useState(0);
+  const [scoreCategory, setScoreCategory] = useState(0);
 
   useEffect(() => {
     const cancelAnimation = easeInOutAnimation(
@@ -34,10 +36,16 @@ const GaugeChart = ({ score: _score }) => {
     { color: GRAPH_COLORS.GOOD, key: 4, startAngle: 86, endAngle: 100 },
   ];
 
-  const pointColor =
-    chartColors.find((item) => {
-      return score >= item.startAngle && score <= item.endAngle;
-    })?.color || null;
+  useEffect(() => {
+    setScoreCategory(
+      chartColors.findIndex((item) => {
+        return score >= item.startAngle && score <= item.endAngle;
+      })
+    );
+    console.log(scoreCategory);
+  }, [score]);
+
+  const pointColor = chartColors[scoreCategory]?.color;
 
   return (
     <div className="w-[400px] flex items-center flex-col">
@@ -106,7 +114,9 @@ const GaugeChart = ({ score: _score }) => {
       <div>
         <p className="text-xl font-medium">
           Campaign Score is <span> </span>
-          <span style={{ color: pointColor }}>Average</span>
+          <span style={{ color: pointColor }}>
+            {SCORE_CATEGORY[scoreCategory]}
+          </span>
         </p>
       </div>
     </div>

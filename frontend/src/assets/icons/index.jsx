@@ -15,6 +15,9 @@ import { ReactComponent as AudioIcon } from "./audio.svg";
 import { ReactComponent as AiIcon } from "./ai.svg";
 import { ReactComponent as CopyIcon } from "./copy.svg";
 import { ReactComponent as CheckIcon } from "./check.svg";
+import { ReactComponent as HotLead } from "./hotLead.svg";
+import { ReactComponent as ColdLead } from "./coldLead.svg";
+import { ReactComponent as WarmLead } from "./warmLead.svg";
 
 export {
   ArrowUpIcon,
@@ -34,4 +37,7 @@ export {
   AiIcon,
   CopyIcon,
   CheckIcon,
+  HotLead,
+  ColdLead,
+  WarmLead,
 };

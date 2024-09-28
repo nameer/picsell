@@ -26,3 +26,10 @@ export const GRAPH_COLORS = {
     'AVERAGE': '#EA973D',
     'GOOD': '#75C57F'
 }
+
+export const SCORE_CATEGORY = {
+    0: 'Poor',
+    1: 'Below Average',
+    2: 'Average',
+    3: 'Good'
+}
