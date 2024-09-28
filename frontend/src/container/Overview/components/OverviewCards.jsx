@@ -15,7 +15,7 @@ const OverViewCard = ({ title, value, subValue, isLoading }) => {
           {subValue && (
             <div className="flex items-center gap-1">
               <div className="text-green-500 font-medium text-[13px] leading-[21px]">
-                +36%
+                {subValue}
               </div>
               <ArrowUpIcon />
             </div>

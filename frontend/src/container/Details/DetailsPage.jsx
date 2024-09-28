@@ -140,40 +140,48 @@ export default function DetailsPage() {
 
   return (
     <DashboardLayout>
-      <DetailsHeader
-        status={campaignData.status}
-        id={campaignData.id}
-        title={campaignData.name}
-        isUploaded={
-          isDraft ? videoFile !== null : campaignData.video_url !== ""
-        }
-        isPublishing={isPublishing}
-        onPublish={handlePublish}
-        onShare={handleShareClick}
-      />
-      <div className="flex gap-4">
-        <Card className="w-1/2 h-fit">
-          <VideoUploader
-            file={!isDraft ? campaignData.video_url : videoFile}
-            onUpload={handleVideUpload}
-          />
-          {!isDraft && (
-            <>
-              <div className="text-left text-[13px] leading-[18px] tracking-[1px] text-gray-500 mt-4">
-                USER ENGAGEMENT
-              </div>
-              <LineChartWithGradient data={lineChartData} />
-            </>
-          )}
-        </Card>
-        {isDraft && <AiSuggestionsCard className="w-1/2" campaignId={campaignId}/>}
-        {!isDraft && (
-          <div className="w-1/2 flex flex-col gap-4 overflow-auto h-[calc(100vh-18rem)] ">
-            <PerformanceSection score={score} leads={data.leads} />
-            <ClusteredBubbleChart data={data.topics} />
-            <PerformanceSummary summary={summary} />
+      <div className="h-full flex flex-col">
+        <DetailsHeader
+          status={campaignData.status}
+          id={campaignData.id}
+          title={campaignData.name}
+          isUploaded={
+            isDraft ? videoFile !== null : campaignData.video_url !== ""
+          }
+          isPublishing={isPublishing}
+          onPublish={handlePublish}
+          onShare={handleShareClick}
+        />
+        <div className="grow flex gap-4">
+          <div className="h-full w-1/2">
+            <Card className="h-fit">
+              <VideoUploader
+                file={!isDraft ? campaignData.video_url : videoFile}
+                onUpload={handleVideUpload}
+              />
+              {!isDraft && (
+                <>
+                  <div className="text-left text-[13px] leading-[18px] tracking-[1px] text-gray-500 mt-4">
+                    USER ENGAGEMENT
+                  </div>
+                  <LineChartWithGradient data={lineChartData} />
+                </>
+              )}
+            </Card>
           </div>
-        )}
+          {isDraft && (
+            <AiSuggestionsCard className="w-1/2" campaignId={campaignId} />
+          )}
+          {!isDraft && (
+            <div className="w-1/2 flex flex-col gap-4 overflow-auto">
+              <div className="grow h-0 overflow-y-auto">
+                <PerformanceSection score={score} leads={data.leads} />
+                <ClusteredBubbleChart data={data.topics} />
+                <PerformanceSummary summary={summary} />
+              </div>
+            </div>
+          )}
+        </div>
       </div>
       <ShareModal isOpen={isShareModalOpen} setIsOpen={setIsShareModalOpen} />
     </DashboardLayout>

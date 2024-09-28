@@ -76,6 +76,8 @@ const Overview = () => {
         <OverviewCards
           totalCampaigns={data.campaigns.length}
           activeCampaigns={getActiveCampaigns().length}
+          totalImpressions={25}
+          engagementRate={"68%"}
           isLoading={isLoading}
         />
         <CampaignsTable
