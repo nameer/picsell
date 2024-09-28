@@ -12,6 +12,8 @@ from app.models import (
     CampaignOverview,
     CampaignUpdate,
     HotSpots,
+    Suggestion,
+    SuggestionInput,
 )
 
 router = APIRouter()
@@ -25,6 +27,15 @@ def create_campaign(session: SessionDep, data: CampaignCreate) -> Campaign:
 @router.get("", response_model=list[Campaign])
 def get_campaigns(session: SessionDep) -> list[Campaign]:
     return crud.get_campaigns(session)
+
+
+@router.post(
+    "/{campaign_id}/suggestion",
+    response_model=Suggestion,
+    dependencies=[Depends(get_campaign)],
+)
+def get_suggestions(campaign_id: int, data: SuggestionInput) -> dict:
+    return ai.get_suggestion(campaign_id, data.query)
 
 
 @router.get("/{campaign_id}", response_model=Campaign)

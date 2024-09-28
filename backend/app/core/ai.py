@@ -25,3 +25,10 @@ def generate_overview(data: dict) -> dict:
     resp = v.json()
     resp["score"] = min(100, max(0, resp["score"]))
     return resp
+
+
+def get_suggestion(campaign_id: int, query: str) -> dict:
+    v = requests.post(
+        get_url("suggestion"), json={"campaign_id": campaign_id, "query": query}
+    )
+    return v.json()

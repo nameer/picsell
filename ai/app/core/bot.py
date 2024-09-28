@@ -33,8 +33,6 @@ file_path = "/app/app/core/Gumlet_Guide.docx.txt"
 
 # Load and print the file content
 docs = read_text_file(file_path)
-print(type(docs))
-
 
 text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
 docs = [Document(page_content=x) for x in text_splitter.split_text(docs)]
