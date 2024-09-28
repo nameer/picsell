@@ -16,7 +16,7 @@ export default function DetailsHeader({
 }) {
   const [isLoading, setIsLoading] = useState(false);
 
-  const isPublished = status === "completed";
+  const isPublished = status === "processing";
 
   const handlePublishClick = () => {
     setIsLoading(true);

@@ -241,7 +241,7 @@ Feature user-generated content.`,
   };
 
   const handlePublish = () => {
-    setData((prev) => ({ ...prev, status: "completed" }));
+    setData((prev) => ({ ...prev, status: "processing" }));
   };
   const handleShareClick = () => {
     setIsShareModalOpen(true);
