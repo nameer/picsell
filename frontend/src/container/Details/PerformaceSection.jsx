@@ -38,13 +38,37 @@ export default function PerformanceSection(props) {
       </Card>
 
       <Card className="w-full px-8 text-left" title="AVG WATCH TIME">
-        <div className="text-xl font-semibold">3:25 min</div>
+        <div className="text-xl font-semibold">
+          {!(
+            props.leads.negative &&
+            props.leads.positive &&
+            props.leads.neutral
+          )
+            ? "-"
+            : "3:25 min"}
+        </div>
       </Card>
       <Card className="w-full px-8 text-left" title="PEAK VIEW TIME">
-        <div className="text-xl font-semibold">1:56 - 2:03 min</div>
+        <div className="text-xl font-semibold">
+          {!(
+            props.leads.negative &&
+            props.leads.positive &&
+            props.leads.neutral
+          )
+            ? "-"
+            : "0:12 - 0:56 min"}
+        </div>
       </Card>
       <Card className="w-full px-8 text-left" title="VIDEO COMPLETION RATE">
-        <div className="text-xl font-semibold">34%</div>
+        <div className="text-xl font-semibold">
+          {!(
+            props.leads.negative &&
+            props.leads.positive &&
+            props.leads.neutral
+          )
+            ? "-"
+            : "4%"}
+        </div>
       </Card>
     </div>
   );
