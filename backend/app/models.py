@@ -31,8 +31,8 @@ class CampaignBase(SQLModel):
 class CampaignCreate(CampaignBase):
     @model_validator(mode="after")
     def validate_urls(self) -> Self:
-        if not self.video_url and not self.document_urls:
-            raise ValueError("Either video_url or document_urls must be provided")
+        if not self.document_urls:
+            raise ValueError("At least one document_url must be provided")
         return self
 
 
@@ -64,8 +64,6 @@ class Campaign(CampaignBase, table=True):
     def validate_urls(cls, values: dict[str, Any]) -> dict[str, Any]:
         if not isinstance(values, CampaignBase):
             return values
-        if values.video_url:
-            values.video_url = str(values.video_url)
         if values.document_urls:
             values.document_urls = [str(url) for url in values.document_urls]
         return values

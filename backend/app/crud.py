@@ -5,6 +5,7 @@ from sqlmodel import Session, func, select
 from app.models import (
     Campaign,
     CampaignCreate,
+    CampaignStatus,
     CampaignUpdate,
     Engagement,
     EngagementCreate,
@@ -36,7 +37,10 @@ def update_campaign(
     session: Session, db_campaign: Campaign, campaign_in: CampaignUpdate
 ) -> Campaign:
     update_data = eval(campaign_in.json(exclude_unset=True))
-    db_campaign.sqlmodel_update(update_data)
+    extra_data = {}
+    if campaign_in.video_url:
+        extra_data["status"] = CampaignStatus.PROCESSING
+    db_campaign.sqlmodel_update(update_data, update=extra_data)
     session.add(db_campaign)
     session.commit()
     session.refresh(db_campaign)
