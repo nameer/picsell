@@ -260,9 +260,8 @@ const ChatPage = () => {
         </div>
         {showMike && !showLoader && !responseData && (
           <div
-            className={`absolute cusror-pointer inset-0 z-30 w-[1011px] h-[500px] flex justify-center pt-64 text-white bg-black bg-opacity-30 rounded-t-[8px] ${
-              isRecording ? 'opacity-50' : ''
-            }`}
+            className={`absolute cusror-pointer inset-0 z-30 w-[1011px] h-[500px] flex justify-center pt-64 bg-gradient-to-r from-[#2246ADCC] to-[#A963A1AB] text-white 
+             rounded-t-[8px] ${isRecording ? 'opacity-50' : ''}`}
           >
             <div
               className="cursor-pointer"
@@ -275,7 +274,7 @@ const ChatPage = () => {
         )}
         {showMike && showLoader && (
           <div
-            className={`absolute cusror-pointer inset-0 z-30 w-[1011px] h-[500px] flex justify-center pt-52 text-white bg-black bg-opacity-30 rounded-t-[8px] ${
+            className={`absolute cusror-pointer inset-0 z-30 w-[1011px] h-[500px] flex justify-center pt-52 text-white bg-gradient-to-r from-[#2246ADCC] to-[#A963A1AB]  bg-opacity-30 rounded-t-[8px] ${
               isRecording ? 'opacity-50' : ''
             }`}
           >
@@ -286,7 +285,7 @@ const ChatPage = () => {
         )}
         {showMike && !showLoader && responseData && (
           <div
-            className={`absolute cusror-pointer inset-0 z-30 w-[1011px] h-[500px] flex justify-center pt-64 text-white bg-black bg-opacity-30 rounded-t-[8px] ${
+            className={`absolute cusror-pointer inset-0 z-30 w-[1011px] h-[500px] flex justify-center pt-64 text-white bg-gradient-to-r from-[#2246ADCC] to-[#A963A1AB] bg-opacity-30 rounded-t-[8px] ${
               isRecording ? 'opacity-50' : ''
             }`}
           >

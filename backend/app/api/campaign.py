@@ -44,7 +44,7 @@ def get_campaign_video_hot_spots(
     points = crud.get_time_based_engagement(session, campaign_id)
 
     plots = [{"x": x, "y": y} for x, y in points]
-    max_heat = max(y for _, y in points)
+    max_heat = max(y for _, y in points) if points else 0
 
     return {
         "total_duration": campaign.video_duration,

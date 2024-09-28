@@ -214,6 +214,7 @@ export default function DetailsPage() {
         },
       }).then(async (response) => {
         const chartData = await response.json();
+        chartData.plot.push({ x: 0, y: 0 });
         setLineChartData(chartData);
       });
     }
@@ -281,9 +282,7 @@ export default function DetailsPage() {
             </>
           )}
         </Card>
-        {isDraft && (
-          <AiSuggestionsCard className="w-1/2" />
-        )}
+        {isDraft && <AiSuggestionsCard className="w-1/2" />}
         {!isDraft && (
           <div className="w-1/2 flex flex-col gap-4 overflow-auto h-[calc(100vh-18rem)] ">
             <PerformanceSection score={score} leads={data.leads} />
