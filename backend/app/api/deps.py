@@ -21,9 +21,7 @@ SessionDep = Annotated[Session, Depends(get_db)]
 async def get_campaign(request: Request, session: SessionDep) -> Campaign:
     campaign_id = request.query_params.get("campaign_id")
     if campaign_id is None:
-        print("pathparams", request.path_params)
         campaign_id = request.path_params.get("campaign_id")
-        print("frompath", campaign_id)
     if campaign_id is None:
         try:
             body = await request.json()
