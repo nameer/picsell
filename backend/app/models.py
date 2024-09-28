@@ -63,11 +63,15 @@ class Campaign(CampaignBase, table=True):
     @classmethod
     def validate_urls(cls, values: dict[str, Any]) -> dict[str, Any]:
         if not isinstance(values, CampaignBase):
-            return values
+            if values["video_url"] and values["document_urls"]:
+                values["status"] = CampaignStatus.PROCESSING
+                return values
         if values.video_url:
             values.video_url = str(values.video_url)
         if values.document_urls:
             values.document_urls = [str(url) for url in values.document_urls]
+        if values.video_url and values.document_urls:
+            values.status = CampaignStatus.PROCESSING
         return values
 
 
