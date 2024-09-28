@@ -40,8 +40,8 @@ export default function PerformanceSection(props) {
       <Card className="w-full px-8 text-left" title="AVG WATCH TIME">
         <div className="text-xl font-semibold">
           {!(
-            props.leads.negative &&
-            props.leads.positive &&
+            props.leads.negative ||
+            props.leads.positive ||
             props.leads.neutral
           )
             ? "-"
@@ -51,8 +51,8 @@ export default function PerformanceSection(props) {
       <Card className="w-full px-8 text-left" title="PEAK VIEW TIME">
         <div className="text-xl font-semibold">
           {!(
-            props.leads.negative &&
-            props.leads.positive &&
+            props.leads.negative ||
+            props.leads.positive ||
             props.leads.neutral
           )
             ? "-"
@@ -62,8 +62,8 @@ export default function PerformanceSection(props) {
       <Card className="w-full px-8 text-left" title="VIDEO COMPLETION RATE">
         <div className="text-xl font-semibold">
           {!(
-            props.leads.negative &&
-            props.leads.positive &&
+            props.leads.negative ||
+            props.leads.positive ||
             props.leads.neutral
           )
             ? "-"

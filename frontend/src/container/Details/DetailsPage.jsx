@@ -206,7 +206,9 @@ export default function DetailsPage() {
       },
     }).then(async (response) => {
       const chartData = await response.json();
-      chartData.plot.push({ x: 0, y: 0 });
+      chartData.plot.unshift({ x: 0, y: 0 });
+      chartData.plot.push({ x: chartData.total_duration, y: 0 });
+      debugger;
       setLineChartData(chartData);
     });
   };
