@@ -4,7 +4,7 @@ import { AiImage, Mike, Playing } from '../assets';
 import SpeechRecognition, {
   useSpeechRecognition
 } from 'react-speech-recognition';
-import CircularProgress from '@mui/material/CircularProgress';
+import Spinner from '../assets/minnaminung.gif';
 
 const ChatPage = () => {
   const [showMike, setShowMike] = useState(false);
@@ -233,7 +233,7 @@ const ChatPage = () => {
           playing={playVideo}
           onPlay={handleOnVideoPlay}
           onProgress={handleOnProgress}
-          url={'https://pic-uploadz.s3.ap-south-1.amazonaws.com/evernote.mp4'}
+          url={'https://pic-uploadz.s3.ap-south-1.amazonaws.com/Gumlet.mp4'}
           style={{
             borderRadius: '8px',
             overflow: 'hidden'
@@ -249,21 +249,21 @@ const ChatPage = () => {
         {!showMike && (
           <div className="absolute inset-0 w-full pt-5 text-end h-20 z-30 ">
             <button
-              className="mr-4 rounded-[74px] bg-[#395FCDD6] w-[82px] h-8 border border-white text-white text-sm font-bold text-center"
+              className="mr-4 rounded-[74px] bg-[#395FCDD6] w-[90px] h-8 border border-white text-white text-sm font-bold text-center"
               style={{ boxShadow: '0px 5px 15px 0px rgba(32, 91, 241, 0.2)' }}
               onClick={handleShowMike}
             >
               <div className="flex">
                 <AiImage className="size-[10px] ml-3 mt-[5px] mr-1" />
-                Ask AI
+                Ask Me
               </div>
             </button>
           </div>
         )}
-        <div className="absolute inset-0 text-start pt-[460px] ml-4 z-20 h-8 flex flex-wrap">
+        <div className="absolute inset-0 text-start ml-4 pt-[460px] z-20 h-8 flex flex-wrap">
           {questions?.map((item) => (
             <button
-              className="mr-2 rounded-[74px] bg-[#395FCDD6] w-fit pr-2 h-8 border border-white text-white text-sm text-center"
+              className="mr-2 rounded-[74px] bg-[#395FCDD6] w-fit pr-2 h-8 border border-white text-white text-sm text-center bg-opacity-100"
               style={{ boxShadow: '0px 5px 15px 0px rgba(32, 91, 241, 0.2)' }}
               onClick={() => handleSendQuestions(item)}
             >
@@ -291,12 +291,12 @@ const ChatPage = () => {
         )}
         {showMike && showLoader && (
           <div
-            className={`absolute cusror-pointer inset-0 z-30 w-[1011px] h-[500px] flex justify-center pt-64 text-white bg-black bg-opacity-30 rounded-t-[8px] ${
+            className={`absolute cusror-pointer inset-0 z-30 w-[1011px] h-[500px] flex justify-center pt-52 text-white bg-black bg-opacity-30 rounded-t-[8px] ${
               isRecording ? 'opacity-50' : ''
             }`}
           >
             <div className="flex">
-              <CircularProgress sx={{ color: 'white' }} size={70} />
+              <img src={Spinner} className="size-[180px]" />
             </div>
           </div>
         )}
