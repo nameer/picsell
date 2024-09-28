@@ -175,7 +175,7 @@ Engagement Elements:
 Include clickable links for special offers.
 Feature user-generated content.`,
   });
-  const [capaignData, setCampaignData] = useState();
+  const [campaignData, setCampaignData] = useState();
   const [summary, setSummary] = useState({
     engagement_peak: [],
     ai_query_performance: [],
@@ -183,14 +183,11 @@ Feature user-generated content.`,
     additional_insights: [],
   });
 
-  const [lineChartData] = useState([
-    { x: 1, y: 10 },
-    { x: 2, y: 20 },
-    { x: 3, y: 70 },
-    { x: 4, y: 5 },
-    { x: 5, y: 80 },
-    { x: 6, y: 0 },
-  ]);
+  const [lineChartData, setLineChartData] = useState({
+    total_duration: 0,
+    max_heat: 0,
+    plot: [],
+  });
 
   const [isDetailLoading, setIsDetailLoading] = useState(false);
 
@@ -217,6 +214,18 @@ Feature user-generated content.`,
         setSummary(overviewData.summary);
       });
       setIsDetailLoading(false);
+    });
+  };
+
+  const fetchLineChartData = (campaignId) => {
+    fetch(`http://localhost:8000/${campaignId}/1/hot-spots`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }).then(async (response) => {
+      const chartData = await response.json();
+      setLineChartData(chartData);
     });
   };
 
