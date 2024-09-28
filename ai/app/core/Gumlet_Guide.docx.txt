@@ -1,0 +1,119 @@
+Welcome
+Gumlet is an all-in-one platform to help you store, transcode and stream media files. Here you get all tools to get started in minutes!
+Videos
+Images
+Questions?
+Please feel free to reach out via chat or
+[email protected]
+if you need any help.
+Updated
+4 months ago
+Let's put your videos to work
+Host, secure, and stream videos in minutes. Grow your audience with videos optimized for peak performance.
+Trusted by leading brands worldwide
+Optimized video and image delivery, simplified.
+Reduce costs, automate your media pipeline and deliver stunning videos and images.
+Gumlet Video
+The easiest platform to host, secure and stream videos on the internet. Start streaming to millions or a select few in minutes.
+Gumlet Video API
+Gumlet’s modular Video API solutions to quickly set up custom transcoding, streaming, analytics, and dual-DRM workflows.
+Gumlet Image
+The latest in image optimization with responsive resize, auto-format conversions, network-aware compression, and retina-ready image delivery.
+Videos are freaking
+hard
+easy
+Video hosting for the
+video-first world
+Simple, versatile, and comprehensive video hosting solution to boost engagement and grow your audience. Deliver a buffer-free video viewing experience with snappy video start times and secure streaming.
+Video CMS
+to effortlessly organize your video assets
+Customizable video
+player that works everywhere
+Multi-level
+video protection
+Video analytics
+to track and grow your audience
+Build unique video solutions
+in no time
+Reduce costs and automate your on-demand or user-generated video pipelines. Built for developers, it works with AI-powered video compression, the latest codecs, and universal streaming protocols for flawless playback across mobile devices, PCs, and smart TVs.
+Video Streaming
+for buffer-free playback on every device
+Video Transcoding
+to compress and process videos fast
+Video DRM
+to secure your videos from piracy and theft
+Pixel perfect images, every single time.
+Automate optimized image
+delivery at scale
+Ace core web vitals, reduce CDN costs by up to 30%, boost SEO, and reduce visitor bounce rate with fast-loading webpages. Migrate in minutes and solve optimized image delivery once and for all with the latest in image optimization.
+Optimized Image Compression
+to reduce bandwidth
+Auto-format Conversion
+to deliver the latest image formats
+Auto-responsive Resize
+for flawless end-user experience
+Image Operations
+to control every aspect of your image
+WordPress Plugin
+to optimize image delivery and streamline workflows.
+
+
+Building media infra for the internet
+Work with the latest in media tech for flawless media processing and pixel-perfect viewer experience. Deliver optimized videos and images at any scale with 99.95% uptime guarantee.
+AI-powered tools to level up media experiences
+Leverage the latest AI features to enhance media optimization and delivery
+Gumlet’s AI-powered content-aware video compression tool reduces video file sizes by up to 30% without compromising on video quality. Run PTE out of the box on every video and dramatically reduce bandwidth consumption.
+Automatically generate accurate and precise transcripts for your videos and audios with Gumlet’s AI transcripts in multiple languages. It's perfect for creating searchable and engaging content that meets the needs of a diverse audience.
+Transform your images with our Image Glow-Up features. Effortlessly remove backgrounds and intelligently fill in the missing areas. Enable smart cropping and face detection for seamless image delivery.
+Success Stories
+Sportskeeda achieved 56%
+Image Optimization With Gumlet
+Gumlet optimization resulted in an average 56% images sizes reduction for all Sportskeeda pages for mobile and desktop. The better website performance combined with awesome content led to monthly traffic increasing by 4 times from 15 Mn to 60 Mn.
+Colearn optimized half a million video
+catalogues with Gumlet’s PTE
+Colearn optimized half a million video catalogues with Gumlet’s per-title-encoding. Colearn also observed at least 50% cost savings for both transcoding and streaming.
+Gold standard in media delivery
+Gumlet simplifies this with advanced media optimization, processing, and delivery, democratizing it for everyone.
+Save up to 30% of your image and video delivery costs by dramatically reducing file sizes and bandwidth consumption, without compromising on quality.
+Boost SEO and ace web vitals with optimized images and video metadata. Engage viewers with fast-loading images and snappy, buffer-free video streaming on every device.
+Protect your data and media with SOC2 and GDPR compliance, and 128-bit storage encryption. Guaranteed 99.95% uptime with robust fail-safes for uninterrupted global delivery.
+Deliver pixel-perfect, retina-ready images and cinematic 4K HDR videos on every device. Ensure optimal resolution for all screen sizes, and deliver buffer-free streaming even on choppy networks.
+Save an average of 30% bandwidth with Gumlet  AI Tools
+We switched to Gumlet for our video processing pipeline and instantly realized at least 50% cost savings for transcoding and streaming.
+The infrastructure is by far the best and fastest I have tested for media optimization in terms of how it is delivered to my websites.
+Explore our fully integrated suite
+of media solutions
+Host, secure, and stream videos in minutes.
+Modular Video APIs for custom workflows.
+Automate optimized image delivery at scale.
+Enable DRM encryption for your videos with just a single click.
+Explore Pricing
+Find the perfect plan to match your needs and elevate your experience today.
+Footer
+Gumlet LLC
+8 The Green, Dover, DE 19901
+Gumlet Pte Ltd
+20A, Tanjong Pagar Road, Singapore (088 443)
+© 2024 Gumlet Pte. Ltd.
+Privacy Policy
+Terms of Service
+Welcome
+Gumlet is an all-in-one platform to help you store, transcode and stream media files. Here you get all tools to get started in minutes!
+Videos
+Images
+Questions?
+Please feel free to reach out via chat or
+[email protected]
+if you need any help.
+Updated
+4 months ago
+Getting Started
+1
+Pick a language
+2
+Authenticate
+3
+Try it!
+Rate Limits
+Gumlet servers enforce rate limits to ensure our APIs are responsive as we grow. The rate limit is tied to an account and set to 1000 requests per hour.  If your team would like a higher rate limit, please reach out to our
+sales team

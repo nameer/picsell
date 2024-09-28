@@ -1,9 +1,9 @@
 from langchain.chains import create_history_aware_retriever, create_retrieval_chain
 from langchain.chains.combine_documents import create_stuff_documents_chain
 from langchain.prompts import PromptTemplate
+from langchain.schema.document import Document
 from langchain_chroma import Chroma
 from langchain_community.chat_message_histories import ChatMessageHistory
-from langchain_community.document_loaders import WebBaseLoader
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain_core.runnables.history import RunnableWithMessageHistory
 from langchain_openai import ChatOpenAI, OpenAIEmbeddings
@@ -16,22 +16,32 @@ from app.models import SummaryInput
 
 
 # Initialize language model
-llm = ChatOpenAI(model="gpt-4o-mini")
-
-# Load and process the document
-loader = WebBaseLoader("https://www.macrumors.com/roundup/iphone-16-pro/")
+llm = ChatOpenAI(model="gpt-4o", temperature=0)
 
 
-docs = loader.load()
+def read_text_file(file_path):
+    with open(file_path, encoding="utf-8") as file:
+        content = file.read()
+    return content
 
-text_splitter = RecursiveCharacterTextSplitter(
-    chunk_size=1000, chunk_overlap=200, add_start_index=True
-)
-all_splits = text_splitter.split_documents(docs)
+
+# Specify the path to your .txt file
+
+
+# Specify the path to your .txt file
+file_path = "/app/app/core/Gumlet_Guide.docx.txt"
+
+# Load and print the file content
+docs = read_text_file(file_path)
+print(type(docs))
+
+
+text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
+docs = [Document(page_content=x) for x in text_splitter.split_text(docs)]
 
 # Create vector store
-vectorstore = Chroma.from_documents(documents=all_splits, embedding=OpenAIEmbeddings())
-retriever = vectorstore.as_retriever(search_type="similarity", search_kwargs={"k": 6})
+vectorstore = Chroma.from_documents(documents=docs, embedding=OpenAIEmbeddings())
+retriever = vectorstore.as_retriever(search_type="similarity", search_kwargs={"k": 20})
 
 # Set up promptsl
 contextualize_q_system_prompt = """Given a chat history and the latest user question \
