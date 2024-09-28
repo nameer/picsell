@@ -16,139 +16,18 @@ export default function DetailsPage() {
   const { campaignId } = useParams();
   const [score, setScore] = useState(0);
   const [data, setData] = useState({
-    summary:
-      "Areas for Improvement: Improved clarity on account management features",
-    score: 82,
-    topics: [
-      {
-        name: "Pricing",
-        subtopics: [
-          {
-            name: "Accessing pricing page",
-            value: 3,
-          },
-          {
-            name: "Discounts",
-            value: 2,
-          },
-        ],
-      },
-      {
-        name: "Account Management",
-        subtopics: [
-          {
-            name: "Password reset",
-            value: 4,
-          },
-          {
-            name: "Account deletion",
-            value: 50,
-          },
-          {
-            name: "Two-factor authentication",
-            value: 5,
-          },
-        ],
-      },
-      {
-        name: "Support",
-        subtopics: [
-          {
-            name: "Technical support",
-            value: 1,
-          },
-        ],
-      },
-      {
-        name: "Account Management 2",
-        subtopics: [
-          {
-            name: "Password reset",
-            value: 4,
-          },
-          {
-            name: "Account deletion",
-            value: 10,
-          },
-          {
-            name: "Two-factor authentication",
-            value: 5,
-          },
-        ],
-      },
-      {
-        name: " Management test",
-        subtopics: [
-          {
-            name: "Password reset",
-            value: 4,
-          },
-          {
-            name: "Account deletion",
-            value: 10,
-          },
-          {
-            name: "Two-factor authentication",
-            value: 5,
-          },
-        ],
-      },
-      {
-        name: "Account ",
-        subtopics: [
-          {
-            name: "Password reset",
-            value: 4,
-          },
-          {
-            name: "Account deletion",
-            value: 10,
-          },
-          {
-            name: "Two-factor authentication",
-            value: 5,
-          },
-        ],
-      },
-      {
-        name: " Management",
-        subtopics: [
-          {
-            name: "Password reset",
-            value: 4,
-          },
-          {
-            name: "Account deletion",
-            value: 10,
-          },
-          {
-            name: "Two-factor authentication",
-            value: 5,
-          },
-        ],
-      },
-      {
-        name: " Management 6",
-        subtopics: [
-          {
-            name: "Password reset",
-            value: 4,
-          },
-          {
-            name: "Account deletion",
-            value: 10,
-          },
-          {
-            name: "Two-factor authentication",
-            value: 5,
-          },
-        ],
-      },
-    ],
+    summary: {
+      engagement_peak: [],
+      ai_query_performance: [],
+      customer_feedback: [],
+      additional_insights: [],
+    },
+    score: 0,
+    topics: [],
     leads: {
-      positive: 560,
-      neutral: 305,
-      negative: 282,
+      positive: 0,
+      neutral: 0,
+      negative: 0,
     },
   });
   const [campaignData, setCampaignData] = useState({
