@@ -1,15 +1,12 @@
 from datetime import datetime
 
-from sqlmodel import Session, select
+from sqlmodel import Session, func, select
 
 from app.models import (
     Campaign,
-   
     CampaignCreate,
     CampaignUpdate,
-   
     Engagement,
-   
     EngagementCreate,
     OverviewCache,
 )
@@ -34,9 +31,10 @@ def get_campaign(session: Session, campaign_id: int) -> Campaign | None:
     campaign = session.get(Campaign, campaign_id)
     return campaign
 
+
 def update_campaign(
     session: Session, db_campaign: Campaign, campaign_in: CampaignUpdate
-):
+) -> Campaign:
     update_data = eval(campaign_in.json(exclude_unset=True))
     db_campaign.sqlmodel_update(update_data)
     session.add(db_campaign)
@@ -68,6 +66,16 @@ def get_last_engagement_time(session: Session, campaign_id: int) -> datetime:
         .where(Engagement.campaign_id == campaign_id)
         .order_by(Engagement.created_at.desc())
     ).first()
+
+
+def get_time_based_engagement(
+    session: Session, campaign_id: int
+) -> list[tuple[int, int]]:
+    return session.exec(
+        select(Engagement.time, func.count("*"))
+        .where(Engagement.campaign_id == campaign_id)
+        .group_by(Engagement.time)
+    ).all()
 
 
 # === Overview Cache === #

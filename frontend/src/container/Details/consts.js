@@ -82,3 +82,10 @@ Encourage user-generated content by asking viewers to share their experiences wi
 Additionally, consider adding interactive polls or quizzes to keep the audience engaged and gather valuable feedback.`
 
 export const videoUrl = "https://pic-uploadz.s3.ap-south-1.amazonaws.com/Gumlet.mp4";
+
+export const SUMMARY_HEADING = {
+'engagement_peak': 'Engagement Peak',
+'ai_query_performance': 'AI Query Performance',
+'customer_feedback': 'Customer Feedback',
+'additional_insights': 'Additional Insights'
+}

@@ -156,31 +156,19 @@ export default function DetailsPage() {
     name: "",
     status: "",
   });
-  const [summary] = useState([
-    {
-      heading: "Engagement Peak",
-      details: [
-        "Product setup demonstration (3:00 - 5:30)",
-        "45% of interactions occur after this segment",
-      ],
-    },
-    {
-      heading: "AI Query Performance",
-      details: [
-        'Top Query Handled Well: "How does Model X integrate with other devices?" – 95% accuracy',
-        "Areas for Improvement: Energy-saving feature questions – 89% accuracy",
-      ],
-    },
-  ]);
 
-  const [lineChartData] = useState([
-    { x: 1, y: 10 },
-    { x: 2, y: 20 },
-    { x: 3, y: 70 },
-    { x: 4, y: 5 },
-    { x: 5, y: 80 },
-    { x: 6, y: 0 },
-  ]);
+  const [summary, setSummary] = useState({
+    engagement_peak: [],
+    ai_query_performance: [],
+    customer_feedback: [],
+    additional_insights: [],
+  });
+
+  const [lineChartData, setLineChartData] = useState({
+    total_duration: 0,
+    max_heat: 0,
+    plot: [],
+  });
 
   const [isDetailLoading, setIsDetailLoading] = useState(false);
 
@@ -204,8 +192,21 @@ export default function DetailsPage() {
         const overviewData = await response.json();
         setData(overviewData);
         setScore(overviewData.score);
+        setSummary(overviewData.summary);
       });
       setIsDetailLoading(false);
+    });
+  };
+
+  const fetchLineChartData = (campaignId) => {
+    fetch(`http://localhost:8000/${campaignId}/1/hot-spots`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }).then(async (response) => {
+      const chartData = await response.json();
+      setLineChartData(chartData);
     });
   };
 
