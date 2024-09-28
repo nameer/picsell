@@ -77,8 +77,8 @@ const ChatPage = () => {
     const parameters = {
       question: text || transcript,
       campaign_id: '1',
-      session_id: id
-      //   time: currentTime
+      session_id: id,
+      time: currentTime
     };
     setShowLoder(true);
     setResponseData(null);
@@ -260,7 +260,7 @@ const ChatPage = () => {
         </div>
         {showMike && !showLoader && !responseData && (
           <div
-            className={`absolute cusror-pointer inset-0 z-30 w-[1011px] h-[500px] flex justify-center pt-64 bg-gradient-to-r from-[#2246ADCC] to-[#A963A1AB] text-white 
+            className={`absolute cusror-pointer inset-0 z-30 w-[1011px] h-[500px] flex justify-center pt-64 bg-gradient-to-r from-[#2246ADCC] to-[#A963A1AB] text-white
              rounded-t-[8px] ${isRecording ? 'opacity-50' : ''}`}
           >
             <div
@@ -274,9 +274,8 @@ const ChatPage = () => {
         )}
         {showMike && showLoader && (
           <div
-            className={`absolute cusror-pointer inset-0 z-30 w-[1011px] h-[500px] flex justify-center pt-52 text-white bg-gradient-to-r from-[#2246ADCC] to-[#A963A1AB]  bg-opacity-30 rounded-t-[8px] ${
-              isRecording ? 'opacity-50' : ''
-            }`}
+            className={`absolute cusror-pointer inset-0 z-30 w-[1011px] h-[500px] flex justify-center pt-52 text-white bg-gradient-to-r from-[#2246ADCC] to-[#A963A1AB]  bg-opacity-30 rounded-t-[8px] ${isRecording ? 'opacity-50' : ''
+              }`}
           >
             <div className="flex">
               <img src={Spinner} className="size-[180px]" />
@@ -285,9 +284,8 @@ const ChatPage = () => {
         )}
         {showMike && !showLoader && responseData && (
           <div
-            className={`absolute cusror-pointer inset-0 z-30 w-[1011px] h-[500px] flex justify-center pt-64 text-white bg-gradient-to-r from-[#2246ADCC] to-[#A963A1AB] bg-opacity-30 rounded-t-[8px] ${
-              isRecording ? 'opacity-50' : ''
-            }`}
+            className={`absolute cusror-pointer inset-0 z-30 w-[1011px] h-[500px] flex justify-center pt-64 text-white bg-gradient-to-r from-[#2246ADCC] to-[#A963A1AB] bg-opacity-30 rounded-t-[8px] ${isRecording ? 'opacity-50' : ''
+              }`}
           >
             <div className="flex">
               <Playing className="size-[79px] animate-ping" />

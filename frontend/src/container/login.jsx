@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import logo from "../assets/images/logo.svg";
 import login from "../assets/images/login.png";
 
-const userName = "admin1234";
+const userName = "admin@gumlet.com";
 const password = "12345678";
 const Login = () => {
   const [name, setName] = useState("");
