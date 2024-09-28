@@ -40,6 +40,7 @@ def get_suggestions(campaign_id: int, data: SuggestionInput) -> dict:
 
 @router.get("/{campaign_id}", response_model=Campaign)
 def get_campaign_details(
+    campaign_id: int,  # noqa: ARG001
     campaign: Annotated[Campaign, Depends(get_campaign)],
 ) -> Campaign:
     return campaign
