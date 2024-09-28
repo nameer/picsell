@@ -8,19 +8,21 @@ const AiSuggestionsCard = ({ className, aiSuggestions }) => {
   const textareaRef = useRef();
 
   useEffect(() => {
-    let i = 0;
-    const intervalId = setInterval(() => {
-      setDisplayText(aiSuggestions.slice(0, i));
-      textareaRef.current.scrollTop = textareaRef.current.scrollHeight;
+    if(aiSuggestions){
+      let i = 0;
+      const intervalId = setInterval(() => {
+        setDisplayText(aiSuggestions.slice(0, i));
+        textareaRef.current.scrollTop = textareaRef.current.scrollHeight;
 
-      i++;
+        i++;
 
-      if (i > aiSuggestions.length) {
-        clearInterval(intervalId);
-      }
-    }, 10);
+        if (i > aiSuggestions.length) {
+          clearInterval(intervalId);
+        }
+      }, 10);
 
-    return () => clearInterval(intervalId);
+      return () => clearInterval(intervalId);
+    }
   }, [aiSuggestions]);
 
   return (
@@ -35,7 +37,7 @@ const AiSuggestionsCard = ({ className, aiSuggestions }) => {
         <Button
           icon={<AiIcon />}
           color="secondary"
-          className="px-2 border-[#E69824] text-[#E69824]"
+          className="px-2 border-[#E69824] text-[#E69824] opacity-50"
         >
           Generate campaign video
         </Button>

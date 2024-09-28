@@ -11,20 +11,11 @@ export default function DetailsHeader({
   title,
   id,
   isUploaded,
+  isPublishing,
   onPublish,
   onShare,
 }) {
-  const [isLoading, setIsLoading] = useState(false);
-
   const isPublished = status === "processing";
-
-  const handlePublishClick = () => {
-    setIsLoading(true);
-    setTimeout(() => {
-      onPublish();
-      setIsLoading(false);
-    }, 1000);
-  };
 
   return (
     <div className="flex justify-between mb-3">
@@ -57,14 +48,14 @@ export default function DetailsHeader({
           {!isPublished && (
             <Button
               icon={
-                isLoading ? (
+                isPublishing ? (
                   <Spinner className="!text-white size-4" />
                 ) : (
                   <ShareLogo className="fill-white size-4" />
                 )
               }
-              onClick={handlePublishClick}
-              disabled={isLoading}
+              onClick={onPublish}
+              disabled={isPublishing}
             >
               Publish
             </Button>
@@ -73,7 +64,6 @@ export default function DetailsHeader({
             <Button
               icon={<ShareLogo className="fill-white size-4" />}
               onClick={onShare}
-              disabled={isLoading}
             >
               Share
             </Button>

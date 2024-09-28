@@ -10,14 +10,12 @@ import VideoUploader from "./VideoCard";
 import AiSuggestionsCard from "./AiSuggestionsCard";
 import ShareModal from "./ShareModal";
 import { useParams } from "react-router-dom";
+import { aiSuggestions, videoUrl } from "./consts";
 
 export default function DetailsPage() {
   const { campaignId } = useParams();
   const [score, setScore] = useState(0);
   const [data, setData] = useState({
-    id: "12345",
-    status: "Completed",
-    title: "Coffee Explainer Video",
     summary:
       "Areas for Improvement: Improved clarity on account management features",
     score: 82,
@@ -152,30 +150,13 @@ export default function DetailsPage() {
       neutral: 305,
       negative: 282,
     },
-    aiSuggestions: `Content Recommendations:
-
-Key Messaging:
-“Celebrate Diwali with Evernote!”
-“Stay organized this festive season—capture ideas and plan celebrations!”
-
-Call-to-Action:
-“Start your free trial for exclusive Diwali discounts!”
-
-Media Recommendations:
-
-Video Structure:
-Intro (0:00 - 0:15): Festive visuals with the Evernote logo.
-Features (0:15 - 0:60): Highlight note-taking, web clipper, and themed notebooks.
-Collaboration (0:60 - 1:10): Showcase family planning in real-time.
-Mobile Access (1:10 - 1:30): Capture notes on the go.
-Closing (1:30 - 1:45): Reinforce the message and include a call-to-action.
-Visual Style:
-Use festive colors and motifs—golds, reds, greens.
-Engagement Elements:
-Include clickable links for special offers.
-Feature user-generated content.`,
   });
-  const [campaignData, setCampaignData] = useState();
+  const [campaignData, setCampaignData] = useState({
+    id: "",
+    name: "",
+    status: "",
+  });
+
   const [summary, setSummary] = useState({
     engagement_peak: [],
     ai_query_performance: [],
@@ -236,16 +217,31 @@ Feature user-generated content.`,
 
   const [videoFile, setVideoFile] = useState(null);
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
+  const [isPublishing, setIsPublishing] = useState(false);
 
-  const isDraft = data.status === "drafted";
+  const isDraft = campaignData.status === "drafted";
 
   const handleVideUpload = (file) => {
     setVideoFile(URL.createObjectURL(file));
   };
 
   const handlePublish = () => {
-    setData((prev) => ({ ...prev, status: "processing" }));
+    setIsPublishing(true);
+    fetch(`http://localhost:8000/campaigns/${campaignId}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        video_url: videoUrl,
+      }),
+    }).then(async (response) => {
+      const data = await response.json();
+      setCampaignData(data);
+      setIsPublishing(false);
+    });
   };
+
   const handleShareClick = () => {
     setIsShareModalOpen(true);
   };
@@ -253,16 +249,20 @@ Feature user-generated content.`,
   return (
     <DashboardLayout>
       <DetailsHeader
-        status={data.status}
-        id={data.id}
-        title={data.title}
+        status={campaignData.status}
+        id={campaignData.id}
+        title={campaignData.name}
         isUploaded={videoFile !== null}
+        isPublishing={isPublishing}
         onPublish={handlePublish}
         onShare={handleShareClick}
       />
       <div className="flex gap-4">
         <Card className="w-1/2 h-fit">
-          <VideoUploader file={videoFile} onUpload={handleVideUpload} />
+          <VideoUploader
+            file={!isDraft ? campaignData.video_url : videoFile}
+            onUpload={handleVideUpload}
+          />
           {!isDraft && (
             <>
               <div className="text-left text-[13px] leading-[18px] tracking-[1px] text-gray-500 mt-4">
@@ -273,10 +273,7 @@ Feature user-generated content.`,
           )}
         </Card>
         {isDraft && (
-          <AiSuggestionsCard
-            className="w-1/2"
-            aiSuggestions={data.aiSuggestions}
-          />
+          <AiSuggestionsCard className="w-1/2" aiSuggestions={aiSuggestions} />
         )}
         {!isDraft && (
           <div className="w-1/2 flex flex-col gap-4 overflow-auto h-[calc(100vh-18rem)] ">

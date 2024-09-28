@@ -1,10 +1,12 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import Card from "../../components/Card";
 import Button from "../../components/Button/Button";
 import { UploadIcon } from "../../assets/icons";
 import ReactPlayer from "react-player";
+import Spinner from "../../components/Spinner";
 
 const VideoPlayer = ({ file, onUpload }) => {
+  const [isLoading, setIsLoading] = useState(false);
   const uploadInput = useRef();
 
   const handleUploadClick = () => {
@@ -12,7 +14,11 @@ const VideoPlayer = ({ file, onUpload }) => {
   };
 
   const handleUpload = (e) => {
-    onUpload(e.target.files[0]);
+    setIsLoading(true);
+    setTimeout(() => {
+      onUpload(e.target.files[0]);
+      setIsLoading(false);
+    }, 2000);
   };
 
   return (
@@ -28,11 +34,18 @@ const VideoPlayer = ({ file, onUpload }) => {
           />
           <Button
             className="px-4"
-            icon={<UploadIcon />}
+            icon={
+              isLoading ? (
+                <Spinner className="size-4 text-white" />
+              ) : (
+                <UploadIcon />
+              )
+            }
             color="secondary"
             onClick={handleUploadClick}
+            disabled={isLoading}
           >
-            Upload video
+            {isLoading ? "Uploading..." : "Upload video"}
           </Button>
         </div>
       )}
